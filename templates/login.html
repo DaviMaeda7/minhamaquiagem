@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Área Privada</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* =============================================
+       VARIÁVEIS DE CORES (Design System)
+       ============================================= */
+    :root {
+      --surface:           #FFF8F8;
+      --surface-low:       #F7ECEC;
+      --surface-container: #F2E4E4;
+      --surface-high:      #EDD6D6;
+      --surface-dim:       #E0CCCC;
+      --primary:           #8C4B55;
+      --primary-container: #F8A6B1;
+      --on-surface:        #1D1B1B;
+      --on-surface-soft:   #6B5B5B;
+      --tertiary:          #F0E1C7;
+      --error:             #BA1A1A;
+      --white:             #FFFFFF;
+    }
+
+    /* =============================================
+       RESET & BASE
+       ============================================= */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--surface);
+      font-family: 'Inter', sans-serif;
+      color: var(--on-surface);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* =============================================
+       CABEÇALHO (topo da página)
+       ============================================= */
+    .page-top {
+      padding: 48px 32px 0;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--on-surface-soft);
+      cursor: pointer;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .back-btn:hover { color: var(--primary); }
+
+    /* =============================================
+       ÁREA PRINCIPAL DE LOGIN
+       ============================================= */
+    .login-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 32px 32px 48px;
+      gap: 0;
+    }
+
+    /* Ícone de escudo/segurança */
+    .shield-icon {
+      font-size: 3rem;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .login-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--on-surface);
+      margin-bottom: 8px;
+    }
+
+    .login-title em {
+      font-style: italic;
+      color: var(--primary);
+    }
+
+    .login-sub {
+      font-size: 0.9rem;
+      color: var(--on-surface-soft);
+      font-weight: 300;
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+
+    /* =============================================
+       FORMULÁRIO — "SOFT-TOUCH" INPUTS
+       Sem caixa, só sublinhado quando ativo
+       ============================================= */
+    .form-group {
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--on-surface-soft);
+      margin-bottom: 8px;
+    }
+
+    .form-input {
+      width: 100%;
+      background: var(--surface-container);
+      border: none;
+      border-bottom: 2px solid transparent;
+      border-radius: 0.5rem 0.5rem 0 0;
+      padding: 14px 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      color: var(--on-surface);
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .form-input:focus {
+      border-bottom-color: var(--primary);
+      background: var(--surface-high);
+    }
+
+    /* Ícone dentro do campo de senha */
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: var(--on-surface-soft);
+    }
+
+    /* Mensagem de erro suave */
+    .form-error {
+      font-size: 0.78rem;
+      color: var(--error);
+      margin-top: 6px;
+      display: none;
+    }
+
+    .form-error.show { display: block; }
+
+    /* =============================================
+       OPÇÃO PIN (alternativa ao texto)
+       ============================================= */
+    .pin-option {
+      text-align: center;
+      margin: 8px 0 32px;
+      font-size: 0.82rem;
+      color: var(--on-surface-soft);
+    }
+
+    .pin-option a {
+      color: var(--primary);
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    /* =============================================
+       BOTÕES
+       ============================================= */
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      border-radius: 3rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-container));
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-primary:hover { opacity: 0.88; }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 16px;
+      border-radius: 3rem;
+      background: rgba(140, 75, 85, 0.08);
+      color: var(--primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: background 0.2s;
+    }
+
+    .btn-secondary:hover { background: rgba(140, 75, 85, 0.14); }
+
+    /* =============================================
+       RODAPÉ DA TELA
+       ============================================= */
+    .login-footer {
+      padding: 0 32px 40px;
+      text-align: center;
+    }
+
+    .footer-text {
+      font-size: 0.75rem;
+      color: var(--on-surface-soft);
+      line-height: 1.6;
+    }
+
+    /* =============================================
+       ANIMAÇÃO DE ENTRADA
+       ============================================= */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-wrapper > * {
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .login-wrapper > *:nth-child(1) { animation-delay: 0.05s; }
+    .login-wrapper > *:nth-child(2) { animation-delay: 0.10s; }
+    .login-wrapper > *:nth-child(3) { animation-delay: 0.15s; }
+    .login-wrapper > *:nth-child(4) { animation-delay: 0.20s; }
+    .login-wrapper > *:nth-child(5) { animation-delay: 0.25s; }
+  </style>
+</head>
+<body>
+
+  <!-- BOTÃO VOLTAR -->
+  <div class="page-top">
+    <a class="back-btn" href="index.html">← Voltar para loja</a>
+  </div>
+
+  <!-- ÁREA DE LOGIN -->
+  <div class="login-wrapper">
+
+    <span class="shield-icon">🛡️</span>
+
+    <h1 class="login-title">
+      Área<br/>
+      <em>privada.</em>
+    </h1>
+
+    <p class="login-sub">
+      Apenas você sabe que isto existe.<br/>
+      Entre com segurança.
+    </p>
+
+    <!-- CAMPO USUÁRIO -->
+    <div class="form-group">
+      <label class="form-label" for="inputUsuario">Seu nome de acesso</label>
+      <div class="input-wrapper">
+        <input
+          class="form-input"
+          type="text"
+          id="inputUsuario"
+          placeholder="Como deseja ser chamada"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+        />
+      </div>
+    </div>
+
+    <!-- CAMPO SENHA -->
+    <div class="form-group">
+      <label class="form-label" for="inputSenha">Senha</label>
+      <div class="input-wrapper">
+        <input
+          class="form-input"
+          type="password"
+          id="inputSenha"
+          placeholder="••••••••"
+          id="inputSenha"
+        />
+        <span class="input-icon" id="toggleSenha">👁️</span>
+      </div>
+      <!-- Mensagem de erro (sem alarme) -->
+      <p class="form-error" id="erroSenha">
+        Algo precisa de atenção — verifique suas informações.
+      </p>
+    </div>
+
+    <!-- OPÇÃO PIN -->
+    <p class="pin-option">
+      Prefere usar um PIN? <a href="#">Entrar com código</a>
+    </p>
+
+    <!-- BOTÃO ENTRAR -->
+    <button class="btn-primary" id="btnEntrar">
+      Entrar com segurança →
+    </button>
+
+    <!-- BOTÃO CRIAR CONTA -->
+    <button class="btn-secondary">
+      Criar minha conta segura
+    </button>
+
+  </div>
+
+  <!-- RODAPÉ -->
+  <footer class="login-footer">
+    <p class="footer-text">
+      Suas informações são guardadas com carinho.<br/>
+      Ninguém além de você tem acesso.
+    </p>
+  </footer>
+
+  <!-- ============================================
+       JAVASCRIPT — LÓGICA DE LOGIN
+       Senha correta: "segura123" → vai para app.html
+       ============================================ -->
+  <script>
+    // Mostrar/ocultar senha
+    const toggleSenha = document.getElementById('toggleSenha');
+    const inputSenha  = document.getElementById('inputSenha');
+
+    toggleSenha.addEventListener('click', () => {
+      if (inputSenha.type === 'password') {
+        inputSenha.type = 'text';
+        toggleSenha.textContent = '🙈';
+      } else {
+        inputSenha.type = 'password';
+        toggleSenha.textContent = '👁️';
+      }
+    });
+
+    // Login (senha de demonstração: "segura123")
+    const btnEntrar  = document.getElementById('btnEntrar');
+    const erroSenha  = document.getElementById('erroSenha');
+    const inputUsuario = document.getElementById('inputUsuario');
+
+    btnEntrar.addEventListener('click', () => {
+      const usuario = inputUsuario.value.trim();
+      const senha   = inputSenha.value.trim();
+
+      // Validação simples de demonstração
+      if (!usuario || !senha) {
+        erroSenha.textContent = 'Preencha todos os campos com carinho.';
+        erroSenha.classList.add('show');
+        return;
+      }
+
+      // AQUI você pode trocar a senha de demonstração
+      if (senha === 'segura123') {
+        erroSenha.classList.remove('show');
+        btnEntrar.textContent = 'Bem-vinda... ✦';
+        setTimeout(() => {
+          window.location.href = 'app.html';
+        }, 700);
+      } else {
+        erroSenha.textContent = 'Algo precisa de atenção — verifique suas informações.';
+        erroSenha.classList.add('show');
+        inputSenha.value = '';
+        inputSenha.focus();
+      }
+    });
+
+    // Permite entrar com tecla Enter
+    inputSenha.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') btnEntrar.click();
+    });
+  </script>
+
+</body>
+</html>
