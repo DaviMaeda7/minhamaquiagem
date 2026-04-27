@@ -29,6 +29,6 @@ def make():
 @app.route('/skincare')
 def skincare():
     return render_template('skincare.html')
-
+    
 if __name__ == '__main__':
     app.run(debug=True)
