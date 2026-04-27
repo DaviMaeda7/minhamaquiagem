@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --surface: #fff8f8;
+      --surface-container: #f2e4e4;
+      --surface-high: #edd6d6;
+      --primary: #8c4b55;
+      --primary-container: #f8a6b1;
+      --on-surface: #1d1b1b;
+      --on-surface-soft: #6b5b5b;
+      --error: #ba1a1a;
+      --success: #2e7d32;
+      --white: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      font-family: 'Inter', sans-serif;
+      color: var(--on-surface);
+    }
+
+    .page-top {
+      padding: 40px 32px 0;
+    }
+
+    .back-btn {
+      color: var(--on-surface-soft);
+      text-decoration: none;
+      font-size: 0.82rem;
+    }
+
+    .cadastro-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 32px;
+    }
+
+    .cadastro-icon {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .cadastro-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .cadastro-title em {
+      color: var(--primary);
+      font-style: italic;
+    }
+
+    .cadastro-sub {
+      color: var(--on-surface-soft);
+      font-size: 0.92rem;
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--on-surface-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      padding: 14px 16px;
+      border: none;
+      border-bottom: 2px solid transparent;
+      border-radius: 8px 8px 0 0;
+      background: var(--surface-container);
+      font-size: 0.95rem;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      background: var(--surface-high);
+      border-bottom-color: var(--primary);
+    }
+
+    .input-icon {
+      position: absolute;
+      top: 50%;
+      right: 14px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    .form-error,
+    .form-success {
+      display: none;
+      margin: 0 0 14px;
+      font-size: 0.8rem;
+    }
+
+    .form-error {
+      color: var(--error);
+    }
+
+    .form-success {
+      color: var(--success);
+    }
+
+    .form-error.show,
+    .form-success.show {
+      display: block;
+    }
+
+    .terms {
+      display: flex;
+      gap: 10px;
+      margin: 6px 0 22px;
+      color: var(--on-surface-soft);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .terms input {
+      margin-top: 3px;
+      accent-color: var(--primary);
+    }
+
+    .terms a,
+    .login-link a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-container));
+      color: var(--white);
+      font-size: 0.94rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .login-link {
+      margin-top: 22px;
+      text-align: center;
+      color: var(--on-surface-soft);
+      font-size: 0.82rem;
+    }
+
+    .cadastro-footer {
+      padding: 0 32px 40px;
+      text-align: center;
+    }
+
+    .footer-text {
+      color: var(--on-surface-soft);
+      font-size: 0.75rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page-top">
+    <a href="/login" class="back-btn">← Voltar para login</a>
+  </div>
+
+  <main class="cadastro-wrapper">
+    <span class="cadastro-icon">✨</span>
+
+    <h1 class="cadastro-title">
+      Criar <br>
+      <em>conta.</em>
+    </h1>
+
+    <p class="cadastro-sub">
+      Preencha seus dados para acessar sua área privada com segurança.
+    </p>
+
+    <form id="formCadastro">
+      <div class="form-group">
+        <label for="nome" class="form-label">Nome completo</label>
+        <input type="text" id="nome" class="form-input" placeholder="Digite seu nome">
+      </div>
+
+      <div class="form-group">
+        <label for="email" class="form-label">E-mail</label>
+        <input type="email" id="email" class="form-input" placeholder="seuemail@exemplo.com">
+      </div>
+
+      <div class="form-group">
+        <label for="telefone" class="form-label">Telefone</label>
+        <input type="tel" id="telefone" class="form-input" placeholder="(61) 99999-9999">
+      </div>
+
+      <div class="form-group">
+        <label for="senha" class="form-label">Senha</label>
+        <div class="input-wrapper">
+          <input type="password" id="senha" class="form-input" placeholder="Crie uma senha">
+          <span class="input-icon" id="toggleSenha">👁️</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmarSenha" class="form-label">Confirmar senha</label>
+        <input type="password" id="confirmarSenha" class="form-input" placeholder="Repita sua senha">
+      </div>
+
+      <label class="terms">
+        <input type="checkbox" id="termos">
+        <span>Li e aceito os <a href="#">termos de uso</a> e a <a href="#">política de privacidade</a>.</span>
+      </label>
+
+      <p class="form-error" id="mensagemErro">Preencha todos os campos corretamente.</p>
+      <p class="form-success" id="mensagemSucesso">Cadastro realizado com sucesso!</p>
+
+      <button type="submit" class="btn-primary">Criar minha conta →</button>
+    </form>
+
+    <p class="login-link">
+      Já tem uma conta? <a href="/login">Entrar agora</a>
+    </p>
+  </main>
+
+  <footer class="cadastro-footer">
+    <p class="footer-text">
+      Suas informações são guardadas com carinho.<br>
+      Ninguém além de você tem acesso.
+    </p>
+  </footer>
+
+  <script>
+    const formCadastro = document.getElementById('formCadastro');
+    const nome = document.getElementById('nome');
+    const email = document.getElementById('email');
+    const telefone = document.getElementById('telefone');
+    const senha = document.getElementById('senha');
+    const confirmarSenha = document.getElementById('confirmarSenha');
+    const termos = document.getElementById('termos');
+    const mensagemErro = document.getElementById('mensagemErro');
+    const mensagemSucesso = document.getElementById('mensagemSucesso');
+    const toggleSenha = document.getElementById('toggleSenha');
+
+    toggleSenha.addEventListener('click', () => {
+      if (senha.type === 'password') {
+        senha.type = 'text';
+        toggleSenha.textContent = '🙈';
+      } else {
+        senha.type = 'password';
+        toggleSenha.textContent = '👁️';
+      }
+    });
+
+    formCadastro.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      mensagemErro.classList.remove('show');
+      mensagemSucesso.classList.remove('show');
+
+      if (!nome.value || !email.value || !telefone.value || !senha.value || !confirmarSenha.value) {
+        mensagemErro.textContent = 'Preencha todos os campos com carinho.';
+        mensagemErro.classList.add('show');
+        return;
+      }
+
+      if (senha.value.length < 6) {
+        mensagemErro.textContent = 'A senha precisa ter pelo menos 6 caracteres.';
+        mensagemErro.classList.add('show');
+        return;
+      }
+
+      if (senha.value !== confirmarSenha.value) {
+        mensagemErro.textContent = 'As senhas não são iguais.';
+        mensagemErro.classList.add('show');
+        return;
+      }
+
+      if (!termos.checked) {
+        mensagemErro.textContent = 'Você precisa aceitar os termos para continuar.';
+        mensagemErro.classList.add('show');
+        return;
+      }
+
+      mensagemSucesso.classList.add('show');
+      formCadastro.reset();
+    });
+  </script>
+</body>
+</html>
