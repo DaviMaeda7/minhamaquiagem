@@ -17,6 +17,18 @@ def homesecret():
 @app.route('/cadastro')
 def cadastro():
     return render_template('cadastro.html')
-    
+
+@app.route('/novidades')
+def novidades():
+    return render_template('novidades.html')
+
+@app.route('/make')
+def make():
+    return render_template('make.html')
+
+@app.route('/skincare')
+def skincare():
+    return render_template('skincare.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novidades - Minha Maquiagem</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #fff9f9;
+      --accent-deep: #8c4b55;
+      --text-main: #2d2424;
+      --text-muted: #7a6a6a;
+      --white: #ffffff;
+    }
+
+    body {
+      background: var(--bg-main);
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+    }
+
+    /* HEADER */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 30px;
+      background: white;
+      border-bottom: 1px solid #eee;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Playfair Display', serif;
+      color: var(--accent-deep);
+    }
+
+    .logo img {
+      height: 45px;
+    }
+
+    .menu {
+      display: flex;
+      gap: 25px;
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: #7a4b4b;
+    }
+
+    /* TÍTULO */
+    .page-header {
+      padding: 30px;
+    }
+
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+    }
+
+    /* GRID */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+      padding: 0 30px 40px;
+    }
+
+    /* CARD */
+    .product-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      transition: 0.3s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .product-image {
+      height: 180px;
+      background: #f8f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-image img {
+      max-height: 140px;
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product-name {
+      font-weight: 600;
+    }
+
+    .product-brand {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .product-price {
+      margin-top: 8px;
+      color: var(--accent-deep);
+      font-weight: bold;
+    }
+
+    .page-top {
+      padding: 40px 32px 0;
+    }
+
+    .back-btn {
+      color: var(--on-surface-soft);
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="logo">
+    <img src="static/imagens/logo.png">
+    <span>Minha Maquiagem</span>
+  </div>
+
+  <nav class="menu">
+    <a href="/index">Início</a>
+    <a href="#">Favoritos</a>
+    <a href="/login">Perfil</a>
+  </nav>
+</header>
+
+<div class="page-top">
+    <a href="/index" class="back-btn">← Voltar para loja</a>
+</div>
+
+<section class="page-header">
+  <h1>✨ Novidades</h1>
+  <p>Confira os produtos recém-chegados</p>
+</section>
+
+<section class="product-grid">
+
+  <div class="product-card">
+    <div class="product-image">
+      <img src="{{ url_for('static', filename='imagens/3346470623880.avif') }}">
+    </div>
+    <div class="product-info">
+      <div class="product-name">Batom Matte</div>
+      <div class="product-brand">Marca X</div>
+      <div class="product-price">R$ 89</div>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <div class="product-image">✨</div>
+    <div class="product-info">
+      <div class="product-name">Iluminador Glow</div>
+      <div class="product-brand">Marca Y</div>
+      <div class="product-price">R$ 120</div>
+    </div>
+  </div>
+
+</section>
+
+</body>
+</html>
