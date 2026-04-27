@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Contatos</title>
+    <style>
+        body { background: #fff8f6; font-family: sans-serif; padding: 20px; }
+        .container { max-width: 500px; margin: auto; }
+        .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .contact { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: white; padding: 15px; border-radius: 25px; display: flex; gap: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .nav-item { text-decoration: none; font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Contatos de Confiança</h2>
+        <div class="card" id="lista">
+            <div class="contact"><strong>Mamãe</strong> <span>(11) 99999-9999</span></div>
+        </div>
+        <button onclick="add()" style="width:100%; margin-top:10px; padding:10px; border-radius:10px; border:none; background:#7d3441; color:white;">+ Adicionar</button>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="/home-secret" class="nav-item">🏠</a>
+        <a href="/localizacao" class="nav-item">📍</a>
+        <a href="/contatos" class="nav-item">👥</a>
+        <a href="/diario" class="nav-item">📝</a>
+    </nav>
+
+    <script>
+        function add() {
+            const n = prompt("Nome:");
+            const t = prompt("Tel:");
+            if(n && t) {
+                const item = document.createElement('div');
+                item.className = 'contact';
+                item.innerHTML = `<strong>${n}</strong> <span>${t}</span>`;
+                document.getElementById('lista').appendChild(item);
+            }
+        }
+    </script>
+</body>
+</html>
