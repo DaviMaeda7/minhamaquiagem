@@ -1,0 +1,15 @@
+# Ambientes virtuais (Ignora as pastas de venv padrão)
+venv/
+.venv/
+env/
+
+# Arquivos compilados do Python (Aquele lixo de cache)
+__pycache__/
+*.py[cod]
+
+# Arquivos de segurança e ambiente
+.env
+
+# Banco de dados local (Para não vazar dados de teste)
+database.sqlite
+*.db
