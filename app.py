@@ -1,51 +1,48 @@
-"""
-app.py
-─────────────────────────────────────────────────────────────
-Ponto de entrada unificado do servidor 'Minha Maquiagem'.
-Serve as telas frontend (HTML) e registra a API de backend.
-"""
 import os
 from dotenv import load_dotenv
 
-# Carrega variáveis de ambiente (senhas, chaves do banco) ANTES de tudo
+# Carrega as configurações de segurança (.env)
 load_dotenv()
 
 from flask import Flask, render_template
 
-# ── Imports da Nova Arquitetura (Backend) ──
-# Note que agora o Python busca dentro da pasta 'src'
+# ── Imports da Arquitetura de Backend ──
 from src.rotas.auth_routes import auth_bp
 from src.rotas.questionnaire_routes import questionnaire_bp
 
 app = Flask(__name__)
 
-# ── Registro da API Backend (Blueprints) ──
-# Usamos url_prefix='/api' para que a lógica não colida com as telas HTML
-# Ex: O login visual é '/login', mas o envio dos dados é para '/api/auth/login'
+# Registo da API (Lógica de Login e Questionário)
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(questionnaire_bp, url_prefix='/api')
 
 
-# ── Rotas Frontend (Telas Visuais) ──
-@app.route('/')
-def index():
-    return render_template('index.html')
+# ── Rotas das Telas (Frontend) ──
 
-@app.route('/login')
+@app.route('/')
 def login_page():
+    """Agora a página de entrada oficial do sistema é o Login."""
     return render_template('login.html')
+
+@app.route('/vitrine')
+def index():
+    """A vitrine de maquiagem (o disfarce) continua disponível aqui."""
+    return render_template('index.html')
 
 @app.route('/home-secret')
 def homesecret():
+    """A área secreta após o login."""
     return render_template('home_secret.html')
 
 
-# ── Execução do Servidor ──
+# ── Inicialização Segura ──
 if __name__ == '__main__':
-    # Validação rápida de segurança ao ligar o servidor
-    if not os.getenv("QUESTIONNAIRE_SECRET_KEY"):
-        print("⚠️ AVISO: QUESTIONNAIRE_SECRET_KEY não encontrada no .env!")
-        print("A criptografia do banco poderá falhar.")
-        
-    print("🚀 Servidor 'Minha Maquiagem' iniciando na porta 5000...")
+    # Garante que o banco de dados é criado antes de o site abrir
+    from src.repositorios.sqlite_repository import init_db
+    from src.repositorios.sqlite_questionnaire_repository import init_questionnaire_table
+    
+    init_db()
+    init_questionnaire_table()
+    
+    print("✅ Servidor pronto: O Login é agora a página inicial.")
     app.run(debug=True, port=5000)
