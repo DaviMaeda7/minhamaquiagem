@@ -35,10 +35,10 @@ def pagina_localizacao():
     """Página com a funcionalidade de GPS."""
     return render_template('localizacao.html')
 
-@app.route('/contanto')
+@app.route('/contatos')
 def pagina_contatos():
     """Página de gestão de contactos de emergência."""
-    return render_template('contanto.html')
+    return render_template('contatos.html')
 
 @app.route('/diario')
 def pagina_diario():
