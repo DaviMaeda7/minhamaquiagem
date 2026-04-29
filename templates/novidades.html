@@ -168,6 +168,48 @@
       text-decoration: none;
       font-size: 0.95rem;
     }
+
+    .product-card {
+  position: relative;
+  background: var(--white);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(140, 75, 85, 0.12);
+  transition: 0.3s;
+  cursor: pointer;
+  border: 1px solid #f3e1e1;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+
+  width: 38px;
+  height: 38px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: white;
+  color: var(--accent-deep);
+
+  font-size: 20px;
+  cursor: pointer;
+
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  transition: 0.3s;
+}
+
+.favorite-btn:hover {
+  transform: scale(1.1);
+}
+
+.favorite-btn.active {
+  background: var(--accent-deep);
+  color: white;
+}
   </style>
 </head>
 
@@ -180,14 +222,14 @@
   </div>
 
   <nav class="menu">
-    <a href="/index">Início</a>
-    <a href="#">Favoritos</a>
+    <a href="/">Início</a>
+    <a href="/favoritos">Favoritos</a>
     <a href="/login">Perfil</a>
   </nav>
 </header>
 
 <div class="page-top">
-    <a href="/index" class="back-btn">← Voltar para loja</a>
+    <a href="/" class="back-btn">← Voltar para loja</a>
 </div>
 
 <section class="page-header">
@@ -198,18 +240,16 @@
 <section class="product-grid">
 
   <div class="product-card">
-    <div class="product-image">
-      <img src="{{ url_for('static', filename='imagens/3346470623880.avif') }}">
-    </div>
-    <div class="product-info">
-      <div class="product-name">Batom Matte</div>
-      <div class="product-brand">Marca X</div>
-      <div class="product-price">R$ 89</div>
-    </div>
-  </div>
+    <button class="favorite-btn" 
+    onclick="toggleFavorito(this, {
+      nome: 'Iluminador Glow',
+      marca: 'Marca Y',
+      preco: 'R$ 120',
+      imagem: '✨'
+    })">♡</button>
 
-  <div class="product-card">
-    <div class="product-image">✨</div>
+    <div class="product-image emoji">✨</div>
+
     <div class="product-info">
       <div class="product-name">Iluminador Glow</div>
       <div class="product-brand">Marca Y</div>
@@ -217,7 +257,62 @@
     </div>
   </div>
 
-</section>
+  <div class="product-card">
+    <button class="favorite-btn" 
+    onclick="toggleFavorito(this, {
+      nome: 'Iluminador Glow',
+      marca: 'Marca Y',
+      preco: 'R$ 120',
+      imagem: '✨'
+    })">♡</button>
+
+    <div class="product-image emoji">✨</div>
+
+    <div class="product-info">
+      <div class="product-name">Iluminador Glow</div>
+      <div class="product-brand">Marca Y</div>
+      <div class="product-price">R$ 120</div>
+    </div>
+  </div>
+
+  
+<script>
+function toggleFavorito(btn, produto) {
+  let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+
+  const existe = favoritos.find(p => p.nome === produto.nome);
+
+  if (existe) {
+    favoritos = favoritos.filter(p => p.nome !== produto.nome);
+    btn.classList.remove("active");
+    btn.innerHTML = "♡";
+  } else {
+    favoritos.push(produto);
+    btn.classList.add("active");
+    btn.innerHTML = "❤️";
+  }
+
+  localStorage.setItem("favoritos", JSON.stringify(favoritos));
+}
+
+function marcarFavoritosAtivos() {
+  const favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+  const botoes = document.querySelectorAll(".favorite-btn");
+
+  botoes.forEach(btn => {
+    const onclick = btn.getAttribute("onclick");
+
+    favoritos.forEach(produto => {
+      if (onclick.includes(produto.nome)) {
+        btn.classList.add("active");
+        btn.innerHTML = "❤️";
+      }
+    });
+  });
+}
+
+marcarFavoritosAtivos();
+</script>
 
 </body>
 </html>

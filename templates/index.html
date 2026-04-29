@@ -175,12 +175,13 @@
 
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 22px;
       padding: 0 24px 50px;
     }
 
     .product-card {
+      position: relative;
       background: var(--white);
       border-radius: 22px;
       overflow: hidden;
@@ -201,13 +202,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .product-image img {
-      max-width: 80%;
-      max-height: 150px;
-      object-fit: contain;
-      display: block;
     }
 
     .product-image.emoji {
@@ -236,6 +230,32 @@
       font-size: 1.1rem;
     }
 
+    .favorite-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 2;
+      width: 38px;
+      height: 38px;
+      border: none;
+      border-radius: 50%;
+      background: white;
+      color: var(--accent-deep);
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      transition: 0.3s;
+    }
+
+    .favorite-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .favorite-btn.active {
+      background: var(--accent-deep);
+      color: white;
+    }
+
     .toast {
       position: fixed;
       top: 100px;
@@ -253,12 +273,6 @@
     .toast.show {
       opacity: 1;
     }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 22px;
-    }
   </style>
 </head>
 
@@ -271,8 +285,8 @@
   </div>
 
   <nav class="menu">
-    <a href="/index">Início</a>
-    <a href="#">Favoritos</a>
+    <a href="/">Início</a>
+    <a href="/favoritos">Favoritos</a>
     <a href="/login">Perfil</a>
   </nav>
 </header>
@@ -310,52 +324,75 @@
 </section>
 
 <section class="product-grid">
+
   <div class="product-card">
-    <div class="product-image">
-      <img src="" alt="Batom">
-    </div>
+    <button class="favorite-btn" onclick="toggleFavorito(this, {
+      nome: 'Iluminador Glow',
+      marca: 'Marca Y',
+      preco: 'R$ 120',
+      imagem: '✨'
+    })">♡</button>
+
+    <div class="product-image emoji">✨</div>
+
     <div class="product-info">
-      <div class="product-name">Batom</div>
+      <div class="product-name">Iluminador Glow</div>
+      <div class="product-brand">Marca Y</div>
+      <div class="product-price">R$ 120</div>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <button class="favorite-btn" onclick="toggleFavorito(this, {
+      nome: 'Iluminador',
+      marca: 'Marca Y',
+      preco: 'R$ 120',
+      imagem: '✨'
+    })">♡</button>
+
+    <div class="product-image emoji">✨</div>
+
+    <div class="product-info">
+      <div class="product-name">Iluminador</div>
+      <div class="product-brand">Marca Y</div>
+      <div class="product-price">R$ 120</div>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <button class="favorite-btn" onclick="toggleFavorito(this, {
+      nome: 'Batom Matte',
+      marca: 'Marca X',
+      preco: 'R$ 89',
+      imagem: '💄'
+    })">♡</button>
+
+    <div class="product-image emoji">💄</div>
+
+    <div class="product-info">
+      <div class="product-name">Batom Matte</div>
       <div class="product-brand">Marca X</div>
       <div class="product-price">R$ 89</div>
     </div>
   </div>
 
   <div class="product-card">
-    <div class="product-image emoji">✨</div>
+    <button class="favorite-btn" onclick="toggleFavorito(this, {
+      nome: 'Base Líquida',
+      marca: 'Marca Beauty',
+      preco: 'R$ 99',
+      imagem: '🧴'
+    })">♡</button>
+
+    <div class="product-image emoji">🧴</div>
+
     <div class="product-info">
-      <div class="product-name">Iluminador</div>
-      <div class="product-brand">Marca Y</div>
-      <div class="product-price">R$ 120</div>
+      <div class="product-name">Base Líquida</div>
+      <div class="product-brand">Marca Beauty</div>
+      <div class="product-price">R$ 99</div>
     </div>
   </div>
 
-  <div class="product-card">
-    <div class="product-image emoji">✨</div>
-    <div class="product-info">
-      <div class="product-name">Iluminador</div>
-      <div class="product-brand">Marca Y</div>
-      <div class="product-price">R$ 120</div>
-    </div>
-  </div>
-
-  <div class="product-card">
-    <div class="product-image emoji">✨</div>
-    <div class="product-info">
-      <div class="product-name">Iluminador</div>
-      <div class="product-brand">Marca Y</div>
-      <div class="product-price">R$ 120</div>
-    </div>
-  </div>
-
-  <div class="product-card">
-    <div class="product-image emoji">✨</div>
-    <div class="product-info">
-      <div class="product-name">Iluminador</div>
-      <div class="product-brand">Marca Y</div>
-      <div class="product-price">R$ 120</div>
-    </div>
-  </div>
 </section>
 
 <div id="toast" class="toast">Acessando área privada...</div>
@@ -379,6 +416,42 @@
       toast.classList.remove('show');
     }
   });
+
+  function toggleFavorito(btn, produto) {
+    let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+
+    const existe = favoritos.find(p => p.nome === produto.nome);
+
+    if (existe) {
+      favoritos = favoritos.filter(p => p.nome !== produto.nome);
+      btn.classList.remove("active");
+      btn.innerHTML = "♡";
+    } else {
+      favoritos.push(produto);
+      btn.classList.add("active");
+      btn.innerHTML = "❤️";
+    }
+
+    localStorage.setItem("favoritos", JSON.stringify(favoritos));
+  }
+
+  function marcarFavoritosAtivos() {
+    const favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+    const botoes = document.querySelectorAll(".favorite-btn");
+
+    botoes.forEach(btn => {
+      const onclick = btn.getAttribute("onclick");
+
+      favoritos.forEach(produto => {
+        if (onclick.includes(produto.nome)) {
+          btn.classList.add("active");
+          btn.innerHTML = "❤️";
+        }
+      });
+    });
+  }
+
+  marcarFavoritosAtivos();
 </script>
 
 </body>
