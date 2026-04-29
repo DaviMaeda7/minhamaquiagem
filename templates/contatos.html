@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Área Segura - Meu Escudo</title>
+    <title>Contatos de Emergência</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -20,93 +20,80 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
             color: var(--wine);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            padding-bottom: 100px;
         }
 
         .header {
-            padding: 40px 20px;
+            padding: 30px 20px;
             text-align: center;
         }
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 1.8rem;
         }
 
-        .status-badge {
-            background: #e8f5e9;
-            color: #2e7d32;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        .menu-container {
-            padding: 20px;
-            display: grid;
-            gap: 20px;
+        .container {
             max-width: 500px;
             margin: 0 auto;
-            width: 100%;
+            padding: 0 20px;
         }
 
-        .menu-card {
-            background: var(--white);
-            padding: 25px;
-            border-radius: 25px;
-            text-decoration: none;
-            color: inherit;
+        .contact-list {
             display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 20px;
             box-shadow: var(--shadow);
-            transition: transform 0.2s;
             border: 1px solid rgba(125, 52, 65, 0.05);
         }
 
-        .menu-card:active {
-            transform: scale(0.98);
-        }
-
-        .icon {
-            font-size: 2rem;
-        }
-
-        .card-info h2 {
-            font-size: 1.1rem;
+        .contact-info h3 {
             margin: 0;
+            font-size: 1rem;
         }
 
-        .card-info p {
-            font-size: 0.85rem;
+        .contact-info p {
             margin: 5px 0 0;
-            opacity: 0.7;
+            font-size: 0.85rem;
+            color: var(--rose);
+            font-weight: 600;
         }
 
-        /* SOS Button */
-        .sos-section {
-            padding: 30px 20px;
+        .btn-call {
+            text-decoration: none;
+            background: #fdf0f0;
+            padding: 10px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+        }
+
+        .add-section {
+            margin-top: 30px;
             text-align: center;
         }
 
-        .sos-btn {
-            background: linear-gradient(135deg, var(--wine), #a34555);
+        .btn-add {
+            background: var(--wine);
             color: white;
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 8px solid rgba(125, 52, 65, 0.1);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
             font-weight: bold;
-            font-size: 1.2rem;
             cursor: pointer;
-            box-shadow: 0 15px 35px rgba(125, 52, 65, 0.3);
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(125, 52, 65, 0.2);
         }
 
-        /* Bottom Nav Bar */
+        /* Nav Inferior */
         .bottom-nav {
             position: fixed;
             bottom: 20px;
@@ -131,39 +118,24 @@
 <body>
 
     <div class="header">
-        <h1>Meu Escudo</h1>
-        <span class="status-badge">● MODO PROTEGIDO ATIVO</span>
+        <h1>Contatos de Confiança</h1>
+        <p style="font-size: 0.9rem; opacity: 0.8;">Pessoas que serão alertadas em emergências</p>
     </div>
 
-    <div class="sos-section">
-        <button class="sos-btn" onclick="location.href='/localizacao'">SOS</button>
-        <p style="margin-top: 15px; font-size: 0.9rem;">Pressione para ajuda imediata</p>
-    </div>
-
-    <div class="menu-container">
-        <a href="/localizacao" class="menu-card">
-            <span class="icon">📍</span>
-            <div class="card-info">
-                <h2>Localização</h2>
-                <p>GPS em tempo real e envio de rota.</p>
+    <div class="container">
+        <div class="contact-list" id="listaContatos">
+            <div class="contact-card">
+                <div class="contact-info">
+                    <h3>Polícia</h3>
+                    <p>190</p>
+                </div>
+                <a href="tel:190" class="btn-call">📞</a>
             </div>
-        </a>
+        </div>
 
-        <a href="/contatos" class="menu-card">
-            <span class="icon">👥</span>
-            <div class="card-info">
-                <h2>Contatos</h2>
-                <p>Rede de apoio e emergência.</p>
-            </div>
-        </a>
-
-        <a href="/diario" class="menu-card">
-            <span class="icon">📝</span>
-            <div class="card-info">
-                <h2>Diário</h2>
-                <p>Registros seguros e privados.</p>
-            </div>
-        </a>
+        <div class="add-section">
+            <button class="btn-add" id="btnNovoContato">+ Adicionar Contato</button>
+        </div>
     </div>
 
     <nav class="bottom-nav">
@@ -173,5 +145,27 @@
         <a href="/diario" class="nav-item">📝</a>
     </nav>
 
+    <script>
+        document.getElementById('btnNovoContato').addEventListener('click', () => {
+            const nome = prompt("Nome do contato:");
+            const tel = prompt("Telefone:");
+
+            if (nome && tel) {
+                const lista = document.getElementById('listaContatos');
+                
+                const novoCard = document.createElement('div');
+                novoCard.className = 'contact-card';
+                novoCard.innerHTML = `
+                    <div class="contact-info">
+                        <h3>${nome}</h3>
+                        <p>${tel}</p>
+                    </div>
+                    <a href="tel:${tel}" class="btn-call">📞</a>
+                `;
+                
+                lista.appendChild(novoCard);
+            }
+        });
+    </script>
 </body>
 </html>
