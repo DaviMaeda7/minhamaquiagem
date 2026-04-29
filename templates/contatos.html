@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área Segura - Meu Escudo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fff8f6;
+            --wine: #7d3441;
+            --rose: #d98b93;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(125, 52, 65, 0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--wine);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .menu-container {
+            padding: 20px;
+            display: grid;
+            gap: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .menu-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+            border: 1px solid rgba(125, 52, 65, 0.05);
+        }
+
+        .menu-card:active {
+            transform: scale(0.98);
+        }
+
+        .icon {
+            font-size: 2rem;
+        }
+
+        .card-info h2 {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .card-info p {
+            font-size: 0.85rem;
+            margin: 5px 0 0;
+            opacity: 0.7;
+        }
+
+        /* SOS Button */
+        .sos-section {
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .sos-btn {
+            background: linear-gradient(135deg, var(--wine), #a34555);
+            color: white;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 8px solid rgba(125, 52, 65, 0.1);
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 15px 35px rgba(125, 52, 65, 0.3);
+        }
+
+        /* Bottom Nav Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            padding: 15px;
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .nav-item {
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Meu Escudo</h1>
+        <span class="status-badge">● MODO PROTEGIDO ATIVO</span>
+    </div>
+
+    <div class="sos-section">
+        <button class="sos-btn" onclick="location.href='/localizacao'">SOS</button>
+        <p style="margin-top: 15px; font-size: 0.9rem;">Pressione para ajuda imediata</p>
+    </div>
+
+    <div class="menu-container">
+        <a href="/localizacao" class="menu-card">
+            <span class="icon">📍</span>
+            <div class="card-info">
+                <h2>Localização</h2>
+                <p>GPS em tempo real e envio de rota.</p>
+            </div>
+        </a>
+
+        <a href="/contatos" class="menu-card">
+            <span class="icon">👥</span>
+            <div class="card-info">
+                <h2>Contatos</h2>
+                <p>Rede de apoio e emergência.</p>
+            </div>
+        </a>
+
+        <a href="/diario" class="menu-card">
+            <span class="icon">📝</span>
+            <div class="card-info">
+                <h2>Diário</h2>
+                <p>Registros seguros e privados.</p>
+            </div>
+        </a>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="/home-secret" class="nav-item">🏠</a>
+        <a href="/localizacao" class="nav-item">📍</a>
+        <a href="/contatos" class="nav-item">👥</a>
+        <a href="/diario" class="nav-item">📝</a>
+    </nav>
+
+</body>
+</html>
