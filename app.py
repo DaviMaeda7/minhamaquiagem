@@ -45,6 +45,11 @@ def pagina_diario():
     """Página para escrever no diário secreto."""
     return render_template('diario.html')
 
+@app.route('/questionario')
+def pagina_questionario():
+    """Pagina com o questionario simples de seguranca."""
+    return render_template('questionario.html')
+
 # =============================================
 # ROTAS DE API (PROCESSAMENTO DE DADOS)
 # =============================================
