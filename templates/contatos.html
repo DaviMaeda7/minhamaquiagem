@@ -2,23 +2,319 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Contatos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contatos de Emergência</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body { background: #fff8f6; font-family: sans-serif; padding: 20px; }
-        .container { max-width: 500px; margin: auto; }
-        .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .contact { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
-        .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: white; padding: 15px; border-radius: 25px; display: flex; gap: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        :root {
+            --bg: #fff8f6;
+            --wine: #7d3441;
+            --rose: #d98b93;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(125, 52, 65, 0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 0 0 100px;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--wine);
+        }
+
+        .header {
+            padding: 30px 20px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin: 0 0 6px;
+        }
+
+        .header p { font-size: 0.9rem; opacity: 0.75; margin: 0; }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ── Abas ── */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            background: var(--white);
+            padding: 5px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px 6px;
+            border: none;
+            border-radius: 16px;
+            background: transparent;
+            color: var(--wine);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .tab-btn.active {
+            background: var(--wine);
+            color: white;
+            box-shadow: 0 4px 12px rgba(125, 52, 65, 0.25);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ── Cards de emergência ── */
+        .contact-list { display: flex; flex-direction: column; gap: 14px; }
+
+        .contact-card {
+            background: var(--white);
+            padding: 18px 20px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(125, 52, 65, 0.05);
+        }
+
+        .contact-info h3 { margin: 0; font-size: 1rem; }
+        .contact-info p  { margin: 4px 0 0; font-size: 0.85rem; color: var(--rose); font-weight: 600; }
+
+        .btn-call {
+            text-decoration: none;
+            background: #fdf0f0;
+            padding: 10px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+        }
+
+        /* ── Adicionar contato ── */
+        .add-section { margin-top: 20px; }
+
+        .field { margin-bottom: 12px; }
+
+        .field label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            opacity: 0.75;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid #f0d0d5;
+            border-radius: 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: var(--wine);
+            background: #fff8f6;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .field input:focus { border-color: var(--rose); }
+
+        .btn-add {
+            background: var(--wine);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            box-shadow: 0 5px 15px rgba(125, 52, 65, 0.2);
+            transition: opacity 0.2s;
+        }
+
+        .btn-add:hover { opacity: 0.85; }
+
+        .msg {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.88rem;
+        }
+
+        .msg.ok  { display: block; background: #e8f5e9; color: #2e7d32; }
+        .msg.err { display: block; background: #fdecea; color: #b71c1c; }
+
+        /* ── Voluntárias ── */
+        .aviso {
+            background: #fff8e1;
+            border-left: 3px solid #e65100;
+            padding: 11px 14px;
+            border-radius: 14px;
+            font-size: 0.82rem;
+            color: #5d4037;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .vol-card {
+            background: var(--white);
+            padding: 18px 20px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(125, 52, 65, 0.05);
+            margin-bottom: 14px;
+        }
+
+        .vol-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .vol-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #fdf0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .vol-nome { font-weight: 700; margin: 0 0 2px; font-size: 0.95rem; }
+        .vol-area { font-size: 0.78rem; opacity: 0.6; margin: 0; }
+
+        .vol-desc {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            opacity: 0.8;
+            margin: 0 0 10px;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            padding: 3px 12px;
+            background: #fdf0f0;
+            color: var(--wine);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .btn-contatar {
+            display: inline-block;
+            background: var(--wine);
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 16px;
+            font-weight: bold;
+            font-size: 0.82rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .btn-contatar:hover { opacity: 0.85; }
+
+        /* Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            padding: 15px;
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
         .nav-item { text-decoration: none; font-size: 1.5rem; }
     </style>
 </head>
 <body>
+
+    <div class="header">
+        <h1>Contatos de Confiança</h1>
+        <p>Pessoas que serão alertadas em emergências</p>
+    </div>
+
     <div class="container">
-        <h2>Contatos de Confiança</h2>
-        <div class="card" id="lista">
-            <div class="contact"><strong>Mamãe</strong> <span>(11) 99999-9999</span></div>
+
+        <!-- Abas -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="mudarAba('emergencia', this)">🆘 Emergência</button>
+            <button class="tab-btn" onclick="mudarAba('voluntarias', this)">🤝 Voluntárias</button>
+            <button class="tab-btn" onclick="mudarAba('adicionar', this)">＋ Adicionar</button>
         </div>
-        <button onclick="add()" style="width:100%; margin-top:10px; padding:10px; border-radius:10px; border:none; background:#7d3441; color:white;">+ Adicionar</button>
+
+        <!-- ABA: Emergência -->
+        <div id="aba-emergencia" class="tab-content active">
+            <div class="contact-list" id="listaContatos">
+                <div class="contact-card">
+                    <div class="contact-info"><h3>Polícia</h3><p>190</p></div>
+                    <a href="tel:190" class="btn-call">📞</a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-info"><h3>Central da Mulher</h3><p>180</p></div>
+                    <a href="tel:180" class="btn-call">📞</a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-info"><h3>SAMU</h3><p>192</p></div>
+                    <a href="tel:192" class="btn-call">📞</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA: Voluntárias -->
+        <div id="aba-voluntarias" class="tab-content">
+            <div class="aviso">
+                ⚠️ As voluntárias são parceiras do projeto. O contato é para orientação inicial — não substitui emergências (190, 180).
+            </div>
+            <div id="listaVoluntarias"></div>
+        </div>
+
+        <!-- ABA: Adicionar -->
+        <div id="aba-adicionar" class="tab-content">
+            <div class="add-section">
+                <div class="field">
+                    <label>Nome</label>
+                    <input type="text" id="novoNome" placeholder="Ex: Minha irmã Ana">
+                </div>
+                <div class="field">
+                    <label>Telefone</label>
+                    <input type="tel" id="novoTel" placeholder="(11) 99999-9999">
+                </div>
+                <button class="btn-add" onclick="adicionarContato()">+ Adicionar Contato</button>
+                <div id="msgAdd" class="msg"></div>
+            </div>
+        </div>
+
     </div>
 
     <nav class="bottom-nav">
@@ -29,15 +325,109 @@
     </nav>
 
     <script>
-        function add() {
-            const n = prompt("Nome:");
-            const t = prompt("Tel:");
-            if(n && t) {
-                const item = document.createElement('div');
-                item.className = 'contact';
-                item.innerHTML = `<strong>${n}</strong> <span>${t}</span>`;
-                document.getElementById('lista').appendChild(item);
+        // ── Dados das voluntárias ──────────────────────────────
+        const voluntarias = [
+            {
+                emoji: '👩‍⚖️',
+                nome: 'Dra. Carla Mendes',
+                area: 'Advogada – Direito da Família',
+                desc: 'Orientação jurídica gratuita: medidas protetivas, divórcio e guarda de filhos.',
+                tags: ['Jurídico', 'Medida Protetiva', 'Gratuito'],
+                tel: 'tel:+5511999990001'
+            },
+            {
+                emoji: '🧠',
+                nome: 'Psic. Renata Oliveira',
+                area: 'Psicóloga – Trauma e Violência',
+                desc: 'Atendimento de acolhimento e suporte emocional, presencial ou online.',
+                tags: ['Psicológico', 'Online', 'Acolhimento'],
+                tel: 'tel:+5511999990002'
+            },
+            {
+                emoji: '🏠',
+                nome: 'Rede Abrigo SP',
+                area: 'ONG – Acolhimento Emergencial',
+                desc: 'Vagas em casas de acolhimento temporário para mulheres e filhos em risco.',
+                tags: ['Abrigo', 'Emergencial', 'Crianças'],
+                tel: 'tel:+5511999990003'
+            },
+            {
+                emoji: '👩‍⚕️',
+                nome: 'Enf. Paula Sousa',
+                area: 'Enfermeira – Saúde da Mulher',
+                desc: 'Orientação sobre saúde física e acesso ao SUS após situações de violência.',
+                tags: ['Saúde', 'SUS', 'Urgência'],
+                tel: 'tel:+5511999990004'
             }
+        ];
+
+        // Renderizar voluntárias
+        document.getElementById('listaVoluntarias').innerHTML = voluntarias.map(v => `
+            <div class="vol-card">
+                <div class="vol-top">
+                    <div class="vol-avatar">${v.emoji}</div>
+                    <div>
+                        <p class="vol-nome">${v.nome}</p>
+                        <p class="vol-area">${v.area}</p>
+                    </div>
+                </div>
+                <p class="vol-desc">${v.desc}</p>
+                <div class="badges">${v.tags.map(t => `<span class="badge">${t}</span>`).join('')}</div>
+                <a href="${v.tel}" class="btn-contatar">📞 Entrar em contato</a>
+            </div>
+        `).join('');
+
+        // ── Adicionar contato ──────────────────────────────────
+        async function adicionarContato() {
+            const nome = document.getElementById('novoNome').value.trim();
+            const tel  = document.getElementById('novoTel').value.trim();
+            const msg  = document.getElementById('msgAdd');
+
+            if (!nome || !tel) {
+                msg.className = 'msg err';
+                msg.textContent = 'Preencha nome e telefone.';
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/contatos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome, telefone: tel })
+                });
+
+                if (res.ok) {
+                    // Adiciona na lista visualmente
+                    const lista = document.getElementById('listaContatos');
+                    const card = document.createElement('div');
+                    card.className = 'contact-card';
+                    card.innerHTML = `
+                        <div class="contact-info"><h3>${nome}</h3><p>${tel}</p></div>
+                        <a href="tel:${tel.replace(/\D/g,'')}" class="btn-call">📞</a>
+                    `;
+                    lista.appendChild(card);
+
+                    document.getElementById('novoNome').value = '';
+                    document.getElementById('novoTel').value = '';
+                    msg.className = 'msg ok';
+                    msg.textContent = 'Contato adicionado!';
+                    setTimeout(() => {
+                        msg.className = 'msg';
+                        mudarAba('emergencia', document.querySelectorAll('.tab-btn')[0]);
+                    }, 1400);
+                }
+            } catch (e) {
+                msg.className = 'msg err';
+                msg.textContent = 'Erro ao salvar. Tente novamente.';
+            }
+        }
+
+        // ── Trocar abas ────────────────────────────────────────
+        function mudarAba(id, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('aba-' + id).classList.add('active');
+            btn.classList.add('active');
         }
     </script>
 </body>

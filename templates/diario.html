@@ -2,21 +2,202 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Diário</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diário Seguro - Meu Escudo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body { background: #fff8f6; font-family: sans-serif; padding: 20px; }
-        .card { background: white; padding: 20px; border-radius: 20px; max-width: 500px; margin: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        textarea { width: 100%; height: 200px; border: 1px solid #ddd; border-radius: 10px; padding: 10px; box-sizing: border-box; }
-        .btn { width: 100%; background: #7d3441; color: white; border: none; padding: 15px; margin-top: 10px; border-radius: 10px; cursor: pointer; }
-        .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: white; padding: 15px; border-radius: 25px; display: flex; gap: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        :root {
+            --bg: #fff8f6;
+            --wine: #7d3441;
+            --rose: #d98b93;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(125, 52, 65, 0.1);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            font-family: 'Inter', sans-serif;
+            color: var(--wine);
+            margin: 0;
+            padding: 20px 20px 120px;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            text-align: center;
+            margin: 20px 0 24px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 20px;
+            max-width: 500px;
+            margin: 0 auto 16px;
+            box-shadow: var(--shadow);
+        }
+
+        /* CTA do Questionário */
+        .cta-questionario {
+            display: block;
+            text-decoration: none;
+            background: linear-gradient(135deg, var(--wine), #a34555);
+            color: white;
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto 16px;
+            box-shadow: var(--shadow);
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .cta-questionario:hover {
+            opacity: 0.93;
+            transform: translateY(-1px);
+        }
+
+        .cta-questionario .cta-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+
+        .cta-questionario .cta-icon { font-size: 1.6rem; }
+
+        .cta-questionario h3 {
+            margin: 0;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+        }
+
+        .cta-questionario p {
+            margin: 0;
+            font-size: 0.82rem;
+            opacity: 0.85;
+            line-height: 1.4;
+        }
+
+        .cta-arrow {
+            float: right;
+            font-size: 1.2rem;
+            margin-top: -28px;
+        }
+
+        /* Textarea e botão */
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            margin: 0 0 12px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 180px;
+            border: 1.5px solid #f0d0d5;
+            border-radius: 14px;
+            padding: 12px;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: var(--wine);
+            background: #fff8f6;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus { border-color: var(--rose); }
+
+        .btn {
+            width: 100%;
+            background: var(--wine);
+            color: white;
+            border: none;
+            padding: 14px;
+            margin-top: 12px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover { opacity: 0.85; }
+
+        .msg {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.88rem;
+        }
+
+        .msg.ok  { display: block; background: #e8f5e9; color: #2e7d32; }
+        .msg.err { display: block; background: #fdecea; color: #b71c1c; }
+
+        /* Entradas salvas */
+        .entrada {
+            padding: 12px 0;
+            border-bottom: 1px solid #fde8eb;
+        }
+
+        .entrada:last-child { border-bottom: none; }
+
+        .entrada small { opacity: 0.55; font-size: 0.8rem; }
+        .entrada p { margin: 4px 0 0; line-height: 1.5; font-size: 0.9rem; }
+
+        /* Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            padding: 15px;
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
         .nav-item { text-decoration: none; font-size: 1.5rem; }
     </style>
 </head>
 <body>
+
+    <h2>Meu Diário Seguro</h2>
+
+    <!-- CTA Questionário -->
+    <a href="/questionario" class="cta-questionario">
+        <div class="cta-top">
+            <span class="cta-icon">📋</span>
+            <div>
+                <h3>Questionário de Segurança</h3>
+                <p>Entenda sua situação respondendo algumas perguntas.</p>
+            </div>
+        </div>
+        <span class="cta-arrow">→</span>
+    </a>
+
+    <!-- Escrever no diário -->
     <div class="card">
-        <h2>Meu Diário Seguro</h2>
-        <textarea id="texto" placeholder="Escreva aqui..."></textarea>
-        <button class="btn" onclick="salvar()">Salvar Registro</button>
+        <h3 class="card-title">Nova anotação</h3>
+        <textarea id="texto" placeholder="Escreva aqui o que sentir..."></textarea>
+        <button class="btn" onclick="salvar()">Salvar registro</button>
+        <div id="msg" class="msg"></div>
+    </div>
+
+    <!-- Entradas anteriores -->
+    <div class="card" id="cardEntradas" style="display:none;">
+        <h3 class="card-title">Registros anteriores</h3>
+        <div id="listaEntradas"></div>
     </div>
 
     <nav class="bottom-nav">
@@ -27,14 +208,50 @@
     </nav>
 
     <script>
+        const entradas = [];
+
         async function salvar() {
-            const txt = document.getElementById('texto').value;
-            const res = await fetch('/api/diario', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({texto: txt})
-            });
-            if(res.ok) alert("Salvo com sucesso!");
+            const txt = document.getElementById('texto').value.trim();
+            const msg = document.getElementById('msg');
+
+            if (!txt) {
+                msg.className = 'msg err';
+                msg.textContent = 'Escreva algo antes de salvar.';
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/diario', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ texto: txt })
+                });
+
+                if (res.ok) {
+                    entradas.unshift({ texto: txt, data: new Date().toLocaleString('pt-BR') });
+                    renderEntradas();
+                    document.getElementById('texto').value = '';
+                    msg.className = 'msg ok';
+                    msg.textContent = 'Salvo com sucesso!';
+                    setTimeout(() => { msg.className = 'msg'; }, 3000);
+                }
+            } catch (e) {
+                msg.className = 'msg err';
+                msg.textContent = 'Erro ao salvar. Tente novamente.';
+            }
+        }
+
+        function renderEntradas() {
+            const card = document.getElementById('cardEntradas');
+            const lista = document.getElementById('listaEntradas');
+            if (entradas.length === 0) { card.style.display = 'none'; return; }
+            card.style.display = 'block';
+            lista.innerHTML = entradas.map(e => `
+                <div class="entrada">
+                    <small>${e.data}</small>
+                    <p>${e.texto}</p>
+                </div>
+            `).join('');
         }
     </script>
 </body>
