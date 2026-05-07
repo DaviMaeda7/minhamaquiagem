@@ -3,369 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dados - Meu Escudo</title>
+    <title>Dados & Realidade — Meu Escudo</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #fff8f6;
-            --wine: #7d3441;
-            --rose: #d98b93;
-            --soft-rose: #fdf0f0;
-            --white: #ffffff;
-            --shadow: 0 10px 30px rgba(125, 52, 65, 0.1);
-        }
+        :root { --bg:#fff8f6; --wine:#7d3441; --rose:#d98b93; --soft-rose:#fdf0f0; --white:#ffffff; --shadow:0 10px 30px rgba(125,52,65,.1); }
+        * { box-sizing:border-box; }
+        body { margin:0; padding:0 0 130px; font-family:'Inter',sans-serif; background:var(--bg); color:var(--wine); }
 
-        * { box-sizing: border-box; }
+        .header { padding:32px 20px 18px; text-align:center; }
+        h1 { margin:0 0 8px; font-family:'Playfair Display',serif; font-size:2rem; }
+        .subtitle { margin:0 auto; max-width:500px; font-size:.9rem; line-height:1.5; opacity:.75; }
 
-        body {
-            margin: 0;
-            padding: 0 0 120px;
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--wine);
-        }
+        .container { max-width:580px; margin:0 auto; padding:0 20px; }
 
-        .header {
-            padding: 32px 20px 18px;
-            text-align: center;
-        }
+        .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
+        .stat-card { background:var(--white); padding:18px 16px; border-radius:20px; box-shadow:var(--shadow); text-align:center; border:1px solid rgba(125,52,65,.06); }
+        .stat-number { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; color:var(--wine); line-height:1.1; margin-bottom:6px; }
+        .stat-label  { font-size:.78rem; line-height:1.4; opacity:.7; }
 
-        h1 {
-            margin: 0 0 8px;
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-        }
+        .card { background:var(--white); padding:22px; border-radius:24px; box-shadow:var(--shadow); border:1px solid rgba(125,52,65,.06); margin-bottom:16px; }
+        .card h2 { font-family:'Playfair Display',serif; font-size:1.15rem; margin:0 0 18px; }
 
-        .subtitle {
-            margin: 0 auto;
-            max-width: 500px;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            opacity: 0.75;
-        }
+        .bar-row { margin-bottom:14px; }
+        .bar-label { display:flex; justify-content:space-between; font-size:.82rem; margin-bottom:5px; }
+        .bar-track { background:var(--soft-rose); border-radius:20px; height:10px; overflow:hidden; }
+        .bar-fill { height:100%; border-radius:20px; background:linear-gradient(90deg,var(--wine),var(--rose)); width:0; transition:width 1s ease; }
 
-        .container {
-            max-width: 580px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        .tipo-item { display:flex; align-items:flex-start; gap:12px; padding:12px 0; border-bottom:1px solid #fde8eb; }
+        .tipo-item:last-child { border-bottom:none; }
+        .tipo-icon { font-size:1.3rem; flex-shrink:0; margin-top:2px; }
+        .tipo-info h4 { margin:0 0 3px; font-size:.92rem; }
+        .tipo-info p  { margin:0; font-size:.8rem; opacity:.7; line-height:1.4; }
 
-        /* ── Cards de estatísticas ── */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            margin-bottom: 20px;
-        }
+        .fonte { font-size:.72rem; opacity:.5; text-align:right; margin-top:12px; }
 
-        .stat-card {
-            background: var(--white);
-            padding: 18px 16px;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            text-align: center;
-            border: 1px solid rgba(125, 52, 65, 0.06);
-        }
+        .alerta-ajuda { background:linear-gradient(135deg,var(--wine),#a34555); color:white; padding:20px; border-radius:24px; margin-bottom:16px; box-shadow:var(--shadow); }
+        .alerta-ajuda h3 { font-family:'Playfair Display',serif; margin:0 0 10px; font-size:1.1rem; }
+        .alerta-ajuda p  { margin:0 0 14px; font-size:.85rem; opacity:.9; line-height:1.5; }
+        .numeros { display:flex; gap:10px; flex-wrap:wrap; }
+        .num-btn { background:rgba(255,255,255,.2); color:white; border:1px solid rgba(255,255,255,.4); padding:8px 18px; border-radius:20px; font-weight:bold; font-size:.9rem; text-decoration:none; transition:background .2s; }
+        .num-btn:hover { background:rgba(255,255,255,.35); }
 
-        .stat-number {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--wine);
-            line-height: 1.1;
-            margin-bottom: 6px;
-        }
-
-        .stat-label {
-            font-size: 0.78rem;
-            line-height: 1.4;
-            opacity: 0.7;
-        }
-
-        /* ── Seção de gráfico de barras ── */
-        .card {
-            background: var(--white);
-            padding: 22px;
-            border-radius: 24px;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(125, 52, 65, 0.06);
-            margin-bottom: 16px;
-        }
-
-        .card h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.15rem;
-            margin: 0 0 18px;
-        }
-
-        /* Barras horizontais */
-        .bar-row {
-            margin-bottom: 14px;
-        }
-
-        .bar-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.82rem;
-            margin-bottom: 5px;
-        }
-
-        .bar-track {
-            background: var(--soft-rose);
-            border-radius: 20px;
-            height: 10px;
-            overflow: hidden;
-        }
-
-        .bar-fill {
-            height: 100%;
-            border-radius: 20px;
-            background: linear-gradient(90deg, var(--wine), var(--rose));
-            width: 0;
-            transition: width 1s ease;
-        }
-
-        /* ── Lista de tipos de violência ── */
-        .tipo-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 12px 0;
-            border-bottom: 1px solid #fde8eb;
-        }
-
-        .tipo-item:last-child { border-bottom: none; }
-
-        .tipo-icon {
-            font-size: 1.3rem;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .tipo-info h4 { margin: 0 0 3px; font-size: 0.92rem; }
-        .tipo-info p  { margin: 0; font-size: 0.8rem; opacity: 0.7; line-height: 1.4; }
-
-        /* ── Fontes ── */
-        .fonte {
-            font-size: 0.72rem;
-            opacity: 0.5;
-            text-align: right;
-            margin-top: 12px;
-        }
-
-        /* ── Alerta de ajuda ── */
-        .alerta-ajuda {
-            background: linear-gradient(135deg, var(--wine), #a34555);
-            color: white;
-            padding: 20px;
-            border-radius: 24px;
-            margin-bottom: 16px;
-            box-shadow: var(--shadow);
-        }
-
-        .alerta-ajuda h3 {
-            font-family: 'Playfair Display', serif;
-            margin: 0 0 10px;
-            font-size: 1.1rem;
-        }
-
-        .alerta-ajuda p {
-            margin: 0 0 14px;
-            font-size: 0.85rem;
-            opacity: 0.9;
-            line-height: 1.5;
-        }
-
-        .numeros {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .num-btn {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.4);
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            text-decoration: none;
-            transition: background 0.2s;
-        }
-
-        .num-btn:hover { background: rgba(255,255,255,0.35); }
-
-        /* Nav */
-        .bottom-nav {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 400px;
-            background: white;
-            padding: 15px;
-            border-radius: 30px;
-            display: flex;
-            justify-content: space-around;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .nav-item { text-decoration: none; font-size: 1.5rem; }
-
-        @media (max-width: 400px) {
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .stat-number { font-size: 1.6rem; }
-        }
+        .bottom-nav { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); width:90%; max-width:400px; background:white; padding:15px; border-radius:30px; display:flex; justify-content:space-around; box-shadow:0 10px 40px rgba(0,0,0,.1); z-index:100; }
+        .nav-item { text-decoration:none; font-size:1.5rem; }
     </style>
 </head>
 <body>
 
-    <header class="header">
-        <h1>Dados & Realidade</h1>
-        <p class="subtitle">Informação é proteção. Conheça os números sobre violência doméstica no Brasil.</p>
-    </header>
+<header class="header">
+    <h1>Dados & Realidade</h1>
+    <p class="subtitle">Informação é proteção. Conheça os números sobre violência doméstica no Brasil.</p>
+</header>
 
-    <main class="container">
+<main class="container">
 
-        <!-- Números em destaque -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number">1,4<span style="font-size:1rem">mi</span></div>
-                <div class="stat-label">mulheres vítimas de violência grave por ano no Brasil</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">66%</div>
-                <div class="stat-label">dos casos ocorrem dentro de casa</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">180</div>
-                <div class="stat-label">ligações por hora na Central de Atendimento à Mulher</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">7<span style="font-size:1rem">x</span></div>
-                <div class="stat-label">mais risco quando há histórico de ameaças anteriores</div>
-            </div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">1,4<span style="font-size:1rem">mi</span></div>
+            <div class="stat-label">mulheres vítimas de violência grave por ano no Brasil</div>
         </div>
-
-        <!-- Tipos de violência -->
-        <div class="card">
-            <h2>Formas de violência reconhecidas pela Lei Maria da Penha</h2>
-            <div class="tipo-item">
-                <span class="tipo-icon">🤛</span>
-                <div class="tipo-info">
-                    <h4>Física</h4>
-                    <p>Qualquer ato que ofenda a integridade ou saúde corporal.</p>
-                </div>
-            </div>
-            <div class="tipo-item">
-                <span class="tipo-icon">🧠</span>
-                <div class="tipo-info">
-                    <h4>Psicológica</h4>
-                    <p>Ameaças, humilhações, controle de comportamento, isolamento.</p>
-                </div>
-            </div>
-            <div class="tipo-item">
-                <span class="tipo-icon">💰</span>
-                <div class="tipo-info">
-                    <h4>Patrimonial</h4>
-                    <p>Retenção ou subtração de bens, documentos e recursos financeiros.</p>
-                </div>
-            </div>
-            <div class="tipo-item">
-                <span class="tipo-icon">🔞</span>
-                <div class="tipo-info">
-                    <h4>Sexual</h4>
-                    <p>Qualquer conduta que constranja a participar de ato sexual não desejado.</p>
-                </div>
-            </div>
-            <div class="tipo-item">
-                <span class="tipo-icon">💬</span>
-                <div class="tipo-info">
-                    <h4>Moral</h4>
-                    <p>Calúnia, difamação ou injúria contra a mulher.</p>
-                </div>
-            </div>
-            <p class="fonte">Fonte: Lei 11.340/2006 – Lei Maria da Penha</p>
+        <div class="stat-card">
+            <div class="stat-number">66%</div>
+            <div class="stat-label">dos casos ocorrem dentro de casa</div>
         </div>
-
-        <!-- Gráfico: regiões -->
-        <div class="card">
-            <h2>Registros de violência doméstica por região (2023)</h2>
-            <div class="bar-row">
-                <div class="bar-label"><span>Sudeste</span><span>38%</span></div>
-                <div class="bar-track"><div class="bar-fill" data-pct="38"></div></div>
-            </div>
-            <div class="bar-row">
-                <div class="bar-label"><span>Nordeste</span><span>27%</span></div>
-                <div class="bar-track"><div class="bar-fill" data-pct="27"></div></div>
-            </div>
-            <div class="bar-row">
-                <div class="bar-label"><span>Sul</span><span>17%</span></div>
-                <div class="bar-track"><div class="bar-fill" data-pct="17"></div></div>
-            </div>
-            <div class="bar-row">
-                <div class="bar-label"><span>Norte</span><span>10%</span></div>
-                <div class="bar-track"><div class="bar-fill" data-pct="10"></div></div>
-            </div>
-            <div class="bar-row">
-                <div class="bar-label"><span>Centro-Oeste</span><span>8%</span></div>
-                <div class="bar-track"><div class="bar-fill" data-pct="8"></div></div>
-            </div>
-            <p class="fonte">Fonte: Fórum Brasileiro de Segurança Pública, 2023</p>
+        <div class="stat-card">
+            <div class="stat-number">180</div>
+            <div class="stat-label">ligações por hora na Central de Atendimento à Mulher</div>
         </div>
-
-        <!-- Gráfico: quem agride -->
-        <div class="card">
-            <h2>Relação da vítima com o agressor</h2>
-            <div class="bar-row">
-                <div class="bar-label"><span>Parceiro / ex-parceiro</span><span>76%</span></div>
-                <div class="bar-track"><div class="bar-fill" data-pct="76"></div></div>
-            </div>
-            <div class="bar-row">
-                <div class="bar-label"><span>Familiar (pai, irmão...)</span><span>14%</span></div>
-                <div class="bar-track"><div class="bar-fill" data-pct="14"></div></div>
-            </div>
-            <div class="bar-row">
-                <div class="bar-label"><span>Conhecido</span><span>7%</span></div>
-                <div class="bar-track"><div class="bar-fill" data-pct="7"></div></div>
-            </div>
-            <div class="bar-row">
-                <div class="bar-label"><span>Desconhecido</span><span>3%</span></div>
-                <div class="bar-track"><div class="bar-fill" data-pct="3"></div></div>
-            </div>
-            <p class="fonte">Fonte: DataSenado, 2023</p>
+        <div class="stat-card">
+            <div class="stat-number">7<span style="font-size:1rem">x</span></div>
+            <div class="stat-label">mais risco quando há histórico de ameaças anteriores</div>
         </div>
+    </div>
 
-        <!-- Bloco de ajuda -->
-        <div class="alerta-ajuda">
-            <h3>Se você precisa de ajuda agora</h3>
-            <p>Você não está sozinha. Existem pessoas prontas para te ouvir e te proteger.</p>
-            <div class="numeros">
-                <a href="tel:180" class="num-btn">📞 180 – Central da Mulher</a>
-                <a href="tel:190" class="num-btn">🚨 190 – Polícia</a>
-                <a href="/contatos" class="num-btn">👥 Meus Contatos</a>
-            </div>
+    <div class="card">
+        <h2>Formas de violência reconhecidas pela Lei Maria da Penha</h2>
+        <div class="tipo-item"><span class="tipo-icon">🤛</span><div class="tipo-info"><h4>Física</h4><p>Qualquer ato que ofenda a integridade ou saúde corporal.</p></div></div>
+        <div class="tipo-item"><span class="tipo-icon">🧠</span><div class="tipo-info"><h4>Psicológica</h4><p>Ameaças, humilhações, controle de comportamento, isolamento.</p></div></div>
+        <div class="tipo-item"><span class="tipo-icon">💰</span><div class="tipo-info"><h4>Patrimonial</h4><p>Retenção ou subtração de bens, documentos e recursos financeiros.</p></div></div>
+        <div class="tipo-item"><span class="tipo-icon">🔞</span><div class="tipo-info"><h4>Sexual</h4><p>Qualquer conduta que constranja a participar de ato sexual não desejado.</p></div></div>
+        <div class="tipo-item"><span class="tipo-icon">💬</span><div class="tipo-info"><h4>Moral</h4><p>Calúnia, difamação ou injúria contra a mulher.</p></div></div>
+        <p class="fonte">Fonte: Lei 11.340/2006 – Lei Maria da Penha</p>
+    </div>
+
+    <div class="card">
+        <h2>Registros de violência doméstica por região (2023)</h2>
+        <div class="bar-row"><div class="bar-label"><span>Sudeste</span><span>38%</span></div><div class="bar-track"><div class="bar-fill" data-pct="38"></div></div></div>
+        <div class="bar-row"><div class="bar-label"><span>Nordeste</span><span>27%</span></div><div class="bar-track"><div class="bar-fill" data-pct="27"></div></div></div>
+        <div class="bar-row"><div class="bar-label"><span>Sul</span><span>17%</span></div><div class="bar-track"><div class="bar-fill" data-pct="17"></div></div></div>
+        <div class="bar-row"><div class="bar-label"><span>Norte</span><span>10%</span></div><div class="bar-track"><div class="bar-fill" data-pct="10"></div></div></div>
+        <div class="bar-row"><div class="bar-label"><span>Centro-Oeste</span><span>8%</span></div><div class="bar-track"><div class="bar-fill" data-pct="8"></div></div></div>
+        <p class="fonte">Fonte: Fórum Brasileiro de Segurança Pública, 2023</p>
+    </div>
+
+    <div class="card">
+        <h2>Relação da vítima com o agressor</h2>
+        <div class="bar-row"><div class="bar-label"><span>Parceiro / ex-parceiro</span><span>76%</span></div><div class="bar-track"><div class="bar-fill" data-pct="76"></div></div></div>
+        <div class="bar-row"><div class="bar-label"><span>Familiar (pai, irmão...)</span><span>14%</span></div><div class="bar-track"><div class="bar-fill" data-pct="14"></div></div></div>
+        <div class="bar-row"><div class="bar-label"><span>Conhecido</span><span>7%</span></div><div class="bar-track"><div class="bar-fill" data-pct="7"></div></div></div>
+        <div class="bar-row"><div class="bar-label"><span>Desconhecido</span><span>3%</span></div><div class="bar-track"><div class="bar-fill" data-pct="3"></div></div></div>
+        <p class="fonte">Fonte: DataSenado, 2023</p>
+    </div>
+
+    <div class="alerta-ajuda">
+        <h3>Se você precisa de ajuda agora</h3>
+        <p>Você não está sozinha. Existem pessoas prontas para te ouvir e te proteger.</p>
+        <div class="numeros">
+            <a href="tel:180" class="num-btn">📞 180 – Central da Mulher</a>
+            <a href="tel:190" class="num-btn">🚨 190 – Polícia</a>
+            <a href="/contatos" class="num-btn">👥 Meus Contatos</a>
         </div>
+    </div>
 
-    </main>
+</main>
 
-    <nav class="bottom-nav">
-        <a href="/home-secret" class="nav-item">🏠</a>
-        <a href="/localizacao" class="nav-item">📍</a>
-        <a href="/contatos" class="nav-item">👥</a>
-        <a href="/diario" class="nav-item">📝</a>
-    </nav>
+<nav class="bottom-nav">
+    <a href="/home-secret" class="nav-item">🏠</a>
+    <a href="/localizacao" class="nav-item">📍</a>
+    <a href="/contatos" class="nav-item">👥</a>
+    <a href="/diario" class="nav-item">📝</a>
+</nav>
 
-    <script>
-        // Animar barras ao carregar
-        window.addEventListener('load', () => {
-            document.querySelectorAll('.bar-fill').forEach(bar => {
-                const pct = bar.dataset.pct;
-                setTimeout(() => { bar.style.width = pct + '%'; }, 200);
-            });
+<script>
+    window.addEventListener('load', () => {
+        document.querySelectorAll('.bar-fill').forEach(bar => {
+            setTimeout(() => { bar.style.width = bar.dataset.pct + '%'; }, 200);
         });
-    </script>
+    });
+</script>
 </body>
 </html>
