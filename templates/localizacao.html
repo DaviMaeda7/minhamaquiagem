@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Localização</title>
+    <style>
+        body { background: #fff8f6; font-family: sans-serif; text-align: center; padding: 20px; }
+        .card { background: white; padding: 30px; border-radius: 28px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 500px; margin: auto; }
+        .btn-gps { background: #7d3441; color: white; border: none; padding: 15px 30px; border-radius: 30px; cursor: pointer; font-weight: bold; }
+        .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: white; padding: 15px; border-radius: 25px; display: flex; gap: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .nav-item { text-decoration: none; font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Localização em Tempo Real</h1>
+        <p id="status">GPS Desativado</p>
+        <button class="btn-gps" onclick="ativarGPS()">Ativar GPS</button>
+        <p id="coords"></p>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="/home-secret" class="nav-item">🏠</a>
+        <a href="/localizacao" class="nav-item">📍</a>
+        <a href="/contatos" class="nav-item">👥</a>
+        <a href="/diario" class="nav-item">📝</a>
+    </nav>
+
+    <script>
+        function ativarGPS() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    document.getElementById('status').innerText = "● LOCALIZAÇÃO ATIVA";
+                    document.getElementById('coords').innerText = `Lat: ${pos.coords.latitude.toFixed(4)} | Long: ${pos.coords.longitude.toFixed(4)}`;
+                });
+            }
+        }
+    </script>
+</body>
+</html>

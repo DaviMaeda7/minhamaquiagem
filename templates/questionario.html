@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionário de Segurança - Meu Escudo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fff8f6;
+            --wine: #7d3441;
+            --rose: #d98b93;
+            --soft-rose: #fdf0f0;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(125, 52, 65, 0.1);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0 0 110px;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--wine);
+        }
+
+        .header {
+            padding: 32px 20px 18px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0 0 10px;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            margin: 0 auto;
+            max-width: 520px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            opacity: 0.8;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin: 0 0 18px;
+            color: var(--wine);
+            font-size: 0.88rem;
+            text-decoration: none;
+            opacity: 0.65;
+        }
+
+        .back-link:hover { opacity: 1; }
+
+        .question-card {
+            background: var(--white);
+            margin-bottom: 18px;
+            padding: 22px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(125, 52, 65, 0.06);
+        }
+
+        .question-title {
+            margin: 0 0 14px;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .option {
+            display: block;
+            margin-top: 10px;
+            padding: 13px 14px;
+            background: var(--soft-rose);
+            border: 1px solid transparent;
+            border-radius: 18px;
+            cursor: pointer;
+            font-size: 0.93rem;
+            transition: all 0.18s;
+        }
+
+        .option input {
+            margin-right: 8px;
+            accent-color: var(--wine);
+        }
+
+        .option:has(input:checked) {
+            background: #f8dfe3;
+            border-color: var(--rose);
+            font-weight: 600;
+        }
+
+        .finish-card {
+            background: var(--white);
+            padding: 22px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .btn-finish {
+            width: 100%;
+            max-width: 320px;
+            background: var(--wine);
+            color: white;
+            border: none;
+            padding: 14px 22px;
+            border-radius: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: opacity 0.2s;
+        }
+
+        .btn-finish:hover { opacity: 0.85; }
+
+        .message {
+            display: none;
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 18px;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        .message.error   { display: block; background: #fff1d6; color: #7d3441; }
+        .message.success { display: block; background: #e8f5e9; color: #2e7d32; }
+        .message.alert   { display: block; background: #fdecea; color: #b71c1c; }
+        .message.warning { display: block; background: #fff8e1; color: #e65100; }
+
+        .risco-badge {
+            display: inline-block;
+            margin: 8px 0;
+            padding: 5px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.88rem;
+        }
+
+        .baixo   { background: #e8f5e9; color: #2e7d32; }
+        .medio   { background: #fff8e1; color: #e65100; }
+        .alto    { background: #fdecea; color: #b71c1c; }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            padding: 15px;
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .nav-item { text-decoration: none; font-size: 1.5rem; }
+
+        @media (max-width: 520px) {
+            h1 { font-size: 1.7rem; }
+            .question-card { padding: 18px; border-radius: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Questionário de Segurança</h1>
+        <p class="subtitle">Responda com calma. Este questionário é uma reflexão inicial e não substitui ajuda profissional.</p>
+    </header>
+
+    <main class="container">
+        <a href="/diario" class="back-link">← Voltar ao Diário</a>
+
+        <form id="formQuestionario">
+            <div id="listaPerguntas"></div>
+
+            <div class="finish-card">
+                <button class="btn-finish" type="submit">Finalizar questionário</button>
+                <div id="mensagemFinal" class="message"></div>
+            </div>
+        </form>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="/home-secret" class="nav-item">🏠</a>
+        <a href="/localizacao" class="nav-item">📍</a>
+        <a href="/contatos" class="nav-item">👥</a>
+        <a href="/diario" class="nav-item">📝</a>
+    </nav>
+
+    <script>
+        const perguntas = [
+            {
+                texto: 'Com que frequência você se sente insegura em casa?',
+                opcoes: [
+                    { texto: 'Nunca', peso: 0 },
+                    { texto: 'Raramente', peso: 1 },
+                    { texto: 'Às vezes', peso: 2 },
+                    { texto: 'Frequentemente', peso: 3 }
+                ]
+            },
+            {
+                texto: 'Seu parceiro(a) controla seu dinheiro ou bens?',
+                opcoes: [
+                    { texto: 'Não', peso: 0 },
+                    { texto: 'Um pouco', peso: 1 },
+                    { texto: 'Sim, bastante', peso: 2 },
+                    { texto: 'Controle total', peso: 3 }
+                ]
+            },
+            {
+                texto: 'Você já foi impedida de ver familiares ou amigos?',
+                opcoes: [
+                    { texto: 'Nunca', peso: 0 },
+                    { texto: 'Poucas vezes', peso: 1 },
+                    { texto: 'Com frequência', peso: 2 },
+                    { texto: 'Sou totalmente isolada', peso: 3 }
+                ]
+            },
+            {
+                texto: 'Já sofreu ameaças verbais ou físicas?',
+                opcoes: [
+                    { texto: 'Nunca', peso: 0 },
+                    { texto: 'Verbais leves', peso: 1 },
+                    { texto: 'Verbais graves', peso: 2 },
+                    { texto: 'Físicas', peso: 3 }
+                ]
+            },
+            {
+                texto: 'Você tem acesso a documentos pessoais (RG, CPF, certidões)?',
+                opcoes: [
+                    { texto: 'Sim, todos comigo', peso: 0 },
+                    { texto: 'Alguns estão com outra pessoa', peso: 2 },
+                    { texto: 'Não tenho acesso', peso: 3 }
+                ]
+            },
+            {
+                texto: 'Você sente medo de contrariar seu parceiro(a)?',
+                opcoes: [
+                    { texto: 'Não', peso: 0 },
+                    { texto: 'Às vezes', peso: 1 },
+                    { texto: 'Sim, sempre', peso: 3 }
+                ]
+            }
+        ];
+
+        const respostas = {};
+        const listaPerguntas = document.getElementById('listaPerguntas');
+        const formQuestionario = document.getElementById('formQuestionario');
+        const mensagemFinal = document.getElementById('mensagemFinal');
+
+        function mostrarPerguntas() {
+            perguntas.forEach((pergunta, i) => {
+                const num = i + 1;
+                const card = document.createElement('section');
+                card.className = 'question-card';
+
+                const opcoesHtml = pergunta.opcoes.map(op => `
+                    <label class="option">
+                        <input type="radio" name="p${num}" value="${op.peso}" data-texto="${op.texto}">
+                        ${op.texto}
+                    </label>
+                `).join('');
+
+                card.innerHTML = `
+                    <h2 class="question-title">Pergunta ${num}: ${pergunta.texto}</h2>
+                    ${opcoesHtml}
+                `;
+                listaPerguntas.appendChild(card);
+            });
+        }
+
+        listaPerguntas.addEventListener('change', e => {
+            if (e.target.type === 'radio') {
+                respostas[e.target.name] = {
+                    peso: parseInt(e.target.value),
+                    texto: e.target.dataset.texto
+                };
+            }
+        });
+
+        function calcularNivel(pontos) {
+            const pct = pontos / (perguntas.length * 3);
+            if (pct <= 0.33) return { nivel: 'baixo', label: 'Risco Baixo', classe: 'baixo', msgClasse: 'success' };
+            if (pct <= 0.66) return { nivel: 'medio', label: 'Risco Médio', classe: 'medio', msgClasse: 'warning' };
+            return { nivel: 'alto', label: 'Risco Alto', classe: 'alto', msgClasse: 'alert' };
+        }
+
+        formQuestionario.addEventListener('submit', async e => {
+            e.preventDefault();
+
+            if (Object.keys(respostas).length < perguntas.length) {
+                mensagemFinal.className = 'message error';
+                mensagemFinal.innerHTML = 'Responda todas as perguntas antes de finalizar.';
+                return;
+            }
+
+            const pontos = Object.values(respostas).reduce((acc, r) => acc + r.peso, 0);
+            const { nivel, label, classe, msgClasse } = calcularNivel(pontos);
+
+            const respostasTexto = {};
+            perguntas.forEach((p, i) => {
+                respostasTexto[`Pergunta ${i + 1}`] = respostas[`p${i + 1}`]?.texto || '';
+            });
+
+            try {
+                await fetch('/api/questionario', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ respostas: respostasTexto, nivel })
+                });
+            } catch (_) {}
+
+            const msgs = {
+                baixo: 'Suas respostas indicam uma situação de baixo risco no momento. Continue atenta e cuide-se.',
+                medio: 'Suas respostas indicam sinais de alerta. Considere conversar com alguém de confiança ou buscar apoio profissional.',
+                alto:  '⚠️ Suas respostas indicam risco elevado. Busque ajuda agora: ligue <strong>180</strong> (Central da Mulher) ou <strong>190</strong> (Polícia).'
+            };
+
+            mensagemFinal.className = `message ${msgClasse}`;
+            mensagemFinal.innerHTML = `
+                Questionário finalizado. Obrigada por responder.<br><br>
+                <span class="risco-badge ${classe}">${label}</span><br><br>
+                ${msgs[nivel]}
+            `;
+
+            mensagemFinal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        mostrarPerguntas();
+    </script>
+</body>
+</html>
