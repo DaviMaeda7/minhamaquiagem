@@ -288,12 +288,14 @@
       }
     });
 
-    formCadastro.addEventListener('submit', (event) => {
+    // O "async" foi adicionado aqui para permitir a conexão com o Python
+    formCadastro.addEventListener('submit', async (event) => {
       event.preventDefault();
 
       mensagemErro.classList.remove('show');
       mensagemSucesso.classList.remove('show');
 
+      // 1. Validações locais (se o usuário preencheu tudo certo)
       if (!nome.value || !email.value || !telefone.value || !senha.value || !confirmarSenha.value) {
         mensagemErro.textContent = 'Preencha todos os campos com carinho.';
         mensagemErro.classList.add('show');
@@ -318,8 +320,40 @@
         return;
       }
 
-      mensagemSucesso.classList.add('show');
-      formCadastro.reset();
+      // 2. ENVIANDO OS DADOS PARA O BANCO DE DADOS (PYTHON)
+      try {
+        const res = await fetch('/api/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: nome.value.trim(),
+            email: email.value.trim(),
+            telefone: telefone.value.trim(),
+            password: senha.value,
+            confirm_password: confirmarSenha.value
+          })
+        });
+
+        const data = await res.json();
+        
+        // 3. Resposta do Banco de Dados
+        if (data.success) {
+          mensagemSucesso.textContent = 'Cadastro realizado com sucesso! Entrando...';
+          mensagemSucesso.classList.add('show');
+          
+          // Aguarda 1.5 segundos e joga a usuária logada direto para a área secreta
+          setTimeout(() => {
+            window.location.href = '/home-secret';
+          }, 1500);
+        } else {
+          // Se o e-mail ou nome já existirem, o Python avisa aqui
+          mensagemErro.textContent = data.message;
+          mensagemErro.classList.add('show');
+        }
+      } catch (err) {
+        mensagemErro.textContent = 'Erro ao conectar com o servidor. Tente novamente.';
+        mensagemErro.classList.add('show');
+      }
     });
   </script>
 </body>

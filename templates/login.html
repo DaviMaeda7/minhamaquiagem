@@ -199,12 +199,12 @@
     </p>
 
     <div class="form-group">
-      <label for="inputUsuario" class="form-label">Seu nome de acesso</label>
+      <label for="inputUsuario" class="form-label">Seu e-mail</label>
       <input
         type="text"
         id="inputUsuario"
         class="form-input"
-        placeholder="Digite seu nome"
+        placeholder="Digite seu e-mail"
         autocomplete="off"
         spellcheck="false"
       >
@@ -238,54 +238,87 @@
   </footer>
 
   <script>
-    const toggleSenha = document.getElementById('toggleSenha');
-    const inputSenha = document.getElementById('inputSenha');
-    const inputUsuario = document.getElementById('inputUsuario');
-    const btnEntrar = document.getElementById('btnEntrar');
-    const erroSenha = document.getElementById('erroSenha');
+const toggleSenha = document.getElementById('toggleSenha');
+const inputSenha = document.getElementById('inputSenha');
+const inputUsuario = document.getElementById('inputUsuario');
+const btnEntrar = document.getElementById('btnEntrar');
+const erroSenha = document.getElementById('erroSenha');
 
-    toggleSenha.addEventListener('click', () => {
-      if (inputSenha.type === 'password') {
-        inputSenha.type = 'text';
-        toggleSenha.textContent = '🙈';
-      } else {
-        inputSenha.type = 'password';
-        toggleSenha.textContent = '👁️';
-      }
+// mostrar senha
+toggleSenha.addEventListener('click', () => {
+  if (inputSenha.type === 'password') {
+    inputSenha.type = 'text';
+    toggleSenha.textContent = '🙈';
+  } else {
+    inputSenha.type = 'password';
+    toggleSenha.textContent = '👁️';
+  }
+});
+
+// login real
+async function fazerLogin() {
+
+  const usuario = inputUsuario.value.trim();
+  const senha = inputSenha.value.trim();
+
+  erroSenha.classList.remove('show');
+
+  // validação
+  if (!usuario || !senha) {
+    erroSenha.textContent = 'Preencha todos os campos.';
+    erroSenha.classList.add('show');
+    return;
+  }
+
+  try {
+
+    const resposta = await fetch('/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+
+      body: JSON.stringify({
+        email: usuario,
+        password: senha
+      })
     });
 
-    function fazerLogin() {
-      const usuario = inputUsuario.value.trim();
-      const senha = inputSenha.value.trim();
+    const data = await resposta.json();
 
-      if (!usuario || !senha) {
-        erroSenha.textContent = 'Preencha todos os campos com carinho.';
-        erroSenha.classList.add('show');
-        return;
-      }
+    if (data.success) {
 
-      if (senha === 'segura123') {
-        erroSenha.classList.remove('show');
-        btnEntrar.textContent = 'Bem-vinda... ✦';
+      btnEntrar.textContent = 'Entrando... ✨';
 
-        setTimeout(() => {
-          window.location.href = 'app.html';
-        }, 700);
-      } else {
-        erroSenha.textContent = 'Algo precisa de atenção — verifique suas informações.';
-        erroSenha.classList.add('show');
-        inputSenha.value = '';
-        inputSenha.focus();
-      }
+      setTimeout(() => {
+        window.location.href = '/home-secret';
+      }, 1000);
+
+    } else {
+
+      erroSenha.textContent = data.message;
+      erroSenha.classList.add('show');
+
+      inputSenha.value = '';
+      inputSenha.focus();
     }
 
-    btnEntrar.addEventListener('click', fazerLogin);
+  } catch (erro) {
 
-    inputSenha.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        fazerLogin();
-      }
-    });
-  </script>
+    erroSenha.textContent = 'Erro ao conectar com o servidor.';
+    erroSenha.classList.add('show');
+  }
+}
+
+// botão
+btnEntrar.addEventListener('click', fazerLogin);
+
+// enter
+inputSenha.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    fazerLogin();
+  }
+});
+</script>
 </body>
 </html>

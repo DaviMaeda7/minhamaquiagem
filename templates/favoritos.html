@@ -248,8 +248,10 @@
 <body>
 
 <header class="navbar">
-  <div class="logo">
-    <img src="/static/imagens/logo.png" alt="Logo">
+  <div class="logo" id="secretTrigger">
+    <a href="/">
+      <img src="static/imagens/logo.png" alt="Logo" >
+    </a>
     <span>Minha Maquiagem</span>
   </div>
 
@@ -282,31 +284,49 @@
 <script>
 function carregarFavoritos() {
   const container = document.getElementById("favoritos-container");
-  const favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
 
-if (favoritos.length === 0) {
-  container.innerHTML = `
-    <div class="empty-favorites">
-      <h2>😢 Nenhum favorito ainda</h2>
-      <p>Você ainda não adicionou produtos aos favoritos.</p>
-      <a href="/" class="btn-voltar">Explorar produtos</a>
-    </div>
-  `;
-  return;
-}
+  let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
 
+  // remove produtos inválidos
+  favoritos = favoritos.filter(p => p.nome && p.marca && p.preco);
+
+  localStorage.setItem("favoritos", JSON.stringify(favoritos));
+
+  // LIMPA A TELA antes de renderizar novamente
+  container.innerHTML = "";
+
+  // mensagem de vazio
+  if (favoritos.length === 0) {
+    container.innerHTML = `
+      <div class="empty-favorites">
+        <h2>😢 Nenhum favorito ainda</h2>
+        <p>Você ainda não adicionou produtos aos favoritos.</p>
+        <a href="/" class="btn-voltar">Explorar produtos</a>
+      </div>
+    `;
+    return;
+  }
+
+  // renderiza produtos
   favoritos.forEach(produto => {
     container.innerHTML += `
       <div class="product-card">
-        <button class="favorite-btn active" onclick="removerFavorito('${produto.nome}')">❤️</button>
 
-        <div class="product-image emoji">${produto.imagem}</div>
+        <button class="favorite-btn active"
+        onclick="removerFavorito('${produto.nome}')">
+          ❤️
+        </button>
+
+        <div class="product-image emoji">
+          ${produto.imagem}
+        </div>
 
         <div class="product-info">
           <div class="product-name">${produto.nome}</div>
           <div class="product-brand">${produto.marca}</div>
           <div class="product-price">${produto.preco}</div>
         </div>
+
       </div>
     `;
   });
