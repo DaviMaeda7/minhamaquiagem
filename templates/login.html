@@ -1,248 +1,170 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Área Privada</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --surface: #fff8f8;
-      --surface-low: #f7ecec;
-      --surface-container: #f2e4e4;
-      --surface-high: #edd6d6;
-      --primary: #8c4b55;
-      --primary-container: #f8a6b1;
-      --on-surface: #1d1b1b;
-      --on-surface-soft: #6b5b5b;
-      --error: #ba1a1a;
-      --white: #ffffff;
+      --surface:           #FFF8F8;
+      --surface-low:       #F7ECEC;
+      --surface-container: #F2E4E4;
+      --surface-high:      #EDD6D6;
+      --surface-dim:       #E0CCCC;
+      --primary:           #8C4B55;
+      --primary-container: #F8A6B1;
+      --on-surface:        #1D1B1B;
+      --on-surface-soft:   #6B5B5B;
+      --tertiary:          #F0E1C7;
+      --error:             #BA1A1A;
+      --white:             #FFFFFF;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
+      background-color: var(--surface);
+      font-family: 'Inter', sans-serif;
+      color: var(--on-surface);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      background: var(--surface);
-      font-family: 'Inter', sans-serif;
-      color: var(--on-surface);
     }
 
-    .page-top {
-      padding: 40px 32px 0;
-    }
+    .page-top { padding: 48px 32px 0; }
 
     .back-btn {
-      color: var(--on-surface-soft);
-      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       font-size: 0.82rem;
+      color: var(--on-surface-soft);
+      cursor: pointer;
+      text-decoration: none;
+      transition: color 0.2s;
     }
+    .back-btn:hover { color: var(--primary); }
 
     .login-wrapper {
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 32px;
+      padding: 32px 32px 48px;
     }
 
-    .shield-icon {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
+    .shield-icon { font-size: 3rem; margin-bottom: 24px; display: block; }
 
     .login-title {
       font-family: 'Playfair Display', serif;
       font-size: 2.4rem;
       line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--on-surface);
       margin-bottom: 8px;
     }
+    .login-title em { font-style: italic; color: var(--primary); }
 
-    .login-title em {
-      color: var(--primary);
-      font-style: italic;
-    }
+    .login-sub { font-size: 0.9rem; color: var(--on-surface-soft); font-weight: 300; line-height: 1.6; margin-bottom: 40px; }
 
-    .login-sub {
-      color: var(--on-surface-soft);
-      font-size: 0.92rem;
-      margin-bottom: 36px;
-      line-height: 1.6;
-    }
-
-    .form-group {
-      margin-bottom: 24px;
-    }
-
-    .form-label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: var(--on-surface-soft);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .input-wrapper {
-      position: relative;
-    }
-
+    .form-group { margin-bottom: 28px; position: relative; }
+    .form-label { display: block; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--on-surface-soft); margin-bottom: 8px; }
+    
     .form-input {
-      width: 100%;
-      padding: 14px 16px;
-      border: none;
-      border-bottom: 2px solid transparent;
-      border-radius: 8px 8px 0 0;
-      background: var(--surface-container);
-      font-size: 0.95rem;
-      outline: none;
+      width: 100%; background: var(--surface-container); border: none; border-bottom: 2px solid transparent;
+      border-radius: 0.5rem 0.5rem 0 0; padding: 14px 16px; font-family: 'Inter', sans-serif; font-size: 0.95rem; color: var(--on-surface); outline: none; transition: border-color 0.2s, background 0.2s;
     }
+    .form-input:focus { border-bottom-color: var(--primary); background: var(--surface-high); }
 
-    .form-input:focus {
-      background: var(--surface-high);
-      border-bottom-color: var(--primary);
-    }
+    .input-wrapper { position: relative; }
+    .input-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 1.1rem; color: var(--on-surface-soft); }
 
-    .input-icon {
-      position: absolute;
-      top: 50%;
-      right: 14px;
-      transform: translateY(-50%);
-      cursor: pointer;
-      font-size: 1.1rem;
-    }
+    .form-error { font-size: 0.78rem; color: var(--error); margin-top: 10px; display: none; text-align: center; }
+    .form-error.show { display: block; }
 
-    .form-error {
-      display: none;
-      margin-top: 6px;
-      color: var(--error);
-      font-size: 0.8rem;
-    }
-
-    .form-error.show {
-      display: block;
-    }
-
-    .pin-option {
-      margin: 8px 0 28px;
-      text-align: center;
-      color: var(--on-surface-soft);
-      font-size: 0.82rem;
-    }
-
-    .pin-option a {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .btn-primary,
-    .btn-secondary {
-      width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 30px;
-      font-size: 0.94rem;
-      cursor: pointer;
-    }
+    .pin-option { text-align: center; margin: 8px 0 32px; font-size: 0.82rem; color: var(--on-surface-soft); }
+    .pin-option a { color: var(--primary); cursor: pointer; text-decoration: none; font-weight: 500; }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-container));
-      color: var(--white);
-      font-weight: 500;
+      width: 100%; padding: 16px; border-radius: 3rem; background: linear-gradient(135deg, var(--primary), var(--primary-container));
+      color: var(--white); font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 500; border: none; cursor: pointer; transition: opacity 0.2s;
     }
+    .btn-primary:hover { opacity: 0.88; }
 
     .btn-secondary {
-      margin-top: 12px;
-      background: rgba(140, 75, 85, 0.08);
-      color: var(--primary);
-      font-weight: 500;
+      width: 100%; padding: 16px; border-radius: 3rem; background: rgba(140, 75, 85, 0.08); color: var(--primary);
+      font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 500; border: none; cursor: pointer; margin-top: 12px; transition: background 0.2s;
     }
+    .btn-secondary:hover { background: rgba(140, 75, 85, 0.14); }
 
-    .login-footer {
-      padding: 0 32px 40px;
-      text-align: center;
-    }
-
-    .footer-text {
-      color: var(--on-surface-soft);
-      font-size: 0.75rem;
-      line-height: 1.6;
-    }
+    .login-footer { padding: 0 32px 40px; text-align: center; }
+    .footer-text { font-size: 0.75rem; color: var(--on-surface-soft); line-height: 1.6; }
   </style>
 </head>
 <body>
+
   <div class="page-top">
-    <a href="/" class="back-btn">← Voltar para loja</a>
+    <!-- Link corrigido para voltar à loja real -->
+    <a class="back-btn" href="/index">← Voltar para loja</a>
   </div>
 
-  <main class="login-wrapper">
+  <div class="login-wrapper">
     <span class="shield-icon">🛡️</span>
 
     <h1 class="login-title">
-      Área <br>
+      Área<br/>
       <em>privada.</em>
     </h1>
 
     <p class="login-sub">
-      Apenas você sabe que isto existe.<br>
+      Apenas você sabe que isto existe.<br/>
       Entre com segurança.
     </p>
 
+    <!-- CAMPO E-MAIL (Ajustado para o banco de dados) -->
     <div class="form-group">
-      <label for="inputUsuario" class="form-label">Seu nome de acesso</label>
-      <input
-        type="text"
-        id="inputUsuario"
-        class="form-input"
-        placeholder="Digite seu nome"
-        autocomplete="off"
-        spellcheck="false"
-      >
+      <label class="form-label" for="loginEmail">E-mail</label>
+      <div class="input-wrapper">
+        <input class="form-input" type="email" id="loginEmail" placeholder="Seu e-mail secreto" autocomplete="off" />
+      </div>
     </div>
 
+    <!-- CAMPO SENHA -->
     <div class="form-group">
-      <label for="inputSenha" class="form-label">Senha</label>
+      <label class="form-label" for="loginSenha">Senha</label>
       <div class="input-wrapper">
-        <input
-          type="password"
-          id="inputSenha"
-          class="form-input"
-          placeholder="••••••••"
-        >
+        <input class="form-input" type="password" id="loginSenha" placeholder="••••••••" />
         <span class="input-icon" id="toggleSenha">👁️</span>
       </div>
-      <p class="form-error" id="erroSenha">Algo precisa de atenção — verifique suas informações.</p>
+      <p class="form-error" id="msgErroLogin"></p>
     </div>
 
-    <button class="btn-primary" id="btnEntrar">Entrar com segurança →</button>
-    <button class="btn-secondary" onclick="window.location.href='/cadastro'">
-    Criar minha conta segura
+    <p class="pin-option">
+      Prefere usar um PIN? <a href="#">Entrar com código</a>
+    </p>
+
+    <!-- BOTÕES -->
+    <button class="btn-primary" onclick="fazerLogin()">
+      Entrar com segurança →
     </button>
-  </main>
+
+    <button class="btn-secondary" onclick="window.location.href='/cadastro'">
+      Criar minha conta segura
+    </button>
+
+  </div>
 
   <footer class="login-footer">
     <p class="footer-text">
-      Suas informações são guardadas com carinho.<br>
+      Suas informações são guardadas com carinho.<br/>
       Ninguém além de você tem acesso.
     </p>
   </footer>
 
   <script>
     const toggleSenha = document.getElementById('toggleSenha');
-    const inputSenha = document.getElementById('inputSenha');
-    const inputUsuario = document.getElementById('inputUsuario');
-    const btnEntrar = document.getElementById('btnEntrar');
-    const erroSenha = document.getElementById('erroSenha');
+    const inputSenha = document.getElementById('loginSenha');
 
     toggleSenha.addEventListener('click', () => {
       if (inputSenha.type === 'password') {
@@ -254,38 +176,42 @@
       }
     });
 
-    function fazerLogin() {
-      const usuario = inputUsuario.value.trim();
-      const senha = inputSenha.value.trim();
+    async function fazerLogin() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const senha = document.getElementById('loginSenha').value.trim();
+      const msgErro = document.getElementById('msgErroLogin');
 
-      if (!usuario || !senha) {
-        erroSenha.textContent = 'Preencha todos os campos com carinho.';
-        erroSenha.classList.add('show');
+      if (!email || !senha) {
+        msgErro.textContent = 'Preencha todos os campos com carinho.';
+        msgErro.classList.add('show');
         return;
       }
 
-      if (senha === 'segura123') {
-        erroSenha.classList.remove('show');
-        btnEntrar.textContent = 'Bem-vinda... ✦';
-
-        setTimeout(() => {
-          window.location.href = 'app.html';
-        }, 700);
-      } else {
-        erroSenha.textContent = 'Algo precisa de atenção — verifique suas informações.';
-        erroSenha.classList.add('show');
-        inputSenha.value = '';
-        inputSenha.focus();
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email, password: senha })
+        });
+        
+        const data = await res.json();
+        if (data.success) {
+          window.location.href = '/home-secret';
+        } else {
+          msgErro.textContent = data.message;
+          msgErro.classList.add('show');
+        }
+      } catch (err) {
+        msgErro.textContent = 'Erro ao conectar. Tente novamente.';
+        msgErro.classList.add('show');
       }
     }
 
-    btnEntrar.addEventListener('click', fazerLogin);
-
-    inputSenha.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        fazerLogin();
-      }
+    // Permite entrar apertando a tecla Enter no teclado
+    inputSenha.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') fazerLogin();
     });
   </script>
+
 </body>
 </html>
