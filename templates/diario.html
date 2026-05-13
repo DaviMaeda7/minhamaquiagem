@@ -14,20 +14,6 @@
 
         .card { background:var(--white); padding:20px; border-radius:20px; max-width:500px; margin:0 auto 16px; box-shadow:var(--shadow); }
 
-        .cta-questionario {
-            display:block; text-decoration:none;
-            background:linear-gradient(135deg,var(--wine),#a34555);
-            color:white; border-radius:20px; padding:20px;
-            max-width:500px; margin:0 auto 16px;
-            box-shadow:var(--shadow); transition:opacity .2s,transform .2s;
-        }
-        .cta-questionario:hover { opacity:.93; transform:translateY(-1px); }
-        .cta-top { display:flex; align-items:center; gap:12px; margin-bottom:6px; }
-        .cta-icon { font-size:1.6rem; }
-        .cta-questionario h3 { margin:0; font-family:'Playfair Display',serif; font-size:1.1rem; }
-        .cta-questionario p  { margin:0; font-size:.82rem; opacity:.85; line-height:1.4; }
-        .cta-arrow { float:right; font-size:1.2rem; margin-top:-28px; }
-
         .card-title { font-family:'Playfair Display',serif; font-size:1.1rem; margin:0 0 12px; }
 
         textarea {
@@ -60,17 +46,6 @@
 
 <h2>Meu Diário Seguro</h2>
 
-<a href="/questionario" class="cta-questionario">
-    <div class="cta-top">
-        <span class="cta-icon">📋</span>
-        <div>
-            <h3>Questionário de Segurança</h3>
-            <p>Entenda sua situação respondendo algumas perguntas.</p>
-        </div>
-    </div>
-    <span class="cta-arrow">→</span>
-</a>
-
 <div class="card">
     <h3 class="card-title">Nova anotação</h3>
     <textarea id="texto" placeholder="Escreva aqui o que sentir... Este espaço é só seu."></textarea>
@@ -91,45 +66,95 @@
 </nav>
 
 <script>
-    // Entradas salvas em memória durante a sessão
-    let entradas = [];
+    const API = "/api/diario";
 
-    function salvar() {
-        const txt = document.getElementById('texto').value.trim();
-        const msg = document.getElementById('msg');
-        if (!txt) {
-            msg.className = 'msg err';
-            msg.textContent = 'Escreva algo antes de salvar.';
-            return;
-        }
-        entradas.unshift({ texto: txt, data: new Date().toLocaleString('pt-BR') });
-        renderEntradas();
-        document.getElementById('texto').value = '';
-        msg.className = 'msg ok';
-        msg.textContent = '✅ Salvo com segurança!';
-        setTimeout(() => { msg.className = 'msg'; }, 3000);
+    // ── Utilitários ─────────────────────────────────────────────────────────
+    function exibirMsg(tipo, texto) {
+        const el = document.getElementById("msg");
+        el.className = `msg ${tipo}`;
+        el.textContent = texto;
+        if (tipo === "ok") setTimeout(() => { el.className = "msg"; }, 3000);
     }
 
-    function apagarEntrada(idx) {
-        if (confirm('Apagar este registro?')) {
-            entradas.splice(idx, 1);
-            renderEntradas();
+    function escaparHTML(str) {
+        return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    }
+
+    function formatarData(raw) {
+        try { return new Date(raw.replace(" ", "T")).toLocaleString("pt-BR"); }
+        catch { return raw; }
+    }
+
+    // ── Carregar entradas ────────────────────────────────────────────────────
+    async function carregarEntradas() {
+        try {
+            const res = await fetch(API);
+            if (res.status === 401) { renderEntradas([]); return; }
+            if (!res.ok) throw new Error();
+            renderEntradas(await res.json());
+        } catch {
+            document.getElementById("listaEntradas").innerHTML =
+                '<p style="opacity:.5;font-size:.88rem">Não foi possível carregar os registros.</p>';
+            document.getElementById("cardEntradas").style.display = "block";
         }
     }
 
-    function renderEntradas() {
-        const card  = document.getElementById('cardEntradas');
-        const lista = document.getElementById('listaEntradas');
-        if (entradas.length === 0) { card.style.display = 'none'; return; }
-        card.style.display = 'block';
-        lista.innerHTML = entradas.map((e, i) => `
+    // ── Salvar ───────────────────────────────────────────────────────────────
+    async function salvar() {
+        const txt = document.getElementById("texto").value.trim();
+        if (!txt) { exibirMsg("err", "Escreva algo antes de salvar."); return; }
+
+        const btn = document.querySelector(".btn");
+        btn.disabled = true;
+        btn.textContent = "Salvando…";
+
+        try {
+            const res = await fetch(API, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ texto: txt })
+            });
+            const dados = await res.json();
+            if (!res.ok) throw new Error(dados.message || "Erro ao salvar.");
+            document.getElementById("texto").value = "";
+            exibirMsg("ok", "✅ Salvo com segurança!");
+            await carregarEntradas();
+        } catch (err) {
+            exibirMsg("err", `❌ ${err.message}`);
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "Salvar registro";
+        }
+    }
+
+    // ── Apagar ───────────────────────────────────────────────────────────────
+    async function apagarEntrada(id) {
+        if (!confirm("Apagar este registro permanentemente?")) return;
+        try {
+            const res = await fetch(`${API}/${id}`, { method: "DELETE" });
+            if (!res.ok) throw new Error();
+            await carregarEntradas();
+        } catch {
+            alert("Não foi possível apagar. Tente novamente.");
+        }
+    }
+
+    // ── Renderizar ───────────────────────────────────────────────────────────
+    function renderEntradas(entradas) {
+        const card  = document.getElementById("cardEntradas");
+        const lista = document.getElementById("listaEntradas");
+        if (!entradas.length) { card.style.display = "none"; return; }
+        card.style.display = "block";
+        lista.innerHTML = entradas.map(e => `
             <div class="entrada">
-                <small>${e.data}</small>
-                <p>${e.texto.replace(/</g,'&lt;')}</p>
-                <button class="btn-apagar" onclick="apagarEntrada(${i})">🗑 Apagar este registro</button>
+                <small>${formatarData(e.criado_em)}</small>
+                <p>${escaparHTML(e.texto)}</p>
+                <button class="btn-apagar" onclick="apagarEntrada(${e.id})">🗑 Apagar este registro</button>
             </div>
-        `).join('');
+        `).join("");
     }
+
+    carregarEntradas();
 </script>
 </body>
 </html>
