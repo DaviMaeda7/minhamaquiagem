@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, jsonify, session, redirect
+from flask_cors import CORS  # ← adiciona essa linha
 from datetime import datetime
 from src.repositorios.sqlite_repository import init_db, SQLiteUserRepository, SQLiteDiarioRepository
 from src.servicos.auth import hash_password, verify_password, validate_signup_data, validate_login_data
 
 app = Flask(__name__)
 app.secret_key = "chave-secreta-temporaria-para-testes-em-desenvolvimento"
+CORS(app, supports_credentials=True, origins=["https://minhamaquiagem.vidadavi777.workers.dev"])  # ← adiciona essa linha
 
 init_db()
 repo        = SQLiteUserRepository()
