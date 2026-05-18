@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diário Seguro — Meu Escudo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg:#fff8f6; --wine:#7d3441; --rose:#d98b93; --white:#ffffff; --shadow:0 10px 30px rgba(125,52,65,.1); }
+        * { box-sizing:border-box; }
+        body { background:var(--bg); font-family:'Inter',sans-serif; color:var(--wine); margin:0; padding:20px 20px 130px; }
+
+        h2 { font-family:'Playfair Display',serif; font-size:1.8rem; text-align:center; margin:20px 0 24px; }
+
+        .card { background:var(--white); padding:20px; border-radius:20px; max-width:500px; margin:0 auto 16px; box-shadow:var(--shadow); }
+
+        .card-title { font-family:'Playfair Display',serif; font-size:1.1rem; margin:0 0 12px; }
+
+        textarea {
+            width:100%; height:180px; border:1.5px solid #f0d0d5;
+            border-radius:14px; padding:12px; font-family:'Inter',sans-serif;
+            font-size:.95rem; color:var(--wine); background:#fff8f6;
+            resize:vertical; outline:none; transition:border-color .2s;
+        }
+        textarea:focus { border-color:var(--rose); }
+
+        .btn { width:100%; background:var(--wine); color:white; border:none; padding:14px; margin-top:12px; border-radius:16px; cursor:pointer; font-weight:bold; font-size:.95rem; font-family:'Inter',sans-serif; transition:opacity .2s; }
+        .btn:hover { opacity:.85; }
+
+        .msg { display:none; margin-top:10px; padding:10px 14px; border-radius:12px; font-size:.88rem; }
+        .msg.ok  { display:block; background:#e8f5e9; color:#2e7d32; }
+        .msg.err { display:block; background:#fdecea; color:#b71c1c; }
+
+        .entrada { padding:12px 0; border-bottom:1px solid #fde8eb; }
+        .entrada:last-child { border-bottom:none; }
+        .entrada small { opacity:.55; font-size:.8rem; }
+        .entrada p { margin:4px 0 0; line-height:1.5; font-size:.9rem; word-break:break-word; }
+
+        .btn-apagar { background:none; border:none; color:var(--rose); font-size:.78rem; cursor:pointer; margin-top:4px; font-family:'Inter',sans-serif; padding:0; }
+
+        .bottom-nav { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); width:90%; max-width:400px; background:white; padding:15px; border-radius:30px; display:flex; justify-content:space-around; box-shadow:0 10px 40px rgba(0,0,0,.1); z-index:100; }
+        .nav-item { text-decoration:none; font-size:1.5rem; }
+    </style>
+</head>
+<body>
+
+<h2>Meu Diário Seguro</h2>
+
+<div class="card">
+    <h3 class="card-title">Nova anotação</h3>
+    <textarea id="texto" placeholder="Escreva aqui o que sentir... Este espaço é só seu."></textarea>
+    <button class="btn" onclick="salvar()">Salvar registro</button>
+    <div id="msg" class="msg"></div>
+</div>
+
+<div class="card" id="cardEntradas" style="display:none;">
+    <h3 class="card-title">Registros anteriores</h3>
+    <div id="listaEntradas"></div>
+</div>
+
+<nav class="bottom-nav">
+    <a href="/home-secret" class="nav-item">🏠</a>
+    <a href="/localizacao" class="nav-item">📍</a>
+    <a href="/contatos" class="nav-item">👥</a>
+    <a href="/diario" class="nav-item">📝</a>
+</nav>
+
+<script>
+    const API = "/api/diario";
+
+    // ── Utilitários ─────────────────────────────────────────────────────────
+    function exibirMsg(tipo, texto) {
+        const el = document.getElementById("msg");
+        el.className = `msg ${tipo}`;
+        el.textContent = texto;
+        if (tipo === "ok") setTimeout(() => { el.className = "msg"; }, 3000);
+    }
+
+    function escaparHTML(str) {
+        return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    }
+
+    function formatarData(raw) {
+        try { return new Date(raw.replace(" ", "T")).toLocaleString("pt-BR"); }
+        catch { return raw; }
+    }
+
+    // ── Carregar entradas ────────────────────────────────────────────────────
+    async function carregarEntradas() {
+        try {
+            const res = await fetch(API);
+            if (res.status === 401) { renderEntradas([]); return; }
+            if (!res.ok) throw new Error();
+            renderEntradas(await res.json());
+        } catch {
+            document.getElementById("listaEntradas").innerHTML =
+                '<p style="opacity:.5;font-size:.88rem">Não foi possível carregar os registros.</p>';
+            document.getElementById("cardEntradas").style.display = "block";
+        }
+    }
+
+    // ── Salvar ───────────────────────────────────────────────────────────────
+    async function salvar() {
+        const txt = document.getElementById("texto").value.trim();
+        if (!txt) { exibirMsg("err", "Escreva algo antes de salvar."); return; }
+
+        const btn = document.querySelector(".btn");
+        btn.disabled = true;
+        btn.textContent = "Salvando…";
+
+        try {
+            const res = await fetch(API, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ texto: txt })
+            });
+            const dados = await res.json();
+            if (!res.ok) throw new Error(dados.message || "Erro ao salvar.");
+            document.getElementById("texto").value = "";
+            exibirMsg("ok", "✅ Salvo com segurança!");
+            await carregarEntradas();
+        } catch (err) {
+            exibirMsg("err", `❌ ${err.message}`);
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "Salvar registro";
+        }
+    }
+
+    // ── Apagar ───────────────────────────────────────────────────────────────
+    async function apagarEntrada(id) {
+        if (!confirm("Apagar este registro permanentemente?")) return;
+        try {
+            const res = await fetch(`${API}/${id}`, { method: "DELETE" });
+            if (!res.ok) throw new Error();
+            await carregarEntradas();
+        } catch {
+            alert("Não foi possível apagar. Tente novamente.");
+        }
+    }
+
+    // ── Renderizar ───────────────────────────────────────────────────────────
+    function renderEntradas(entradas) {
+        const card  = document.getElementById("cardEntradas");
+        const lista = document.getElementById("listaEntradas");
+        if (!entradas.length) { card.style.display = "none"; return; }
+        card.style.display = "block";
+        lista.innerHTML = entradas.map(e => `
+            <div class="entrada">
+                <small>${formatarData(e.criado_em)}</small>
+                <p>${escaparHTML(e.texto)}</p>
+                <button class="btn-apagar" onclick="apagarEntrada(${e.id})">🗑 Apagar este registro</button>
+            </div>
+        `).join("");
+    }
+
+    carregarEntradas();
+</script>
+</body>
+</html>

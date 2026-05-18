@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contatos de Confiança — Meu Escudo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fff8f6;
+            --wine: #7d3441;
+            --rose: #d98b93;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(125, 52, 65, 0.1);
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0 0 130px;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg); color: var(--wine); min-height: 100vh;
+        }
+        .header { padding: 30px 20px 18px; text-align: center; }
+        h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 0 0 6px; }
+        .header p { font-size: 0.9rem; opacity: 0.72; margin: 0; }
+
+        .container { max-width: 500px; margin: 0 auto; padding: 0 18px; }
+
+        /* Abas */
+        .tabs {
+            display: flex; gap: 6px; margin-bottom: 18px;
+            background: var(--white); padding: 5px;
+            border-radius: 22px; box-shadow: var(--shadow);
+        }
+        .tab-btn {
+            flex: 1; padding: 10px 4px; border: none;
+            border-radius: 17px; background: transparent;
+            color: var(--wine); font-family: 'Inter', sans-serif;
+            font-weight: 600; font-size: 0.78rem; cursor: pointer;
+            transition: all 0.22s;
+        }
+        .tab-btn.active { background: var(--wine); color: white; box-shadow: 0 4px 12px rgba(125,52,65,0.22); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Cards emergência */
+        .contact-list { display: flex; flex-direction: column; gap: 12px; }
+        .contact-card {
+            background: var(--white); padding: 16px 18px;
+            border-radius: 18px; box-shadow: var(--shadow);
+            display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid rgba(125,52,65,0.05);
+        }
+        .contact-info h3 { margin: 0; font-size: 0.97rem; }
+        .contact-info p  { margin: 4px 0 0; font-size: 0.83rem; color: var(--rose); font-weight: 700; }
+        .btn-call {
+            text-decoration: none; background: #fdf0f0;
+            padding: 10px; border-radius: 50%; font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        /* Voluntárias */
+        .aviso {
+            background: #fff8e1; border-left: 3px solid #e65100;
+            padding: 10px 14px; border-radius: 12px;
+            font-size: 0.81rem; margin-bottom: 16px; line-height: 1.5;
+        }
+
+        .vol-card {
+            background: var(--white); padding: 18px;
+            border-radius: 20px; box-shadow: var(--shadow);
+            border: 1px solid rgba(125,52,65,0.05);
+            margin-bottom: 14px;
+        }
+        .vol-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+        .vol-avatar {
+            width: 46px; height: 46px; border-radius: 50%;
+            background: #fdf0f0; display: flex; align-items: center;
+            justify-content: center; font-size: 1.4rem; flex-shrink: 0;
+        }
+        .vol-nome { font-weight: 700; margin: 0; font-size: 0.97rem; }
+        .vol-area { font-size: 0.78rem; opacity: 0.6; margin: 2px 0 0; }
+        .vol-desc { font-size: 0.84rem; opacity: 0.78; margin: 0 0 10px; line-height: 1.5; }
+        .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+        .badge {
+            padding: 3px 12px; background: #fdf0f0;
+            border-radius: 20px; font-size: 0.73rem; font-weight: 700;
+        }
+        .vol-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-contatar {
+            display: inline-block; background: var(--wine); color: white;
+            padding: 9px 16px; border-radius: 14px; font-weight: 700;
+            font-size: 0.82rem; text-decoration: none;
+        }
+        .btn-whats {
+            display: inline-block; background: #25D366; color: white;
+            padding: 9px 16px; border-radius: 14px; font-weight: 700;
+            font-size: 0.82rem; text-decoration: none;
+        }
+
+        /* Busca voluntárias */
+        .search-box {
+            width: 100%; padding: 11px 14px;
+            border: 1.5px solid #f0d0d5; border-radius: 14px;
+            font-family: 'Inter', sans-serif; font-size: 0.93rem;
+            color: var(--wine); background: #fff8f6;
+            outline: none; margin-bottom: 16px;
+        }
+        .search-box:focus { border-color: var(--rose); }
+
+        /* CTA ser voluntária dentro da aba */
+        .cta-vol {
+            background: linear-gradient(135deg, var(--wine), #a34555);
+            color: white; border-radius: 20px; padding: 18px;
+            margin-bottom: 16px; display: flex; align-items: center;
+            gap: 14px; text-decoration: none; cursor: pointer;
+            border: none; width: 100%; font-family: 'Inter', sans-serif;
+            transition: opacity 0.2s;
+        }
+        .cta-vol:active { opacity: 0.88; }
+        .cta-vol-icon { font-size: 1.8rem; flex-shrink: 0; }
+        .cta-vol-text { text-align: left; }
+        .cta-vol-text h3 { margin: 0; font-family: 'Playfair Display', serif; font-size: 1rem; color: white; }
+        .cta-vol-text p  { margin: 4px 0 0; font-size: 0.8rem; opacity: 0.85; }
+        .cta-vol-arrow { margin-left: auto; font-size: 1.2rem; opacity: 0.8; }
+
+        /* Formulário adicionar */
+        .add-section { margin-top: 4px; }
+        .field { margin-bottom: 12px; }
+        .field label { display: block; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; opacity: 0.65; }
+        .field input, .field select, .field textarea {
+            width: 100%; padding: 11px 14px;
+            border: 1.5px solid #f0d0d5; border-radius: 14px;
+            font-family: 'Inter', sans-serif; font-size: 0.93rem;
+            color: var(--wine); background: #fff8f6; outline: none; resize: none;
+        }
+        .field input:focus, .field select:focus { border-color: var(--rose); }
+        .btn-add {
+            background: var(--wine); color: white; border: none;
+            padding: 14px 30px; border-radius: 30px; font-weight: bold;
+            cursor: pointer; width: 100%; font-size: 0.95rem;
+            box-shadow: 0 5px 15px rgba(125,52,65,0.2); margin-top: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+        .msg { display: none; margin-top: 10px; padding: 10px; border-radius: 12px; font-size: 0.88rem; }
+        .msg.ok  { display: block; background: #e8f5e9; color: #2e7d32; }
+        .msg.err { display: block; background: #fdecea; color: #b71c1c; }
+
+        /* Nav */
+        .bottom-nav {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 400px; background: white; padding: 15px;
+            border-radius: 30px; display: flex; justify-content: space-around;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1); z-index: 100;
+        }
+        .nav-item { text-decoration: none; font-size: 1.5rem; }
+
+        /* Modal voluntária */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.6); z-index: 500;
+            align-items: flex-end; justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-sheet {
+            background: white; width: 100%; max-width: 520px;
+            border-radius: 28px 28px 0 0; padding: 30px 24px 44px;
+            animation: slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
+            max-height: 90vh; overflow-y: auto;
+        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .modal-sheet h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin: 0 0 6px; }
+        .msub { font-size: 0.84rem; opacity: 0.7; margin: 0 0 20px; line-height: 1.5; }
+        .btn-enviar {
+            width: 100%; background: linear-gradient(135deg, var(--wine), #a34555);
+            color: white; border: none; padding: 15px; border-radius: 20px;
+            font-weight: 700; font-size: 0.95rem; cursor: pointer;
+            font-family: 'Inter', sans-serif; margin-top: 6px;
+        }
+        .btn-cancelar {
+            width: 100%; background: #f0f0f0; color: #555; border: none;
+            padding: 13px; border-radius: 20px; font-weight: 600;
+            font-size: 0.9rem; cursor: pointer; font-family: 'Inter', sans-serif; margin-top: 10px;
+        }
+        .msg-ok-modal {
+            display: none; background: #e8f5e9; color: #2e7d32;
+            padding: 12px 16px; border-radius: 14px; font-size: 0.88rem;
+            margin-top: 12px; line-height: 1.5;
+        }
+        .msg-ok-modal.show { display: block; }
+
+        .empty-state {
+            text-align: center; padding: 30px 10px; opacity: 0.5; font-size: 0.88rem;
+        }
+        .empty-state span { display: block; font-size: 2.5rem; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Contatos de Confiança</h1>
+    <p>Rede de apoio e emergência</p>
+</div>
+
+<div class="container">
+    <div class="tabs">
+        <button class="tab-btn active" onclick="mudarAba('emergencia', this)">🆘 Emergência</button>
+        <button class="tab-btn" onclick="mudarAba('voluntarias', this)">🤝 Voluntárias</button>
+        <button class="tab-btn" onclick="mudarAba('adicionar', this)">＋ Adicionar</button>
+    </div>
+
+    <!-- ABA EMERGÊNCIA -->
+    <div id="aba-emergencia" class="tab-content active">
+        <div class="contact-list" id="listaContatos">
+            <div class="contact-card">
+                <div class="contact-info"><h3>🚨 Polícia Militar — DF</h3><p>190</p></div>
+                <a href="tel:190" class="btn-call">📞</a>
+            </div>
+            <div class="contact-card">
+                <div class="contact-info"><h3>📞 Central da Mulher</h3><p>180</p></div>
+                <a href="tel:180" class="btn-call">📞</a>
+            </div>
+            <div class="contact-card">
+                <div class="contact-info"><h3>🚑 SAMU</h3><p>192</p></div>
+                <a href="tel:192" class="btn-call">📞</a>
+            </div>
+            <div class="contact-card">
+                <div class="contact-info"><h3>🔵 DEAM — Delegacia da Mulher DF</h3><p>(61) 3242-5813</p></div>
+                <a href="tel:01932425813" class="btn-call">📞</a>
+            </div>
+            <div class="contact-card">
+                <div class="contact-info"><h3>🏠 Casa da Mulher Brasileira — DF</h3><p>(61) 3204-0033</p></div>
+                <a href="tel:01932040033" class="btn-call">📞</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABA VOLUNTÁRIAS -->
+    <div id="aba-voluntarias" class="tab-content">
+
+        <!-- CTA ser voluntária -->
+        <button class="cta-vol" onclick="abrirModalVol()">
+            <span class="cta-vol-icon">🤝</span>
+            <div class="cta-vol-text">
+                <h3>Quero ser Voluntária</h3>
+                <p>Cadastre-se e faça parte da nossa rede de apoio</p>
+            </div>
+            <span class="cta-vol-arrow">→</span>
+        </button>
+
+        <div class="aviso">⚠️ Contato para orientação inicial — não substitui o 190 em situações de perigo.</div>
+
+        <!-- Busca -->
+        <input type="text" class="search-box" placeholder="🔍 Buscar por nome ou área..." oninput="filtrarVol(this.value)">
+
+        <div id="listaVoluntarias"></div>
+    </div>
+
+    <!-- ABA ADICIONAR -->
+    <div id="aba-adicionar" class="tab-content">
+        <div class="add-section">
+            <div class="field">
+                <label>Tipo de Cadastro</label>
+                <select id="tipoRegistro" onchange="toggleCampos()">
+                    <option value="emergencia">Contato de Emergência</option>
+                    <option value="voluntaria">Nova Voluntária</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Nome</label>
+                <input type="text" id="novoNome" placeholder="Ex: Maria Silva">
+            </div>
+            <div id="campoVoluntaria" style="display:none;">
+                <div class="field">
+                    <label>Área (Ex: Advogada)</label>
+                    <input type="text" id="novaArea" placeholder="Ex: Psicóloga">
+                </div>
+            </div>
+            <div class="field">
+                <label>Telefone</label>
+                <input type="tel" id="novoTel" placeholder="(61) 99999-9999">
+            </div>
+            <button class="btn-add" onclick="processarCadastro()">+ Salvar Registro</button>
+            <div id="msgAdd" class="msg"></div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL SER VOLUNTÁRIA -->
+<div class="modal-overlay" id="modalVol">
+    <div class="modal-sheet">
+        <h2>🤝 Quero ser Voluntária</h2>
+        <p class="msub">Preencha seus dados. Nossa equipe validará seu cadastro antes de você aparecer na rede.</p>
+        <div class="field">
+            <label>Nome completo</label>
+            <input type="text" id="volNome" placeholder="Seu nome completo">
+        </div>
+        <div class="field">
+            <label>Área de atuação</label>
+            <select id="volArea">
+                <option value="">Selecione...</option>
+                <option>Advogada / Jurídico</option>
+                <option>Psicóloga</option>
+                <option>Assistente Social</option>
+                <option>Médica / Enfermeira</option>
+                <option>Educadora</option>
+                <option>Outra área</option>
+            </select>
+        </div>
+        <div class="field">
+            <label>Telefone / WhatsApp</label>
+            <input type="tel" id="volTel" placeholder="(61) 99999-9999">
+        </div>
+        <div class="field">
+            <label>Como você quer ajudar?</label>
+            <textarea id="volDesc" rows="3" placeholder="Descreva brevemente como quer contribuir..."></textarea>
+        </div>
+        <button class="btn-enviar" onclick="enviarCadastroVol()">Enviar cadastro →</button>
+        <button class="btn-cancelar" onclick="fecharModalVol()">Cancelar</button>
+        <div class="msg-ok-modal" id="msgOkModal">
+            ✅ <strong>Cadastro recebido com sucesso!</strong><br>
+            Nossa equipe analisará suas informações e entrará em contato em breve. Obrigada por querer fazer a diferença! 💜
+        </div>
+    </div>
+</div>
+
+<nav class="bottom-nav">
+    <a href="/home-secret" class="nav-item">🏠</a>
+    <a href="/localizacao" class="nav-item">📍</a>
+    <a href="/contatos" class="nav-item">👥</a>
+    <a href="/diario" class="nav-item">📝</a>
+</nav>
+
+<script>
+    let voluntarias = [
+        {
+            emoji: '👩‍⚖️', nome: 'Dra. Carla Mendes', area: 'Advogada',
+            desc: 'Orientação jurídica gratuita em casos de violência doméstica. Medidas protetivas e Boletim de Ocorrência.',
+            tags: ['Jurídico', 'Medida Protetiva', 'BO'], tel: '61999990001', whats: '38999142866'
+        },
+        {
+            emoji: '🧠', nome: 'Psic. Renata Oliveira', area: 'Psicóloga',
+            desc: 'Suporte emocional especializado para vítimas de violência. Atendimento online disponível.',
+            tags: ['Psicológico', 'Online', 'Trauma'], tel: '61999990002', whats: '6181636444'
+        },
+        {
+            emoji: '🤝', nome: 'Felipe Garrido', area: 'Assistente Social',
+            desc: 'Auxílio com documentação, abrigos e encaminhamentos para serviços sociais do DF.',
+            tags: ['Social', 'Abrigos', 'Documentos'], tel: '61999990003', whats: '5561999990003'
+        },
+        {
+            emoji: '⚕️', nome: 'Dr.Eduardo Branquinho', area: 'Médica',
+            desc: 'Orientação sobre laudos médicos para processos judiciais e atendimento de saúde prioritário.',
+            tags: ['Saúde', 'Laudos', 'Médica'], tel: '61999990004', whats: '5561999990004'
+        }
+    ];
+
+    let voluntariasFiltradas = [...voluntarias];
+
+    function renderizarVoluntarias(lista) {
+        const container = document.getElementById('listaVoluntarias');
+        if (lista.length === 0) {
+            container.innerHTML = `<div class="empty-state"><span>🔍</span>Nenhuma voluntária encontrada para essa busca.</div>`;
+            return;
+        }
+        container.innerHTML = lista.map(v => `
+            <div class="vol-card">
+                <div class="vol-top">
+                    <div class="vol-avatar">${v.emoji}</div>
+                    <div>
+                        <p class="vol-nome">${v.nome}</p>
+                        <p class="vol-area">${v.area}</p>
+                    </div>
+                </div>
+                <p class="vol-desc">${v.desc}</p>
+                <div class="badges">${v.tags.map(t => `<span class="badge">${t}</span>`).join('')}</div>
+                <div class="vol-actions">
+                    <a href="tel:${v.tel}" class="btn-contatar">📞 Ligar</a>
+                    <a href="https://wa.me/${v.whats}?text=Olá, vi seu contato no Meu Escudo e preciso de apoio." 
+                       class="btn-whats" target="_blank">💬 WhatsApp</a>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function filtrarVol(termo) {
+        const t = termo.toLowerCase();
+        voluntariasFiltradas = voluntarias.filter(v =>
+            v.nome.toLowerCase().includes(t) ||
+            v.area.toLowerCase().includes(t) ||
+            v.tags.some(tag => tag.toLowerCase().includes(t))
+        );
+        renderizarVoluntarias(voluntariasFiltradas);
+    }
+
+    function mudarAba(id, btn) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById('aba-' + id).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    function toggleCampos() {
+        const tipo = document.getElementById('tipoRegistro').value;
+        document.getElementById('campoVoluntaria').style.display = tipo === 'voluntaria' ? 'block' : 'none';
+    }
+
+    function processarCadastro() {
+        const tipo = document.getElementById('tipoRegistro').value;
+        const nome = document.getElementById('novoNome').value.trim();
+        const tel  = document.getElementById('novoTel').value.trim();
+        const msg  = document.getElementById('msgAdd');
+        if (!nome || !tel) {
+            msg.className = 'msg err';
+            msg.textContent = 'Preencha os campos obrigatórios.';
+            return;
+        }
+        if (tipo === 'voluntaria') {
+            const area = document.getElementById('novaArea').value || 'Voluntária';
+            voluntarias.push({
+                emoji: '🤝', nome, area,
+                desc: 'Nova colaboradora da rede de apoio.',
+                tags: ['Nova'], tel: tel.replace(/\D/g,''),
+                whats: '55' + tel.replace(/\D/g,'')
+            });
+            renderizarVoluntarias(voluntarias);
+        } else {
+            const lista = document.getElementById('listaContatos');
+            const card  = document.createElement('div');
+            card.className = 'contact-card';
+            card.innerHTML = `<div class="contact-info"><h3>${nome}</h3><p>${tel}</p></div><a href="tel:${tel.replace(/\D/g,'')}" class="btn-call">📞</a>`;
+            lista.appendChild(card);
+        }
+        msg.className = 'msg ok';
+        msg.textContent = 'Adicionado com sucesso!';
+        setTimeout(() => {
+            msg.className = 'msg';
+            const idx = tipo === 'voluntaria' ? 1 : 0;
+            mudarAba(tipo === 'voluntaria' ? 'voluntarias' : 'emergencia', document.querySelectorAll('.tab-btn')[idx]);
+        }, 1200);
+    }
+
+    // Modal voluntária
+    function abrirModalVol() {
+        document.getElementById('modalVol').classList.add('open');
+        document.getElementById('msgOkModal').classList.remove('show');
+        document.querySelector('.btn-enviar').style.display = 'block';
+    }
+    function fecharModalVol() {
+        document.getElementById('modalVol').classList.remove('open');
+    }
+    function enviarCadastroVol() {
+        const nome = document.getElementById('volNome').value.trim();
+        const area = document.getElementById('volArea').value;
+        const tel  = document.getElementById('volTel').value.trim();
+        if (!nome || !area || !tel) {
+            alert('Por favor, preencha nome, área e telefone.');
+            return;
+        }
+        document.querySelector('.btn-enviar').style.display = 'none';
+        document.getElementById('msgOkModal').classList.add('show');
+        setTimeout(() => fecharModalVol(), 3800);
+    }
+
+    renderizarVoluntarias(voluntarias);
+</script>
+</body>
+</html>
