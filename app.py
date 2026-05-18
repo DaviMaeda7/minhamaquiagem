@@ -6,7 +6,10 @@ from src.servicos.auth import hash_password, verify_password, validate_signup_da
 
 app = Flask(__name__)
 app.secret_key = "chave-secreta-temporaria-para-testes-em-desenvolvimento"
-CORS(app, supports_credentials=True, origins=["https://minhamaquiagem.vidadavi777.workers.dev"])  # ← adiciona essa linha
+CORS(app, supports_credentials=True, origins=[
+    "https://minhamaquiagem.vidadavi777.workers.dev",
+    "https://minhamaquiagem-production.up.railway.app"
+])
 
 init_db()
 repo        = SQLiteUserRepository()
