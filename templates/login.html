@@ -246,6 +246,7 @@ const erroSenha = document.getElementById('erroSenha');
 
 // mostrar senha
 toggleSenha.addEventListener('click', () => {
+
   if (inputSenha.type === 'password') {
     inputSenha.type = 'text';
     toggleSenha.textContent = '🙈';
@@ -253,27 +254,41 @@ toggleSenha.addEventListener('click', () => {
     inputSenha.type = 'password';
     toggleSenha.textContent = '👁️';
   }
+
 });
 
-// login real
+// login
 async function fazerLogin() {
+
+  console.log('BOTÃO CLICADO');
 
   const usuario = inputUsuario.value.trim();
   const senha = inputSenha.value.trim();
+
+  console.log('EMAIL:', usuario);
+  console.log('SENHA:', senha);
 
   erroSenha.classList.remove('show');
 
   // validação
   if (!usuario || !senha) {
+
+    console.log('CAMPOS VAZIOS');
+
     erroSenha.textContent = 'Preencha todos os campos.';
     erroSenha.classList.add('show');
+
     return;
   }
 
   try {
 
+    console.log('ENVIANDO REQUEST');
+
     const resposta = await fetch('/api/login', {
+
       method: 'POST',
+
       headers: {
         'Content-Type': 'application/json'
       },
@@ -282,9 +297,14 @@ async function fazerLogin() {
         email: usuario,
         password: senha
       })
+
     });
 
+    console.log('STATUS:', resposta.status);
+
     const data = await resposta.json();
+
+    console.log('RESPOSTA:', data);
 
     if (data.success) {
 
@@ -296,7 +316,7 @@ async function fazerLogin() {
 
     } else {
 
-      erroSenha.textContent = data.message;
+      erroSenha.textContent = data.message || 'Login inválido';
       erroSenha.classList.add('show');
 
       inputSenha.value = '';
@@ -304,6 +324,8 @@ async function fazerLogin() {
     }
 
   } catch (erro) {
+
+    console.error('ERRO COMPLETO:', erro);
 
     erroSenha.textContent = 'Erro ao conectar com o servidor.';
     erroSenha.classList.add('show');
@@ -315,9 +337,11 @@ btnEntrar.addEventListener('click', fazerLogin);
 
 // enter
 inputSenha.addEventListener('keydown', (event) => {
+
   if (event.key === 'Enter') {
     fazerLogin();
   }
+
 });
 </script>
 </body>
