@@ -187,20 +187,22 @@
 
     .favorite-btn.active { background: var(--accent-deep); color: white; }
 
-    .product-image {
-      height: 190px;
-      background: linear-gradient(135deg, #fff0f2, #f8e1e1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    .product-image{
+    height: 220px;
+    background: linear-gradient(135deg, #fff0f2, #f8e1e1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
 
-    .product-image img {
-      max-width: 80%;
-      max-height: 150px;
-      object-fit: contain;
-      display: block;
-    }
+.product-image img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 20px;
+    display: block;
+}
 
     .product-image.emoji { font-size: 3rem; }
 
@@ -331,17 +333,23 @@
     favoritesBox.style.display = "block";
 
     favoritos.forEach(produto => {
-      container.innerHTML += `
-        <div class="product-card">
-          <button class="favorite-btn active" onclick="removerFavorito('${produto.nome}')">❤️</button>
-          <div class="product-image emoji">${produto.imagem}</div>
-          <div class="product-info">
+      card.innerHTML = `
+    <div class="product-card">
+
+        <button class="favorite-btn active">❤️</button>
+
+        <div class="product-image">
+            <img src="${produto.imagem}" alt="${produto.nome}">
+        </div>
+
+        <div class="product-info">
             <div class="product-name">${produto.nome}</div>
             <div class="product-brand">${produto.marca}</div>
             <div class="product-price">${produto.preco}</div>
-          </div>
         </div>
-      `;
+
+    </div>
+`;
     });
   }
 
