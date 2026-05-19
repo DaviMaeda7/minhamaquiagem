@@ -17,11 +17,7 @@
       --white: #ffffff;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       background: var(--bg-main);
@@ -49,18 +45,11 @@
       font-family: 'Playfair Display', serif;
       font-size: 1.6rem;
       color: var(--accent-deep);
-      cursor: pointer;
     }
 
-    .logo img {
-      height: 48px;
-      width: auto;
-    }
+    .logo img { height: 48px; width: auto; }
 
-    .menu {
-      display: flex;
-      gap: 28px;
-    }
+    .menu { display: flex; gap: 28px; }
 
     .menu a {
       text-decoration: none;
@@ -69,13 +58,48 @@
       transition: 0.2s;
     }
 
-    .menu a:hover {
-      color: var(--accent-deep);
+    .menu a:hover { color: var(--accent-deep); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
     }
 
-    .hero {
-      padding: 42px 24px 20px;
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--accent-deep);
+      border-radius: 2px;
+      transition: 0.3s;
     }
+
+    @media (max-width: 600px) {
+      .hamburger { display: flex; }
+
+      .menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: rgba(255, 249, 249, 0.97);
+        border-bottom: 1px solid #f0dddd;
+        padding: 16px 24px;
+        gap: 16px;
+        backdrop-filter: blur(10px);
+      }
+
+      .menu.aberto { display: flex; }
+    }
+
+    .hero { padding: 42px 24px 20px; }
 
     .hero-tag {
       background: var(--accent-soft);
@@ -94,15 +118,9 @@
       margin-bottom: 10px;
     }
 
-    .hero-title span {
-      color: var(--accent-deep);
-      font-style: italic;
-    }
+    .hero-title span { color: var(--accent-deep); font-style: italic; }
 
-    .hero-desc {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
+    .hero-desc { color: var(--text-muted); font-size: 0.95rem; }
 
     .image-frame {
       width: 95%;
@@ -147,10 +165,7 @@
       transition: 0.25s;
     }
 
-    .category-item:hover {
-      transform: translateY(-4px);
-      background: var(--accent-soft);
-    }
+    .category-item:hover { transform: translateY(-4px); background: var(--accent-soft); }
 
     .category-icon {
       width: 45px;
@@ -164,14 +179,9 @@
       font-weight: bold;
     }
 
-    .category-text strong {
-      font-size: 0.85rem;
-    }
+    .category-text strong { font-size: 0.85rem; }
 
-    .category-arrow {
-      font-size: 1.5rem;
-      color: var(--accent-deep);
-    }
+    .category-arrow { font-size: 1.5rem; color: var(--accent-deep); }
 
     .product-grid {
       display: grid;
@@ -204,31 +214,15 @@
       justify-content: center;
     }
 
-    .product-image.emoji {
-      font-size: 3rem;
-    }
+    .product-image.emoji { font-size: 3rem; }
 
-    .product-info {
-      padding: 16px;
-    }
+    .product-info { padding: 16px; }
 
-    .product-name {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
+    .product-name { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
 
-    .product-brand {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 10px;
-    }
+    .product-brand { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; }
 
-    .product-price {
-      color: var(--accent-deep);
-      font-weight: 800;
-      font-size: 1.1rem;
-    }
+    .product-price { color: var(--accent-deep); font-weight: 800; font-size: 1.1rem; }
 
     .favorite-btn {
       position: absolute;
@@ -247,82 +241,28 @@
       transition: 0.3s;
     }
 
-    .favorite-btn:hover {
-      transform: scale(1.1);
+    .favorite-btn:hover { transform: scale(1.1); }
+
+    .favorite-btn.active { background: var(--accent-deep); color: white; }
+
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid #f0dddd;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      line-height: 2;
     }
 
-    .favorite-btn.active {
-      background: var(--accent-deep);
-      color: white;
-    }
-
-    .toast {
-      position: fixed;
-      top: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #2d2424;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 999px;
-      opacity: 0;
-      pointer-events: none;
-      transition: 0.3s;
-    }
-
-    .toast.show {
-      opacity: 1;
-    }
-
-    .hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 4px;
-}
-
-.hamburger span {
-  display: block;
-  width: 24px;
-  height: 2px;
-  background: var(--accent-deep);
-  border-radius: 2px;
-  transition: 0.3s;
-}
-
-@media (max-width: 600px) {
-  .hamburger {
-    display: flex;
-  }
-
-  .menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    background: rgba(255, 249, 249, 0.97);
-    border-bottom: 1px solid #f0dddd;
-    padding: 16px 24px;
-    gap: 16px;
-    backdrop-filter: blur(10px);
-  }
-
-  .menu.aberto {
-    display: flex;
-  }
-}
+    footer a { color: var(--text-muted); text-decoration: none; margin: 0 10px; }
+    footer a:hover { color: var(--accent-deep); }
   </style>
 </head>
 
 <body>
 
 <header class="navbar">
-  <div class="logo" id="secretTrigger">
+  <div class="logo">
     <a href="/">
       <img src="./static/imagens/logo.png" alt="Logo">
     </a>
@@ -330,9 +270,7 @@
   </div>
 
   <button class="hamburger" id="hamburger" aria-label="Abrir menu">
-    <span></span>
-    <span></span>
-    <span></span>
+    <span></span><span></span><span></span>
   </button>
 
   <nav class="menu" id="menu">
@@ -359,13 +297,11 @@
       <div class="category-text"><strong>NOVIDADES</strong></div>
       <span class="category-arrow">›</span>
     </a>
-
     <a href="/make" class="category-item">
       <div class="category-icon">💄</div>
       <div class="category-text"><strong>MAKE</strong></div>
       <span class="category-arrow">›</span>
     </a>
-
     <a href="/skincare" class="category-item">
       <div class="category-icon">🧴</div>
       <div class="category-text"><strong>SKINCARE</strong></div>
@@ -379,50 +315,44 @@
   <div class="product-card">
     <button class="favorite-btn" onclick="toggleFavorito(this, {
       nome: 'Iluminador Glow',
-      marca: 'Marca Y',
+      marca: 'Velvêt',
       preco: 'R$ 120',
       imagem: '✨'
     })">♡</button>
-
     <div class="product-image emoji">✨</div>
-
     <div class="product-info">
       <div class="product-name">Iluminador Glow</div>
-      <div class="product-brand">Marca Y</div>
+      <div class="product-brand">Velvêt</div>
       <div class="product-price">R$ 120</div>
     </div>
   </div>
 
   <div class="product-card">
     <button class="favorite-btn" onclick="toggleFavorito(this, {
-      nome: 'Iluminador',
-      marca: 'Marca Y',
-      preco: 'R$ 120',
-      imagem: '✨'
+      nome: 'Blush Rosé',
+      marca: 'Lumé',
+      preco: 'R$ 85',
+      imagem: '🌸'
     })">♡</button>
-
-    <div class="product-image emoji">✨</div>
-
+    <div class="product-image emoji">🌸</div>
     <div class="product-info">
-      <div class="product-name">Iluminador</div>
-      <div class="product-brand">Marca Y</div>
-      <div class="product-price">R$ 120</div>
+      <div class="product-name">Blush Rosé</div>
+      <div class="product-brand">Lumé</div>
+      <div class="product-price">R$ 85</div>
     </div>
   </div>
 
   <div class="product-card">
     <button class="favorite-btn" onclick="toggleFavorito(this, {
       nome: 'Batom Matte',
-      marca: 'Marca X',
+      marca: 'Rosé Beauty',
       preco: 'R$ 89',
       imagem: '💄'
     })">♡</button>
-
     <div class="product-image emoji">💄</div>
-
     <div class="product-info">
       <div class="product-name">Batom Matte</div>
-      <div class="product-brand">Marca X</div>
+      <div class="product-brand">Rosé Beauty</div>
       <div class="product-price">R$ 89</div>
     </div>
   </div>
@@ -430,33 +360,40 @@
   <div class="product-card">
     <button class="favorite-btn" onclick="toggleFavorito(this, {
       nome: 'Base Líquida',
-      marca: 'Marca Beauty',
+      marca: 'Lumé',
       preco: 'R$ 99',
       imagem: '🧴'
     })">♡</button>
-
     <div class="product-image emoji">🧴</div>
-
     <div class="product-info">
       <div class="product-name">Base Líquida</div>
-      <div class="product-brand">Marca Beauty</div>
+      <div class="product-brand">Lumé</div>
       <div class="product-price">R$ 99</div>
     </div>
   </div>
 
 </section>
 
-<div id="toast" class="toast">Acessando área privada...</div>
+<footer>
+  <div>
+    <a href="#">Sobre nós</a>
+    <a href="#">Política de Privacidade</a>
+    <a href="#">Trocas e Devoluções</a>
+    <a href="#">Contato</a>
+  </div>
+  <div style="margin-top: 12px;">© 2026 Minha Maquiagem. Todos os direitos reservados.</div>
+</footer>
 
 <script>
-  const logo = document.getElementById('secretTrigger');
-  const toast = document.getElementById('toast');
+  const hamburger = document.getElementById('hamburger');
+  const menu = document.getElementById('menu');
 
-  let clicks = 0;
+  hamburger.addEventListener('click', () => {
+    menu.classList.toggle('aberto');
+  });
 
   function toggleFavorito(btn, produto) {
     let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
-
     const existe = favoritos.find(p => p.nome === produto.nome);
 
     if (existe) {
@@ -474,11 +411,8 @@
 
   function marcarFavoritosAtivos() {
     const favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
-    const botoes = document.querySelectorAll(".favorite-btn");
-
-    botoes.forEach(btn => {
+    document.querySelectorAll(".favorite-btn").forEach(btn => {
       const onclick = btn.getAttribute("onclick");
-
       favoritos.forEach(produto => {
         if (onclick.includes(produto.nome)) {
           btn.classList.add("active");
@@ -489,13 +423,6 @@
   }
 
   marcarFavoritosAtivos();
-
-  const hamburger = document.getElementById('hamburger');
-const menu = document.getElementById('menu');
-
-hamburger.addEventListener('click', () => {
-  menu.classList.toggle('aberto');
-});
 </script>
 
 </body>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Área Privada</title>
+  <title>Minha Conta — Minha Maquiagem</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
@@ -132,19 +132,6 @@
       display: block;
     }
 
-    .pin-option {
-      margin: 8px 0 28px;
-      text-align: center;
-      color: var(--on-surface-soft);
-      font-size: 0.82rem;
-    }
-
-    .pin-option a {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 500;
-    }
-
     .btn-primary,
     .btn-secondary {
       width: 100%;
@@ -186,16 +173,15 @@
   </div>
 
   <main class="login-wrapper">
-    <span class="shield-icon">🛡️</span>
+    <span class="shield-icon">👤</span>
 
     <h1 class="login-title">
-      Área <br>
-      <em>privada.</em>
+      Bem-vinda <br>
+      <em>de volta.</em>
     </h1>
 
     <p class="login-sub">
-      Apenas você sabe que isto existe.<br>
-      Entre com segurança.
+      Entre na sua conta para ver seus pedidos e favoritos.
     </p>
 
     <div class="form-group">
@@ -221,128 +207,90 @@
         >
         <span class="input-icon" id="toggleSenha">👁️</span>
       </div>
-      <p class="form-error" id="erroSenha">Algo precisa de atenção — verifique suas informações.</p>
+      <p class="form-error" id="erroSenha">Verifique suas informações e tente novamente.</p>
     </div>
 
-    <button class="btn-primary" id="btnEntrar">Entrar com segurança →</button>
+    <button class="btn-primary" id="btnEntrar">Entrar →</button>
     <button class="btn-secondary" onclick="window.location.href='/cadastro'">
-    Criar minha conta segura
+      Criar minha conta
     </button>
   </main>
 
   <footer class="login-footer">
     <p class="footer-text">
-      Suas informações são guardadas com carinho.<br>
-      Ninguém além de você tem acesso.
+      Ao entrar, você concorda com nossos<br>
+      Termos de Uso e Política de Privacidade.
     </p>
   </footer>
 
   <script>
-const toggleSenha = document.getElementById('toggleSenha');
-const inputSenha = document.getElementById('inputSenha');
-const inputUsuario = document.getElementById('inputUsuario');
-const btnEntrar = document.getElementById('btnEntrar');
-const erroSenha = document.getElementById('erroSenha');
+    const toggleSenha = document.getElementById('toggleSenha');
+    const inputSenha = document.getElementById('inputSenha');
+    const inputUsuario = document.getElementById('inputUsuario');
+    const btnEntrar = document.getElementById('btnEntrar');
+    const erroSenha = document.getElementById('erroSenha');
 
-// mostrar senha
-toggleSenha.addEventListener('click', () => {
-
-  if (inputSenha.type === 'password') {
-    inputSenha.type = 'text';
-    toggleSenha.textContent = '🙈';
-  } else {
-    inputSenha.type = 'password';
-    toggleSenha.textContent = '👁️';
-  }
-
-});
-
-// login
-async function fazerLogin() {
-
-  console.log('BOTÃO CLICADO');
-
-  const usuario = inputUsuario.value.trim();
-  const senha = inputSenha.value.trim();
-
-  console.log('EMAIL:', usuario);
-  console.log('SENHA:', senha);
-
-  erroSenha.classList.remove('show');
-
-  // validação
-  if (!usuario || !senha) {
-
-    console.log('CAMPOS VAZIOS');
-
-    erroSenha.textContent = 'Preencha todos os campos.';
-    erroSenha.classList.add('show');
-
-    return;
-  }
-
-  try {
-
-    console.log('ENVIANDO REQUEST');
-
-    const resposta = await fetch('https://minhamaquiagem-production.up.railway.app/api/login', {
-
-      method: 'POST',
-
-      headers: {
-        'Content-Type': 'application/json'
-      },
-
-      body: JSON.stringify({
-        email: usuario,
-        password: senha
-      })
-
+    toggleSenha.addEventListener('click', () => {
+      if (inputSenha.type === 'password') {
+        inputSenha.type = 'text';
+        toggleSenha.textContent = '🙈';
+      } else {
+        inputSenha.type = 'password';
+        toggleSenha.textContent = '👁️';
+      }
     });
 
-    console.log('STATUS:', resposta.status);
+    async function fazerLogin() {
+      const usuario = inputUsuario.value.trim();
+      const senha = inputSenha.value.trim();
 
-    const data = await resposta.json();
+      erroSenha.classList.remove('show');
 
-    console.log('RESPOSTA:', data);
+      if (!usuario || !senha) {
+        erroSenha.textContent = 'Preencha todos os campos.';
+        erroSenha.classList.add('show');
+        return;
+      }
 
-    if (data.success) {
+      try {
+        const resposta = await fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: usuario,
+            password: senha
+          })
+        });
 
-      btnEntrar.textContent = 'Entrando... ✨';
+        const data = await resposta.json();
 
-      setTimeout(() => {
-        window.location.href = '/home-secret';
-      }, 1000);
+        if (data.success) {
+          btnEntrar.textContent = 'Entrando... ✨';
+          setTimeout(() => {
+            window.location.href = '/home-secret';
+          }, 1000);
+        } else {
+          erroSenha.textContent = data.message || 'E-mail ou senha incorretos.';
+          erroSenha.classList.add('show');
+          inputSenha.value = '';
+          inputSenha.focus();
+        }
 
-    } else {
-
-      erroSenha.textContent = data.message || 'Login inválido';
-      erroSenha.classList.add('show');
-
-      inputSenha.value = '';
-      inputSenha.focus();
+      } catch (erro) {
+        erroSenha.textContent = 'Erro ao conectar. Tente novamente.';
+        erroSenha.classList.add('show');
+      }
     }
 
-  } catch (erro) {
+    btnEntrar.addEventListener('click', fazerLogin);
 
-    console.error('ERRO COMPLETO:', erro);
-
-    erroSenha.textContent = 'Erro ao conectar com o servidor.';
-    erroSenha.classList.add('show');
-  }
-}
-
-// botão
-btnEntrar.addEventListener('click', fazerLogin);
-
-// enter
-inputSenha.addEventListener('keydown', (event) => {
-
-  if (event.key === 'Enter') {
-    fazerLogin();
-  }
-
-});
-</script>
+    inputSenha.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        fazerLogin();
+      }
+    });
+  </script>
 </body>
 </html>
