@@ -235,6 +235,7 @@
     </div>
 
     <!-- ABA VOLUNTÁRIAS -->
+    <div id="voluntarias"></div>
     <div id="aba-voluntarias" class="tab-content">
 
         <!-- CTA ser voluntária -->
@@ -398,6 +399,18 @@
         document.getElementById('aba-' + id).classList.add('active');
         btn.classList.add('active');
     }
+
+    function ativarAbaPorHash() {
+        const hash = window.location.hash.replace('#', '');
+        if (!hash) return;
+        const btn = Array.from(document.querySelectorAll('.tab-btn')).find(el => el.getAttribute('onclick')?.includes(`'${hash}'`));
+        if (btn && document.getElementById('aba-' + hash)) {
+            mudarAba(hash, btn);
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', ativarAbaPorHash);
+    window.addEventListener('hashchange', ativarAbaPorHash);
 
     function toggleCampos() {
         const tipo = document.getElementById('tipoRegistro').value;

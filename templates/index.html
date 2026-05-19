@@ -273,6 +273,49 @@
     .toast.show {
       opacity: 1;
     }
+
+    .hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--accent-deep);
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+@media (max-width: 600px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: rgba(255, 249, 249, 0.97);
+    border-bottom: 1px solid #f0dddd;
+    padding: 16px 24px;
+    gap: 16px;
+    backdrop-filter: blur(10px);
+  }
+
+  .menu.aberto {
+    display: flex;
+  }
+}
   </style>
 </head>
 
@@ -281,12 +324,18 @@
 <header class="navbar">
   <div class="logo" id="secretTrigger">
     <a href="/">
-      <img src="./static/imagens/logo.png" alt="Logo" >
+      <img src="./static/imagens/logo.png" alt="Logo">
     </a>
     <span>Minha Maquiagem</span>
   </div>
 
-  <nav class="menu">
+  <button class="hamburger" id="hamburger" aria-label="Abrir menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <nav class="menu" id="menu">
     <a href="/">Início</a>
     <a href="/favoritos">Favoritos</a>
     <a href="/login">Perfil</a>
@@ -405,20 +454,6 @@
 
   let clicks = 0;
 
-  logo.addEventListener('click', () => {
-    clicks++;
-
-    if (clicks >= 3) {
-      toast.classList.add('show');
-    }
-
-    if (clicks === 5) {
-      alert('Área privada!');
-      clicks = 0;
-      toast.classList.remove('show');
-    }
-  });
-
   function toggleFavorito(btn, produto) {
     let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
 
@@ -454,6 +489,13 @@
   }
 
   marcarFavoritosAtivos();
+
+  const hamburger = document.getElementById('hamburger');
+const menu = document.getElementById('menu');
+
+hamburger.addEventListener('click', () => {
+  menu.classList.toggle('aberto');
+});
 </script>
 
 </body>

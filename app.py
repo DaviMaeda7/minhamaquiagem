@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, jsonify, session, redirect
-from flask_cors import CORS  # ← adiciona essa linha
+from flask_cors import CORS
 from datetime import datetime
+from dotenv import load_dotenv
+load_dotenv()
 from src.repositorios.sqlite_repository import init_db, SQLiteUserRepository, SQLiteDiarioRepository
 from src.servicos.auth import hash_password, verify_password, validate_signup_data, validate_login_data
 
@@ -62,22 +64,32 @@ def favoritos():
 
 @app.route('/contatos')
 def pagina_contatos():
+    if 'user_id' not in session:
+        return redirect('/login')
     return render_template('contatos.html')
 
 @app.route('/diario')
 def pagina_diario():
+    if 'user_id' not in session:
+        return redirect('/login')
     return render_template('diario.html')
 
 @app.route('/questionario')
 def pagina_questionario():
+    if 'user_id' not in session:
+        return redirect('/login')
     return render_template('questionario.html')
 
 @app.route('/dados')
 def pagina_dados():
+    if 'user_id' not in session:
+        return redirect('/login')
     return render_template('dados.html')
 
 @app.route('/localizacao')
 def pagina_localizacao():
+    if 'user_id' not in session:
+        return redirect('/login')
     return render_template('localizacao.html')
 
 # ── Auth ─────────────────────────────────────────────────────────────────────

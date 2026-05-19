@@ -43,6 +43,8 @@
 
         .bottom-nav { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); width:90%; max-width:400px; background:white; padding:15px; border-radius:30px; display:flex; justify-content:space-around; box-shadow:0 10px 40px rgba(0,0,0,.1); z-index:100; }
         .nav-item { text-decoration:none; font-size:1.5rem; }
+
+        .btn-voluntarios { display:block; margin:12px auto 0; background:var(--wine); color:white; border:none; padding:8px 14px; border-radius:18px; font-weight:bold; cursor:pointer; font-size:.88rem; text-align: center; }
     </style>
 </head>
 <body>
@@ -112,8 +114,8 @@
 
             const msgs = {
                 baixo: 'Suas respostas indicam uma situação de baixo risco no momento. Continue atenta e cuide-se.',
-                medio: 'Suas respostas indicam sinais de alerta. Considere conversar com alguém de confiança ou buscar apoio profissional.',
-                alto:  '⚠️ Suas respostas indicam risco elevado. Busque ajuda agora: ligue <strong>180</strong> (Central da Mulher) ou <strong>190</strong> (Polícia do DF).'
+                medio: 'Suas respostas indicam sinais de alerta. Considere conversar com alguém de confiança ou buscar apoio profissional. Se quiser, acesse nossa rede de voluntárias <a href="/contatos#voluntarias" class="btn-voluntarios">Ir para Voluntárias</a>',
+                alto:  '⚠️ Suas respostas indicam risco elevado. Busque ajuda agora: ligue <strong>180</strong> (Central da Mulher) ou <strong>190</strong> (Polícia do DF). <br>Considere também acessar nossa rede de voluntárias <a href="/contatos#voluntarias" class="btn-voluntarios">Ir para Voluntárias</a>'
             };
 
             mf.className = `message ${msgClasse}`;
