@@ -310,53 +310,109 @@
   });
 
   function carregarFavoritos() {
+
     const container = document.getElementById("favoritos-container");
+
     let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
 
-    favoritos = favoritos.filter(p => p.nome && p.marca && p.preco);
-    localStorage.setItem("favoritos", JSON.stringify(favoritos));
+    favoritos = favoritos.filter(
+      p => p.nome && p.marca && p.preco
+    );
+
+    localStorage.setItem(
+      "favoritos",
+      JSON.stringify(favoritos)
+    );
 
     container.innerHTML = "";
 
+    // SEM FAVORITOS
     if (favoritos.length === 0) {
+
       favoritesBox.style.display = "none";
+
       container.innerHTML = `
         <div class="empty-favorites">
           <h2>Nenhum favorito ainda</h2>
-          <p>Você ainda não adicionou produtos aos favoritos.</p>
-          <a href="/" class="btn-voltar">Explorar produtos</a>
+
+          <p>
+            Você ainda não adicionou produtos aos favoritos.
+          </p>
+
+          <a href="/" class="btn-voltar">
+            Explorar produtos
+          </a>
         </div>
       `;
+
       return;
     }
 
+    // COM FAVORITOS
     favoritesBox.style.display = "block";
 
     favoritos.forEach(produto => {
+
+      // cria card
+      const card = document.createElement("div");
+
+      // conteúdo
       card.innerHTML = `
-    <div class="product-card">
+        <div class="product-card">
 
-        <button class="favorite-btn active">❤️</button>
+          <button
+            class="favorite-btn active"
+            onclick="removerFavorito('${produto.nome}')"
+          >
+            ❤️
+          </button>
 
-        <div class="product-image">
-            <img src="${produto.imagem}" alt="${produto.nome}">
+          <div class="product-image">
+            <img
+              src="${produto.imagem}"
+              alt="${produto.nome}"
+            >
+          </div>
+
+          <div class="product-info">
+
+            <div class="product-name">
+              ${produto.nome}
+            </div>
+
+            <div class="product-brand">
+              ${produto.marca}
+            </div>
+
+            <div class="product-price">
+              ${produto.preco}
+            </div>
+
+          </div>
+
         </div>
+      `;
 
-        <div class="product-info">
-            <div class="product-name">${produto.nome}</div>
-            <div class="product-brand">${produto.marca}</div>
-            <div class="product-price">${produto.preco}</div>
-        </div>
+      // adiciona no container
+      container.appendChild(card);
 
-    </div>
-`;
     });
   }
 
   function removerFavorito(nome) {
-    let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
-    favoritos = favoritos.filter(produto => produto.nome !== nome);
-    localStorage.setItem("favoritos", JSON.stringify(favoritos));
+
+    let favoritos =
+      JSON.parse(localStorage.getItem("favoritos")) || [];
+
+    favoritos = favoritos.filter(
+      produto => produto.nome !== nome
+    );
+
+    localStorage.setItem(
+      "favoritos",
+      JSON.stringify(favoritos)
+    );
+
     carregarFavoritos();
   }
 
