@@ -40,6 +40,15 @@
 
         .bottom-nav { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); width:90%; max-width:400px; background:white; padding:15px; border-radius:30px; display:flex; justify-content:space-around; box-shadow:0 10px 40px rgba(0,0,0,.1); z-index:100; }
         .nav-item { text-decoration:none; font-size:1.5rem; }
+
+        .file-list {margin: 0; padding: 0; list-style: none;}
+        .file-item {display: flex; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid #fde8eb;}
+        .file-item:last-child { border-bottom: none; }
+        .file-item-name {font-size: .9rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .file-item-meta {font-size: .76rem; opacity: .5; margin-top: 1px;}
+        
+        .btn-remove {background: none; border: none; color: var(--rose); font-size: .78rem; cursor: pointer; padding: 0; transition: opacity .2s;}
+        .btn-remove:hover { opacity: .7; }
     </style>
 </head>
 <body>
@@ -51,6 +60,18 @@
     <textarea id="texto" placeholder="Escreva aqui o que sentir... Este espaço é só seu."></textarea>
     <button class="btn" onclick="salvar()">Salvar registro</button>
     <div id="msg" class="msg"></div>
+</div>
+
+<div class="card">
+  <p class="card-title">Anexar documentos</p>
+
+  <div class="drop-zone">
+    <button class="btn" style="margin-bottom:8px;" onclick="document.getElementById('fileInput').click()">📎 Anexar arquivos</button>
+        <strong>Clique para selecionar um arquivo: PDF, DOCX, imagens…</strong>
+  </div>
+  <input type="file" id="fileInput" style="display:none" multiple>
+
+  <ul class="file-list" id="fileList" style="margin-top:10px"></ul>
 </div>
 
 <div class="card" id="cardEntradas" style="display:none;">
@@ -155,6 +176,54 @@
     }
 
     carregarEntradas();
+
+    const files = [];
+
+    function ext(name) {
+     return (name.split('.').pop() || '').toLowerCase();
+    }
+
+    function fmtSize(b) {
+    return b < 1024 ? b + 'B' : b < 1048576 ? (b / 1024).toFixed(1) + 'KB' : (b / 1048576).toFixed(1) + 'MB';
+    }
+
+    function renderList() {
+    const ul = document.getElementById('fileList');
+    ul.innerHTML = '';
+
+    if (!files.length) {
+        document.getElementById('listCard').style.display = 'none';
+        return;
+    }
+
+    document.getElementById('listCard').style.display = 'block';
+
+    files.forEach((f, i) => {
+        const li = document.createElement('li');
+        li.className = 'file-item';
+        li.innerHTML = `
+        <div class="file-item-icon">📄</div>
+        <div class="file-item-info">
+            <div class="file-item-name">${f.name}</div>
+            <div class="file-item-meta">${fmtSize(f.size)}</div>
+        </div>
+        <button class="btn-remove" onclick="removeFile(${i})">✕ remover</button>
+        `;
+        ul.appendChild(li);
+    });
+    }
+
+    function removeFile(i) {
+    files.splice(i, 1);
+    renderList();
+    }
+
+// Conecta ao seu input file existente
+    document.getElementById('fileInput').addEventListener('change', e => {
+    files.push(...e.target.files);
+    renderList();
+    e.target.value = '';
+    });
 </script>
 </body>
 </html>

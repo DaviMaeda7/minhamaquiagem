@@ -17,13 +17,19 @@
       --white: #ffffff;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       background: var(--bg-main);
       font-family: 'Inter', sans-serif;
       color: var(--text-main);
     }
+
+    /* NAVBAR */
 
     .navbar {
       position: sticky;
@@ -47,9 +53,15 @@
       color: var(--accent-deep);
     }
 
-    .logo img { height: 48px; width: auto; }
+    .logo img {
+      height: 48px;
+      width: auto;
+    }
 
-    .menu { display: flex; gap: 28px; }
+    .menu {
+      display: flex;
+      gap: 28px;
+    }
 
     .menu a {
       text-decoration: none;
@@ -58,7 +70,9 @@
       transition: 0.2s;
     }
 
-    .menu a:hover { color: var(--accent-deep); }
+    .menu a:hover {
+      color: var(--accent-deep);
+    }
 
     .hamburger {
       display: none;
@@ -80,7 +94,9 @@
     }
 
     @media (max-width: 600px) {
-      .hamburger { display: flex; }
+      .hamburger {
+        display: flex;
+      }
 
       .menu {
         display: none;
@@ -96,10 +112,16 @@
         backdrop-filter: blur(10px);
       }
 
-      .menu.aberto { display: flex; }
+      .menu.aberto {
+        display: flex;
+      }
     }
 
-    .hero { padding: 42px 24px 20px; }
+    /* HERO */
+
+    .hero {
+      padding: 42px 24px 20px;
+    }
 
     .hero-tag {
       background: var(--accent-soft);
@@ -118,26 +140,54 @@
       margin-bottom: 10px;
     }
 
-    .hero-title span { color: var(--accent-deep); font-style: italic; }
+    .hero-title span {
+      color: var(--accent-deep);
+      font-style: italic;
+    }
 
-    .hero-desc { color: var(--text-muted); font-size: 0.95rem; }
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* HERO IMAGE */
 
     .image-frame {
       width: 95%;
-      height: 400px;
-      margin: 20px auto 32px;
-      border-radius: 30px;
+      height: 420px;
+      margin: 20px auto 40px;
+      border-radius: 32px;
       overflow: hidden;
-      box-shadow: 0 12px 30px rgba(140, 75, 85, 0.18);
+      position: relative;
+      box-shadow:
+        0 20px 40px rgba(140, 75, 85, 0.15),
+        0 8px 20px rgba(140, 75, 85, 0.08);
+    }
+
+    .image-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,0.05),
+          rgba(0,0,0,0.18)
+        );
     }
 
     .image-frame img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
-      display: block;
+      transition: transform 0.6s ease;
     }
+
+    .image-frame:hover img {
+      transform: scale(1.05);
+    }
+
+    /* CATEGORIES */
 
     .categories {
       padding: 24px;
@@ -165,7 +215,10 @@
       transition: 0.25s;
     }
 
-    .category-item:hover { transform: translateY(-4px); background: var(--accent-soft); }
+    .category-item:hover {
+      transform: translateY(-4px);
+      background: var(--accent-soft);
+    }
 
     .category-icon {
       width: 45px;
@@ -179,71 +232,191 @@
       font-weight: bold;
     }
 
-    .category-text strong { font-size: 0.85rem; }
+    .category-arrow {
+      font-size: 1.5rem;
+      color: var(--accent-deep);
+    }
 
-    .category-arrow { font-size: 1.5rem; color: var(--accent-deep); }
+    /* PRODUCTS */
 
     .product-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 22px;
-      padding: 0 24px 50px;
+      gap: 24px;
+      padding: 0 24px 60px;
     }
 
     .product-card {
       position: relative;
       background: var(--white);
-      border-radius: 22px;
+      border-radius: 28px;
       overflow: hidden;
-      box-shadow: 0 10px 28px rgba(140, 75, 85, 0.12);
-      transition: 0.3s;
+      box-shadow:
+        0 10px 30px rgba(140, 75, 85, 0.10),
+        0 2px 8px rgba(140, 75, 85, 0.06);
+      transition: all 0.35s ease;
       cursor: pointer;
-      border: 1px solid #f3e1e1;
+      border: 1px solid rgba(243, 225, 225, 0.9);
     }
 
     .product-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 18px 40px rgba(140, 75, 85, 0.2);
+      transform: translateY(-10px);
+      box-shadow:
+        0 25px 45px rgba(140, 75, 85, 0.18),
+        0 8px 20px rgba(140, 75, 85, 0.12);
     }
 
-    .product-image img{
-      width: 100%;
-      height: 100%;
+    .product-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 5;
+
+      background: linear-gradient(
+        135deg,
+        #8c4b55,
+        #b76c77
+      );
+
+      color: white;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+
+      padding: 7px 12px;
+      border-radius: 999px;
+
+      box-shadow:
+        0 6px 18px rgba(140, 75, 85, 0.25);
+    }
+
+    .product-image {
+      position: relative;
+      height: 320px;
+      overflow: hidden;
+
+      background:
+        radial-gradient(circle at top, #fff 0%, #fff6f6 45%, #fbeaea 100%);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-image::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,0.5) 0%,
+          rgba(255,255,255,0) 30%
+        );
+
+      z-index: 1;
+    }
+
+    .product-image::after {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      background: rgba(255,255,255,0.35);
+      border-radius: 50%;
+      filter: blur(30px);
+      top: -40px;
+      right: -40px;
+    }
+
+    .product-image img {
+      position: relative;
+      z-index: 2;
+
+      width: 85%;
+      height: 85%;
       object-fit: contain;
-      padding: 20px;
-      display: block;
-}
 
-    .product-image.emoji { font-size: 3rem; }
+      transition:
+        transform 0.45s ease,
+        filter 0.35s ease;
 
-    .product-info { padding: 16px; }
+      filter:
+        drop-shadow(0 20px 25px rgba(0,0,0,0.15));
+    }
 
-    .product-name { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .product-card:hover .product-image img {
+      transform: scale(1.08) rotate(-2deg);
+    }
 
-    .product-brand { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; }
+    .product-info {
+      padding: 20px 18px 22px;
+      background: white;
+    }
 
-    .product-price { color: var(--accent-deep); font-weight: 800; font-size: 1.1rem; }
+    .product-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .product-brand {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    .product-price {
+      color: var(--accent-deep);
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    /* FAVORITE BUTTON */
 
     .favorite-btn {
       position: absolute;
-      top: 12px;
-      right: 12px;
-      z-index: 2;
-      width: 38px;
-      height: 38px;
+      top: 14px;
+      right: 14px;
+      z-index: 5;
+
+      width: 42px;
+      height: 42px;
+
       border: none;
       border-radius: 50%;
-      background: white;
+
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+
       color: var(--accent-deep);
       font-size: 20px;
       cursor: pointer;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-      transition: 0.3s;
+
+      box-shadow:
+        0 8px 20px rgba(0,0,0,0.12);
+
+      transition: all 0.3s ease;
     }
 
-    .favorite-btn:hover { transform: scale(1.1); }
+    .favorite-btn:hover {
+      transform: scale(1.12);
+      background: white;
+    }
 
-    .favorite-btn.active { background: var(--accent-deep); color: white; }
+    .favorite-btn.active {
+      background: linear-gradient(
+        135deg,
+        #8c4b55,
+        #b76c77
+      );
+
+      color: white;
+    }
+
+    /* FOOTER */
 
     footer {
       text-align: center;
@@ -254,8 +427,29 @@
       line-height: 2;
     }
 
-    footer a { color: var(--text-muted); text-decoration: none; margin: 0 10px; }
-    footer a:hover { color: var(--accent-deep); }
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    footer a:hover {
+      color: var(--accent-deep);
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .image-frame {
+        height: 280px;
+      }
+
+      .product-image {
+        height: 260px;
+      }
+    }
   </style>
 </head>
 
@@ -292,92 +486,128 @@
 
 <section class="categories">
   <div class="category-menu">
+
     <a href="/novidades" class="category-item">
       <div class="category-icon">✦</div>
-      <div class="category-text"><strong>NOVIDADES</strong></div>
+      <div><strong>NOVIDADES</strong></div>
       <span class="category-arrow">›</span>
     </a>
+
     <a href="/make" class="category-item">
       <div class="category-icon">💄</div>
-      <div class="category-text"><strong>MAKE</strong></div>
+      <div><strong>MAKE</strong></div>
       <span class="category-arrow">›</span>
     </a>
+
     <a href="/skincare" class="category-item">
       <div class="category-icon">🧴</div>
-      <div class="category-text"><strong>SKINCARE</strong></div>
+      <div><strong>SKINCARE</strong></div>
       <span class="category-arrow">›</span>
     </a>
+
   </div>
 </section>
 
 <section class="product-grid">
 
+  <!-- PRODUTO 1 -->
+
   <div class="product-card">
+
+    <div class="product-badge">BEST SELLER</div>
+
     <button class="favorite-btn" onclick="toggleFavorito(this, {
       nome: 'Iluminador Glow',
       marca: 'Velvêt',
       preco: 'R$ 120',
       imagem: './static/imagens/iluminador_v.png'
     })">♡</button>
+
     <div class="product-image">
       <img src="./static/imagens/iluminador_v.png" alt="Iluminador Glow">
     </div>
+
     <div class="product-info">
       <div class="product-name">Iluminador Glow</div>
       <div class="product-brand">Velvêt</div>
       <div class="product-price">R$ 120</div>
     </div>
+
   </div>
 
+  <!-- PRODUTO 2 -->
+
   <div class="product-card">
+
+    <div class="product-badge">TRENDING</div>
+
     <button class="favorite-btn" onclick="toggleFavorito(this, {
       nome: 'Blush Rosé',
       marca: 'Lumé',
       preco: 'R$ 85',
       imagem: './static/imagens/blush-rose.jpg'
     })">♡</button>
+
     <div class="product-image">
       <img src="./static/imagens/blush-rose.jpg" alt="Blush Rosé">
     </div>
+
     <div class="product-info">
       <div class="product-name">Blush Rosé</div>
       <div class="product-brand">Lumé</div>
       <div class="product-price">R$ 85</div>
     </div>
+
   </div>
 
+  <!-- PRODUTO 3 -->
+
   <div class="product-card">
+
+    <div class="product-badge">NEW</div>
+
     <button class="favorite-btn" onclick="toggleFavorito(this, {
       nome: 'Batom Matte',
       marca: 'Rosé Beauty',
       preco: 'R$ 89',
       imagem: './static/imagens/batom-matte.jpg'
     })">♡</button>
+
     <div class="product-image">
       <img src="./static/imagens/batom-matte.jpg" alt="Batom Matte">
     </div>
+
     <div class="product-info">
       <div class="product-name">Batom Matte</div>
       <div class="product-brand">Rosé Beauty</div>
       <div class="product-price">R$ 89</div>
     </div>
+
   </div>
 
+  <!-- PRODUTO 4 -->
+
   <div class="product-card">
+
+    <div class="product-badge">POPULAR</div>
+
     <button class="favorite-btn" onclick="toggleFavorito(this, {
       nome: 'Base Líquida',
       marca: 'Lumé',
       preco: 'R$ 99',
       imagem: './static/imagens/base-liquida.avif'
     })">♡</button>
+
     <div class="product-image">
       <img src="./static/imagens/base-liquida.avif" alt="Base Líquida">
     </div>
+
     <div class="product-info">
       <div class="product-name">Base Líquida</div>
       <div class="product-brand">Lumé</div>
       <div class="product-price">R$ 99</div>
     </div>
+
   </div>
 
 </section>
@@ -389,7 +619,10 @@
     <a href="#">Trocas e Devoluções</a>
     <a href="#">Contato</a>
   </div>
-  <div style="margin-top: 12px;">© 2026 Minha Maquiagem. Todos os direitos reservados.</div>
+
+  <div style="margin-top: 12px;">
+    © 2026 Minha Maquiagem. Todos os direitos reservados.
+  </div>
 </footer>
 
 <script>
@@ -402,6 +635,7 @@
 
   function toggleFavorito(btn, produto) {
     let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+
     const existe = favoritos.find(p => p.nome === produto.nome);
 
     if (existe) {
@@ -419,8 +653,10 @@
 
   function marcarFavoritosAtivos() {
     const favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+
     document.querySelectorAll(".favorite-btn").forEach(btn => {
       const onclick = btn.getAttribute("onclick");
+
       favoritos.forEach(produto => {
         if (onclick.includes(produto.nome)) {
           btn.classList.add("active");
