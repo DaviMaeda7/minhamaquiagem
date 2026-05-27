@@ -1,3 +1,5 @@
+#KPI a ser implementada
+
 from flask import Flask, render_template, request, jsonify, session, redirect
 from flask_cors import CORS
 from datetime import datetime
