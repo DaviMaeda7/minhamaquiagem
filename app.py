@@ -1,5 +1,3 @@
-#KPI a ser implementada
-
 from flask import Flask, render_template, request, jsonify, session, redirect
 from flask_cors import CORS
 from datetime import datetime
@@ -7,6 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 from src.repositorios.sqlite_repository import init_db, SQLiteUserRepository, SQLiteDiarioRepository
 from src.servicos.auth import hash_password, verify_password, validate_signup_data, validate_login_data
+from src.servicos.kpi import log_event
 
 app = Flask(__name__)
 app.secret_key = "chave-secreta-temporaria-para-testes-em-desenvolvimento"
@@ -156,6 +155,8 @@ def apagar_diario(entrada_id):
 
 # ── Questionário ─────────────────────────────────────────────────────────────
 
+# ── Questionário ─────────────────────────────────────────────────────────────
+
 @app.route('/api/questionario', methods=['POST'])
 def salvar_questionario():
     dados = request.get_json()
@@ -165,6 +166,10 @@ def salvar_questionario():
             "respostas": dados.get('respostas'),
             "nivel_risco_front": dados.get('nivel')
         })
+        
+        # 🟢 KPI: Registra que um questionário foi finalizado
+        log_event("QUESTIONNAIRE_FINISHED")
+
         return jsonify({"success": True}), 200
     return jsonify({"success": False}), 400
 
