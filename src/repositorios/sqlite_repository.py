@@ -1,14 +1,26 @@
+"""
+sqlite_repository.py  (na prática: repositório PostgreSQL)
+─────────────────────────────────────────────────────────────
+Implementação concreta dos repositórios usando PostgreSQL via psycopg2.
+O nome do arquivo é legado — o banco real é Postgres.
+"""
+
 import os
 import psycopg2
 import psycopg2.extras
 from src.repositorios.repository import UserRepository, User
 
+
 def _get_connection():
     return psycopg2.connect(os.environ["DATABASE_URL"], sslmode="require")
 
+
 def init_db():
+    """Cria todas as tabelas necessárias caso ainda não existam."""
     with _get_connection() as conn:
         with conn.cursor() as cur:
+
+            # Usuários
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS users (
                     id            SERIAL PRIMARY KEY,
@@ -17,6 +29,8 @@ def init_db():
                     password_hash BYTEA NOT NULL
                 )
             """)
+
+            # Diário
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS entradas_diario (
                     id        SERIAL PRIMARY KEY,
@@ -26,10 +40,26 @@ def init_db():
                     FOREIGN KEY (user_id) REFERENCES users(id)
                 )
             """)
+
+            # ── KPI ────────────────────────────────────────────────────────────
+            # Tabela de eventos. Cada linha = uma ação registrada no sistema.
+            # user_id é NULL para eventos anônimos (ex.: signup antes do login).
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS kpi_events (
+                    id        SERIAL PRIMARY KEY,
+                    event     TEXT NOT NULL,
+                    user_id   INTEGER,
+                    criado_em TIMESTAMP NOT NULL DEFAULT NOW()
+                )
+            """)
+
         conn.commit()
 
 
+# ── Usuários ──────────────────────────────────────────────────────────────────
+
 class SQLiteUserRepository(UserRepository):
+
     def create(self, email: str, username: str, password_hash: bytes) -> User:
         with _get_connection() as conn:
             with conn.cursor() as cur:
@@ -47,7 +77,12 @@ class SQLiteUserRepository(UserRepository):
                 cur.execute("SELECT * FROM users WHERE email = %s", (email,))
                 row = cur.fetchone()
         if row:
-            return User(id=row["id"], email=row["email"], username=row["username"], password_hash=bytes(row["password_hash"]))
+            return User(
+                id=row["id"],
+                email=row["email"],
+                username=row["username"],
+                password_hash=bytes(row["password_hash"]),
+            )
         return None
 
     def exists(self, email: str, username: str) -> dict:
@@ -60,7 +95,10 @@ class SQLiteUserRepository(UserRepository):
         return {"email": email_exists, "username": username_exists}
 
 
+# ── Diário ────────────────────────────────────────────────────────────────────
+
 class SQLiteDiarioRepository:
+
     def criar(self, user_id: int, texto: str) -> dict:
         with _get_connection() as conn:
             with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:

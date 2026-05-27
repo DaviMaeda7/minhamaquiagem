@@ -3,9 +3,10 @@ from flask_cors import CORS
 from datetime import datetime
 from dotenv import load_dotenv
 load_dotenv()
+
 from src.repositorios.sqlite_repository import init_db, SQLiteUserRepository, SQLiteDiarioRepository
 from src.servicos.auth import hash_password, verify_password, validate_signup_data, validate_login_data
-from src.servicos.kpi import log_event
+from src.servicos.kpi import log_event, KPI
 
 app = Flask(__name__)
 app.secret_key = "chave-secreta-temporaria-para-testes-em-desenvolvimento"
@@ -20,14 +21,15 @@ repo_diario = SQLiteDiarioRepository()
 
 banco_dados = {
     "contatos": [
-        {"nome": "Polícia",                        "telefone": "190"},
-        {"nome": "Central de Atendimento à Mulher","telefone": "180"},
-        {"nome": "SAMU",                           "telefone": "192"}
+        {"nome": "Polícia",                         "telefone": "190"},
+        {"nome": "Central de Atendimento à Mulher", "telefone": "180"},
+        {"nome": "SAMU",                            "telefone": "192"}
     ],
     "questionarios": []
 }
 
-# ── Páginas ──────────────────────────────────────────────────────────────────
+
+# ── Páginas ───────────────────────────────────────────────────────────────────
 
 @app.route('/')
 def index():
@@ -93,40 +95,57 @@ def pagina_localizacao():
         return redirect('/login')
     return render_template('localizacao.html')
 
-# ── Auth ─────────────────────────────────────────────────────────────────────
+
+# ── Auth ──────────────────────────────────────────────────────────────────────
 
 @app.route('/api/signup', methods=['POST'])
 def api_signup():
     dados = request.get_json()
     erro = validate_signup_data(dados)
-    if erro: return jsonify({"success": False, "message": erro}), 400
+    if erro:
+        return jsonify({"success": False, "message": erro}), 400
+
     exists = repo.exists(dados['email'], dados['username'])
-    if exists['email']:    return jsonify({"success": False, "message": "Este e-mail já está cadastrado."}), 400
-    if exists['username']: return jsonify({"success": False, "message": "Este nome de acesso já está em uso."}), 400
+    if exists['email']:
+        return jsonify({"success": False, "message": "Este e-mail já está cadastrado."}), 400
+    if exists['username']:
+        return jsonify({"success": False, "message": "Este nome de acesso já está em uso."}), 400
+
     senha_hash   = hash_password(dados['password'])
     novo_usuario = repo.create(dados['email'], dados['username'], senha_hash)
     session['user_id']  = novo_usuario.id
     session['username'] = novo_usuario.username
+
+    log_event(KPI.USER_SIGNUP, user_id=novo_usuario.id)
     return jsonify({"success": True, "message": "Conta criada com sucesso!"}), 201
+
 
 @app.route('/api/login', methods=['POST'])
 def api_login():
     dados = request.get_json()
     erro = validate_login_data(dados)
-    if erro: return jsonify({"success": False, "message": erro}), 400
+    if erro:
+        return jsonify({"success": False, "message": erro}), 400
+
     usuario = repo.find_by_email(dados['email'])
     if not usuario or not verify_password(dados['password'], usuario.password_hash):
         return jsonify({"success": False, "message": "Dados incorretos. Verifique e tente novamente."}), 401
+
     session['user_id']  = usuario.id
     session['username'] = usuario.username
+
+    log_event(KPI.USER_LOGIN, user_id=usuario.id)
     return jsonify({"success": True}), 200
+
 
 @app.route('/api/logout', methods=['POST'])
 def api_logout():
+    log_event(KPI.USER_LOGOUT, user_id=session.get('user_id'))
     session.clear()
     return jsonify({"success": True}), 200
 
-# ── Diário ───────────────────────────────────────────────────────────────────
+
+# ── Diário ────────────────────────────────────────────────────────────────────
 
 @app.route('/api/diario', methods=['GET'])
 def listar_diario():
@@ -134,56 +153,66 @@ def listar_diario():
         return jsonify({"success": False, "message": "Não autenticada."}), 401
     return jsonify(repo_diario.listar(session['user_id'])), 200
 
+
 @app.route('/api/diario', methods=['POST'])
 def salvar_diario():
     if 'user_id' not in session:
         return jsonify({"success": False, "message": "Não autenticada."}), 401
+
     dados = request.get_json(silent=True) or {}
     texto = (dados.get('texto') or '').strip()
     if not texto:
         return jsonify({"success": False, "message": "Texto não pode ser vazio."}), 400
+
     nova = repo_diario.criar(session['user_id'], texto)
+    log_event(KPI.DIARIO_ENTRY_CREATED, user_id=session['user_id'])
     return jsonify({"success": True, "entrada": nova}), 201
+
 
 @app.route('/api/diario/<int:entrada_id>', methods=['DELETE'])
 def apagar_diario(entrada_id):
     if 'user_id' not in session:
         return jsonify({"success": False, "message": "Não autenticada."}), 401
+
     if not repo_diario.apagar(entrada_id, session['user_id']):
         return jsonify({"success": False, "message": "Entrada não encontrada."}), 404
+
+    log_event(KPI.DIARIO_ENTRY_DELETED, user_id=session['user_id'])
     return jsonify({"success": True}), 200
 
-# ── Questionário ─────────────────────────────────────────────────────────────
 
-# ── Questionário ─────────────────────────────────────────────────────────────
+# ── Questionário ──────────────────────────────────────────────────────────────
 
 @app.route('/api/questionario', methods=['POST'])
 def salvar_questionario():
     dados = request.get_json()
     if dados.get('respostas'):
         banco_dados["questionarios"].append({
-            "data": datetime.now().strftime("%d/%m/%Y %H:%M"),
-            "respostas": dados.get('respostas'),
+            "data":             datetime.now().strftime("%d/%m/%Y %H:%M"),
+            "respostas":        dados.get('respostas'),
             "nivel_risco_front": dados.get('nivel')
         })
-        
-        # 🟢 KPI: Registra que um questionário foi finalizado
-        log_event("QUESTIONNAIRE_FINISHED")
-
+        log_event(KPI.QUESTIONNAIRE_FINISHED, user_id=session.get('user_id'))
         return jsonify({"success": True}), 200
     return jsonify({"success": False}), 400
 
-# ── Contatos ─────────────────────────────────────────────────────────────────
+
+# ── Contatos ──────────────────────────────────────────────────────────────────
 
 @app.route('/api/contatos', methods=['GET'])
 def listar_contatos():
     return jsonify(banco_dados["contatos"]), 200
 
+
 @app.route('/api/contatos', methods=['POST'])
 def adicionar_contato():
     dados = request.get_json()
     if dados.get('nome') and dados.get('telefone'):
-        banco_dados["contatos"].append({"nome": dados.get('nome'), "telefone": dados.get('telefone')})
+        banco_dados["contatos"].append({
+            "nome":     dados.get('nome'),
+            "telefone": dados.get('telefone')
+        })
+        log_event(KPI.CONTACT_ADDED, user_id=session.get('user_id'))
         return jsonify({"success": True}), 200
     return jsonify({"success": False}), 400
 
