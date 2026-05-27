@@ -92,6 +92,10 @@ def pagina_localizacao():
         return redirect('/login')
     return render_template('localizacao.html')
 
+@app.route('/home-visitor')
+def home_visitor():
+    return render_template('home-visitor.html')
+
 # ── Auth ─────────────────────────────────────────────────────────────────────
 
 @app.route('/api/signup', methods=['POST'])
