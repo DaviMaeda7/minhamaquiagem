@@ -6,53 +6,279 @@
     <title>Diário Seguro — Meu Escudo</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg:#fff8f6; --wine:#7d3441; --rose:#d98b93; --white:#ffffff; --shadow:0 10px 30px rgba(125,52,65,.1); }
-        * { box-sizing:border-box; }
-        body { background:var(--bg); font-family:'Inter',sans-serif; color:var(--wine); margin:0; padding:20px 20px 130px; }
+        :root {
+            --bg: #fff8f6;
+            --wine: #7d3441;
+            --rose: #d98b93;
+            --rose-light: #fde8eb;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(125,52,65,.1);
+        }
+        * { box-sizing: border-box; }
+        body {
+            background: var(--bg);
+            font-family: 'Inter', sans-serif;
+            color: var(--wine);
+            margin: 0;
+            padding: 20px 20px 130px;
+        }
 
-        h2 { font-family:'Playfair Display',serif; font-size:1.8rem; text-align:center; margin:20px 0 24px; }
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            text-align: center;
+            margin: 20px 0 24px;
+        }
 
-        .card { background:var(--white); padding:20px; border-radius:20px; max-width:500px; margin:0 auto 16px; box-shadow:var(--shadow); }
+        .card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 20px;
+            max-width: 500px;
+            margin: 0 auto 16px;
+            box-shadow: var(--shadow);
+        }
 
-        .card-title { font-family:'Playfair Display',serif; font-size:1.1rem; margin:0 0 12px; }
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            margin: 0 0 12px;
+        }
 
         textarea {
-            width:100%; height:180px; border:1.5px solid #f0d0d5;
-            border-radius:14px; padding:12px; font-family:'Inter',sans-serif;
-            font-size:.95rem; color:var(--wine); background:#fff8f6;
-            resize:vertical; outline:none; transition:border-color .2s;
+            width: 100%;
+            height: 180px;
+            border: 1.5px solid #f0d0d5;
+            border-radius: 14px;
+            padding: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: .95rem;
+            color: var(--wine);
+            background: #fff8f6;
+            resize: vertical;
+            outline: none;
+            transition: border-color .2s;
         }
-        textarea:focus { border-color:var(--rose); }
+        textarea:focus { border-color: var(--rose); }
 
-        .btn { width:100%; background:var(--wine); color:white; border:none; padding:14px; margin-top:12px; border-radius:16px; cursor:pointer; font-weight:bold; font-size:.95rem; font-family:'Inter',sans-serif; transition:opacity .2s; }
-        .btn:hover { opacity:.85; }
+        /* ── Área de Anexos ─────────────────────────────────────── */
+        .anexo-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            font-size: .88rem;
+            font-weight: 600;
+            color: var(--wine);
+            opacity: .8;
+        }
 
-        .msg { display:none; margin-top:10px; padding:10px 14px; border-radius:12px; font-size:.88rem; }
-        .msg.ok  { display:block; background:#e8f5e9; color:#2e7d32; }
-        .msg.err { display:block; background:#fdecea; color:#b71c1c; }
+        .dropzone {
+            margin-top: 8px;
+            border: 2px dashed var(--rose);
+            border-radius: 14px;
+            background: #fff8f6;
+            padding: 18px 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: background .2s, border-color .2s;
+            position: relative;
+        }
+        .dropzone:hover,
+        .dropzone.dragover {
+            background: var(--rose-light);
+            border-color: var(--wine);
+        }
+        .dropzone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        .dropzone-icon { font-size: 1.8rem; display: block; margin-bottom: 4px; }
+        .dropzone-hint { font-size: .8rem; color: var(--wine); opacity: .6; }
+        .dropzone-hint strong { opacity: 1; color: var(--rose); }
 
-        .entrada { padding:12px 0; border-bottom:1px solid #fde8eb; }
-        .entrada:last-child { border-bottom:none; }
-        .entrada small { opacity:.55; font-size:.8rem; }
-        .entrada p { margin:4px 0 0; line-height:1.5; font-size:.9rem; word-break:break-word; }
+        /* Lista de arquivos selecionados */
+        #listaAnexos {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
 
-        .btn-apagar { background:none; border:none; color:var(--rose); font-size:.78rem; cursor:pointer; margin-top:4px; font-family:'Inter',sans-serif; padding:0; }
+        .arquivo-chip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--rose-light);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: .82rem;
+            color: var(--wine);
+            animation: slideIn .2s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
-        .bottom-nav { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); width:90%; max-width:400px; background:white; padding:15px; border-radius:30px; display:flex; justify-content:space-around; box-shadow:0 10px 40px rgba(0,0,0,.1); z-index:100; }
-        .nav-item { text-decoration:none; font-size:1.5rem; }
+        .arquivo-chip .chip-icon { font-size: 1.1rem; flex-shrink: 0; }
+        .arquivo-chip .chip-nome {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 600;
+        }
+        .arquivo-chip .chip-tamanho { opacity: .55; flex-shrink: 0; }
+        .arquivo-chip .chip-remover {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: .9rem;
+            line-height: 1;
+            color: var(--rose);
+            padding: 0;
+            flex-shrink: 0;
+            transition: color .15s;
+        }
+        .arquivo-chip .chip-remover:hover { color: var(--wine); }
+
+        /* Barra de progresso individual */
+        .chip-progress-bar {
+            height: 3px;
+            background: var(--rose);
+            border-radius: 99px;
+            margin-top: 4px;
+            width: 0%;
+            transition: width .4s ease;
+        }
+
+        /* ── Botões e mensagens ─────────────────────────────────── */
+        .btn {
+            width: 100%;
+            background: var(--wine);
+            color: white;
+            border: none;
+            padding: 14px;
+            margin-top: 12px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: .95rem;
+            font-family: 'Inter', sans-serif;
+            transition: opacity .2s;
+        }
+        .btn:hover { opacity: .85; }
+        .btn:disabled { opacity: .55; cursor: default; }
+
+        .msg { display: none; margin-top: 10px; padding: 10px 14px; border-radius: 12px; font-size: .88rem; }
+        .msg.ok  { display: block; background: #e8f5e9; color: #2e7d32; }
+        .msg.err { display: block; background: #fdecea; color: #b71c1c; }
+
+        /* ── Entradas do diário ─────────────────────────────────── */
+        .entrada {
+            padding: 12px 0;
+            border-bottom: 1px solid #fde8eb;
+        }
+        .entrada:last-child { border-bottom: none; }
+        .entrada small { opacity: .55; font-size: .8rem; }
+        .entrada p { margin: 4px 0 0; line-height: 1.5; font-size: .9rem; word-break: break-word; }
+
+        /* Anexos já salvos na entrada */
+        .entrada-anexos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .entrada-anexo-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--rose-light);
+            border: none;
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: .78rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--wine);
+            cursor: pointer;
+            text-decoration: none;
+            transition: background .15s;
+        }
+        .entrada-anexo-btn:hover { background: #f5c8cf; }
+
+        .btn-apagar {
+            background: none;
+            border: none;
+            color: var(--rose);
+            font-size: .78rem;
+            cursor: pointer;
+            margin-top: 4px;
+            font-family: 'Inter', sans-serif;
+            padding: 0;
+        }
+
+        /* ── Nav ────────────────────────────────────────────────── */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            padding: 15px;
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 10px 40px rgba(0,0,0,.1);
+            z-index: 100;
+        }
+        .nav-item { text-decoration: none; font-size: 1.5rem; }
     </style>
 </head>
 <body>
 
 <h2>Meu Diário Seguro</h2>
 
+<!-- ── Formulário de nova anotação ── -->
 <div class="card">
     <h3 class="card-title">Nova anotação</h3>
+
     <textarea id="texto" placeholder="Escreva aqui o que sentir... Este espaço é só seu."></textarea>
+
+    <!-- SEÇÃO DE ANEXOS -->
+    <div class="anexo-label">
+        <span>📎</span> Anexar documentos / provas
+    </div>
+
+    <div class="dropzone" id="dropzone">
+        <input
+            type="file"
+            id="inputArquivos"
+            multiple
+            accept="image/*,.pdf,.doc,.docx,.txt,.mp4,.mov,.mp3,.ogg"
+            onchange="adicionarArquivos(this.files)"
+        />
+        <span class="dropzone-icon">📁</span>
+        <span class="dropzone-hint">
+            <strong>Clique para selecionar</strong> ou arraste arquivos aqui<br>
+            Fotos, PDFs, vídeos, áudios e documentos
+        </span>
+    </div>
+
+    <div id="listaAnexos"></div>
+
     <button class="btn" onclick="salvar()">Salvar registro</button>
     <div id="msg" class="msg"></div>
 </div>
 
+<!-- ── Registros anteriores ── -->
 <div class="card" id="cardEntradas" style="display:none;">
     <h3 class="card-title">Registros anteriores</h3>
     <div id="listaEntradas"></div>
@@ -66,14 +292,42 @@
 </nav>
 
 <script>
-    const API = "/api/diario";
+    const API       = "/api/diario";
+    const API_ANEX  = "/api/diario/anexos"; // endpoint de upload
+    let arquivosSelecionados = []; // { file: File, id: string }
+
+    // ── Drag & drop ─────────────────────────────────────────────────────────
+    const dz = document.getElementById("dropzone");
+    dz.addEventListener("dragover",  e => { e.preventDefault(); dz.classList.add("dragover"); });
+    dz.addEventListener("dragleave", ()  => dz.classList.remove("dragover"));
+    dz.addEventListener("drop", e => {
+        e.preventDefault();
+        dz.classList.remove("dragover");
+        adicionarArquivos(e.dataTransfer.files);
+    });
 
     // ── Utilitários ─────────────────────────────────────────────────────────
+    function gerarId() { return Math.random().toString(36).slice(2, 9); }
+
+    function formatarTamanho(bytes) {
+        if (bytes < 1024)       return `${bytes} B`;
+        if (bytes < 1024**2)    return `${(bytes/1024).toFixed(1)} KB`;
+        return `${(bytes/1024**2).toFixed(1)} MB`;
+    }
+
+    function iconeArquivo(tipo) {
+        if (tipo.startsWith("image/"))  return "🖼️";
+        if (tipo === "application/pdf") return "📄";
+        if (tipo.startsWith("video/"))  return "🎥";
+        if (tipo.startsWith("audio/"))  return "🎵";
+        return "📎";
+    }
+
     function exibirMsg(tipo, texto) {
         const el = document.getElementById("msg");
         el.className = `msg ${tipo}`;
         el.textContent = texto;
-        if (tipo === "ok") setTimeout(() => { el.className = "msg"; }, 3000);
+        if (tipo === "ok") setTimeout(() => { el.className = "msg"; }, 3500);
     }
 
     function escaparHTML(str) {
@@ -85,7 +339,147 @@
         catch { return raw; }
     }
 
-    // ── Carregar entradas ────────────────────────────────────────────────────
+    // ── Gerenciar lista de arquivos ──────────────────────────────────────────
+    function adicionarArquivos(fileList) {
+        Array.from(fileList).forEach(file => {
+            // Limite de 20 MB por arquivo
+            if (file.size > 20 * 1024 * 1024) {
+                exibirMsg("err", `❌ "${file.name}" é maior que 20 MB e foi ignorado.`);
+                return;
+            }
+            // Evitar duplicatas
+            if (arquivosSelecionados.find(a => a.file.name === file.name && a.file.size === file.size)) return;
+
+            arquivosSelecionados.push({ file, id: gerarId() });
+        });
+        // Limpar o input para permitir re-seleção do mesmo arquivo
+        document.getElementById("inputArquivos").value = "";
+        renderListaAnexos();
+    }
+
+    function removerArquivo(id) {
+        arquivosSelecionados = arquivosSelecionados.filter(a => a.id !== id);
+        renderListaAnexos();
+    }
+
+    function renderListaAnexos() {
+        const lista = document.getElementById("listaAnexos");
+        if (!arquivosSelecionados.length) { lista.innerHTML = ""; return; }
+
+        lista.innerHTML = arquivosSelecionados.map(({ file, id }) => `
+            <div class="arquivo-chip" id="chip-${id}">
+                <span class="chip-icon">${iconeArquivo(file.type)}</span>
+                <span class="chip-nome" title="${escaparHTML(file.name)}">${escaparHTML(file.name)}</span>
+                <span class="chip-tamanho">${formatarTamanho(file.size)}</span>
+                <button class="chip-remover" onclick="removerArquivo('${id}')" title="Remover">✕</button>
+            </div>
+        `).join("");
+    }
+
+    // ── Fazer upload dos anexos ──────────────────────────────────────────────
+    // Retorna array de { nome, url } dos arquivos enviados com sucesso.
+    // Se o backend ainda não existir, retorna lista vazia silenciosamente.
+    async function enviarAnexos(idRegistro) {
+        if (!arquivosSelecionados.length) return [];
+
+        const resultados = [];
+
+        for (const { file, id } of arquivosSelecionados) {
+            const formData = new FormData();
+            formData.append("arquivo", file);
+            formData.append("diario_id", idRegistro);
+
+            // Animação de progresso (visual apenas)
+            const chip = document.getElementById(`chip-${id}`);
+            if (chip) {
+                const bar = document.createElement("div");
+                bar.className = "chip-progress-bar";
+                chip.appendChild(bar);
+                // Simula progresso enquanto faz o fetch
+                let progresso = 0;
+                const intervalo = setInterval(() => {
+                    progresso = Math.min(progresso + 15, 85);
+                    bar.style.width = progresso + "%";
+                }, 150);
+
+                try {
+                    const res = await fetch(`${API_ANEX}`, {
+                        method: "POST",
+                        body: formData
+                    });
+                    clearInterval(intervalo);
+                    bar.style.width = "100%";
+
+                    if (res.ok) {
+                        const dados = await res.json();
+                        resultados.push({ nome: file.name, url: dados.url });
+                    }
+                } catch {
+                    clearInterval(intervalo);
+                    bar.style.background = "#e57373";
+                    bar.style.width = "100%";
+                }
+            }
+        }
+        return resultados;
+    }
+
+    // ── Salvar entrada + anexos ──────────────────────────────────────────────
+    async function salvar() {
+        const txt = document.getElementById("texto").value.trim();
+        if (!txt) { exibirMsg("err", "Escreva algo antes de salvar."); return; }
+
+        const btn = document.querySelector(".btn");
+        btn.disabled = true;
+        btn.textContent = arquivosSelecionados.length
+            ? `Salvando (${arquivosSelecionados.length} anexo${arquivosSelecionados.length > 1 ? "s" : ""})…`
+            : "Salvando…";
+
+        try {
+            // 1. Salvar o texto
+            const res = await fetch(API, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ texto: txt })
+            });
+            const dados = await res.json();
+            if (!res.ok) throw new Error(dados.message || "Erro ao salvar.");
+
+            const idRegistro = dados.id; // O backend deve retornar o ID do registro criado
+
+            // 2. Enviar anexos (se houver)
+            if (arquivosSelecionados.length) {
+                await enviarAnexos(idRegistro);
+            }
+
+            // 3. Limpar
+            document.getElementById("texto").value = "";
+            arquivosSelecionados = [];
+            renderListaAnexos();
+
+            exibirMsg("ok", "✅ Registro salvo com segurança!");
+            await carregarEntradas();
+        } catch (err) {
+            exibirMsg("err", `❌ ${err.message}`);
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "Salvar registro";
+        }
+    }
+
+    // ── Apagar entrada ───────────────────────────────────────────────────────
+    async function apagarEntrada(id) {
+        if (!confirm("Apagar este registro permanentemente? Os anexos também serão removidos.")) return;
+        try {
+            const res = await fetch(`${API}/${id}`, { method: "DELETE" });
+            if (!res.ok) throw new Error();
+            await carregarEntradas();
+        } catch {
+            alert("Não foi possível apagar. Tente novamente.");
+        }
+    }
+
+    // ── Carregar e renderizar entradas ───────────────────────────────────────
     async function carregarEntradas() {
         try {
             const res = await fetch(API);
@@ -99,59 +493,32 @@
         }
     }
 
-    // ── Salvar ───────────────────────────────────────────────────────────────
-    async function salvar() {
-        const txt = document.getElementById("texto").value.trim();
-        if (!txt) { exibirMsg("err", "Escreva algo antes de salvar."); return; }
-
-        const btn = document.querySelector(".btn");
-        btn.disabled = true;
-        btn.textContent = "Salvando…";
-
-        try {
-            const res = await fetch(API, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ texto: txt })
-            });
-            const dados = await res.json();
-            if (!res.ok) throw new Error(dados.message || "Erro ao salvar.");
-            document.getElementById("texto").value = "";
-            exibirMsg("ok", "✅ Salvo com segurança!");
-            await carregarEntradas();
-        } catch (err) {
-            exibirMsg("err", `❌ ${err.message}`);
-        } finally {
-            btn.disabled = false;
-            btn.textContent = "Salvar registro";
-        }
-    }
-
-    // ── Apagar ───────────────────────────────────────────────────────────────
-    async function apagarEntrada(id) {
-        if (!confirm("Apagar este registro permanentemente?")) return;
-        try {
-            const res = await fetch(`${API}/${id}`, { method: "DELETE" });
-            if (!res.ok) throw new Error();
-            await carregarEntradas();
-        } catch {
-            alert("Não foi possível apagar. Tente novamente.");
-        }
-    }
-
-    // ── Renderizar ───────────────────────────────────────────────────────────
     function renderEntradas(entradas) {
         const card  = document.getElementById("cardEntradas");
         const lista = document.getElementById("listaEntradas");
         if (!entradas.length) { card.style.display = "none"; return; }
         card.style.display = "block";
-        lista.innerHTML = entradas.map(e => `
+
+        lista.innerHTML = entradas.map(e => {
+            // Renderizar anexos salvos (caso o backend retorne um array "anexos")
+            const anexosHTML = (e.anexos && e.anexos.length)
+                ? `<div class="entrada-anexos">
+                    ${e.anexos.map(a => `
+                        <a class="entrada-anexo-btn" href="${escaparHTML(a.url)}" target="_blank" rel="noopener">
+                            ${iconeArquivo(a.tipo || "")} ${escaparHTML(a.nome)}
+                        </a>
+                    `).join("")}
+                   </div>`
+                : "";
+
+            return `
             <div class="entrada">
                 <small>${formatarData(e.criado_em)}</small>
                 <p>${escaparHTML(e.texto)}</p>
+                ${anexosHTML}
                 <button class="btn-apagar" onclick="apagarEntrada(${e.id})">🗑 Apagar este registro</button>
-            </div>
-        `).join("");
+            </div>`;
+        }).join("");
     }
 
     carregarEntradas();
