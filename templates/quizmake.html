@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz - Minha Maquiagem</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+--rose:#ff7ea8;
+--pink:#ffd7e5;
+--wine:#5f3041;
+--cream:#fff8f8;
+--dark:#2b2528;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,sans-serif;background:var(--cream);color:var(--dark)}
+.hero{height:45vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
+.hero-content{position:relative;z-index:2;color:#fff;padding:20px}
+.hero-content h1{font-family:'Playfair Display',serif;font-size:3.5rem}
+.hero-content p{margin-top:10px}
+.wrapper{max-width:900px;margin:-70px auto 60px;padding:20px;position:relative;z-index:3}
+.quiz-card{background:rgba(255,255,255,.92);backdrop-filter:blur(20px);border-radius:32px;padding:35px;box-shadow:0 25px 60px rgba(0,0,0,.08)}
+.progress{height:10px;background:#eee;border-radius:999px;overflow:hidden;margin-bottom:25px}
+.bar{height:100%;background:linear-gradient(90deg,var(--rose),var(--wine));width:0%}
+.question-number{color:#777;margin-bottom:10px}
+.question{font-size:1.5rem;font-weight:700;color:var(--wine);margin-bottom:20px}
+.options{display:grid;gap:12px}
+.option{padding:16px;border:2px solid #eee;border-radius:18px;cursor:pointer;transition:.25s;background:#fff}
+.option:hover,.option.selected{border-color:var(--rose);background:#fff1f6}
+.btn{margin-top:25px;border:none;background:var(--wine);color:#fff;padding:14px 24px;border-radius:999px;cursor:pointer}
+.result{display:none;text-align:center}
+.result h2{font-family:'Playfair Display',serif;font-size:3rem;color:var(--wine)}
+.result p{margin-top:15px;line-height:1.8}
+.result .box{background:linear-gradient(135deg,#fff,#ffe9f0);padding:30px;border-radius:28px}
+@media(max-width:768px){
+.hero-content h1{font-size:2.2rem}
+.question{font-size:1.2rem}
+}
+</style>
+</head>
+<body>
+<section class="hero">
+<img src="./static/imagens/img-index2.jpeg" alt="Hero">
+<div class="hero-content">
+<h1>Descubra Seu Estilo</h1>
+<p>Um quiz divertido para encontrar seu perfil de maquiagem.</p>
+</div>
+</section>
+
+<div class="wrapper">
+<div class="quiz-card">
+<div id="quiz">
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div class="question-number" id="number"></div>
+<div class="question" id="question"></div>
+<div class="options" id="options"></div>
+<button class="btn" onclick="nextQuestion()">Próxima</button>
+</div>
+
+<div id="result" class="result">
+<div class="box">
+<h2 id="title"></h2>
+<p id="desc"></p>
+<button class="btn" onclick="location.reload()">Refazer Quiz</button>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+const questions=[
+{q:"Como você costuma se maquiar no dia a dia?",o:[["Não me maquio","beginner"],["Algo bem leve","natural"],["Gosto de ficar elegante","soft"],["Faço produções completas","glam"]]},
+{q:"Qual produto você usa com mais frequência?",o:[["Nenhum","beginner"],["Protetor com cor","natural"],["Blush","soft"],["Delineador ou cílios","glam"]]},
+{q:"Seu relacionamento com batom é:",o:[["Não costumo usar","beginner"],["Uso raramente","natural"],["Prefiro tons neutros","soft"],["Adoro cores marcantes","creative"]]},
+{q:"Quanto tempo leva para se arrumar?",o:[["Menos de 5 min","beginner"],["Até 10 min","natural"],["15 a 30 min","soft"],["Mais de 30 min","glam"]]},
+{q:"O que mais te interessa aprender?",o:[["Tudo do básico","beginner"],["Base ideal","natural"],["Olhos e contorno","soft"],["Maquiagens criativas","creative"]]},
+{q:"Você acompanha tendências?",o:[["Nunca","beginner"],["Pouco","natural"],["Às vezes","soft"],["Sempre","creative"]]},
+{q:"Como você define seu estilo?",o:[["Iniciante","beginner"],["Natural","natural"],["Elegante","soft"],["Ousado","creative"]]},
+{q:"Qual look escolheria para uma festa?",o:[["Nenhum","beginner"],["Clean Girl","natural"],["Soft Glam","soft"],["Editorial","creative"]]},
+{q:"O que chama mais atenção em uma maquiagem?",o:[["Não sei ainda","beginner"],["Pele bonita","natural"],["Harmonia","soft"],["Criatividade","creative"]]},
+{q:"Como você se sente sobre maquiagem?",o:[["Estou começando","beginner"],["Gosto da praticidade","natural"],["Amo me produzir","glam"],["É uma forma de arte","creative"]]}
+];
+
+const scores={beginner:0,natural:0,soft:0,glam:0,creative:0};
+let current=0, selected=null;
+
+function loadQuestion(){
+const q=questions[current];
+number.innerText=`Pergunta ${current+1} de ${questions.length}`;
+question.innerText=q.q;
+options.innerHTML="";
+q.o.forEach(opt=>{
+const div=document.createElement("div");
+div.className="option";
+div.innerText=opt[0];
+div.onclick=()=>{
+document.querySelectorAll(".option").forEach(x=>x.classList.remove("selected"));
+div.classList.add("selected");
+selected=opt[1];
+};
+options.appendChild(div);
+});
+bar.style.width=((current)/questions.length*100)+"%";
+}
+
+function nextQuestion(){
+if(!selected){alert("Selecione uma opção.");return;}
+scores[selected]++;
+current++;
+selected=null;
+if(current>=questions.length){showResult();return;}
+loadQuestion();
+}
+
+function showResult(){
+quiz.style.display="none";
+result.style.display="block";
+let r=Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
+
+const data={
+beginner:["🌸 Iniciante","Você está começando sua jornada na maquiagem. Comece descobrindo seu subtom e aprendendo preparação de pele."],
+natural:["🌿 Natural","Você valoriza leveza, praticidade e beleza natural."],
+soft:["✨ Soft Glam","Você gosta de equilíbrio entre elegância e naturalidade."],
+glam:["👑 Full Glam","Você ama produções marcantes e sofisticadas."],
+creative:["🎨 Criativa","Você vê maquiagem como expressão artística e adora experimentar."]
+};
+title.innerText=data[r][0];
+desc.innerText=data[r][1];
+}
+loadQuestion();
+</script>
+</body>
+</html>
