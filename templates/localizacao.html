@@ -1,345 +1,2400 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Localização — Meu Escudo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    <style>
-        :root { --bg:#fff8f6; --wine:#7d3441; --rose:#d98b93; --white:#ffffff; --shadow:0 10px 30px rgba(125,52,65,.12); }
-        * { box-sizing:border-box; }
-        body { margin:0; padding:0 0 130px; font-family:'Inter',sans-serif; background:var(--bg); color:var(--wine); }
-        .header { padding:32px 20px 16px; text-align:center; }
-        h1 { font-family:'Playfair Display',serif; font-size:1.9rem; margin:0 0 6px; }
-        .header p { font-size:.88rem; opacity:.7; margin:0; }
-        .container { max-width:540px; margin:0 auto; padding:0 18px; }
 
-        /* SOS */
-        .sos-wrapper { text-align:center; margin-bottom:22px; }
-        .sos-btn {
-            background:linear-gradient(135deg,#c0392b,#7d1f2a); color:white;
-            width:140px; height:140px; border-radius:50%; border:none;
-            font-weight:900; font-size:1.5rem; cursor:pointer;
-            font-family:'Inter',sans-serif; letter-spacing:2px;
-            box-shadow:0 8px 32px rgba(192,57,43,.45);
-            animation:pulse-ring 2.2s infinite; transition:transform .15s;
-        }
-        .sos-btn:active { transform:scale(.93); }
-        @keyframes pulse-ring {
-            0%   { box-shadow:0 0 0 0 rgba(192,57,43,.5),0 8px 32px rgba(192,57,43,.3); }
-            60%  { box-shadow:0 0 0 28px rgba(192,57,43,0),0 8px 32px rgba(192,57,43,.3); }
-            100% { box-shadow:0 0 0 0 rgba(192,57,43,0),0 8px 32px rgba(192,57,43,.3); }
-        }
-        .sos-label { display:block; margin-top:14px; font-size:.82rem; opacity:.65; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* Status card */
-        .status-card { background:var(--white); border-radius:22px; padding:18px 20px; box-shadow:var(--shadow); margin-bottom:16px; display:flex; align-items:center; gap:14px; }
-        .status-icon { font-size:1.8rem; flex-shrink:0; }
-        .status-text h3 { margin:0 0 3px; font-size:.95rem; }
-        .status-text p  { margin:0; font-size:.82rem; opacity:.65; }
-        .badge-status { margin-left:auto; padding:5px 12px; border-radius:20px; font-size:.75rem; font-weight:700; white-space:nowrap; }
-        .badge-off { background:#f5f5f5; color:#999; }
-        .badge-on  { background:#e8f5e9; color:#2e7d32; }
+<title>Localização — Meu Escudo</title>
 
-        /* Mapa */
-        .map-card { background:var(--white); border-radius:22px; overflow:hidden; box-shadow:var(--shadow); margin-bottom:16px; }
-        .map-header { padding:14px 18px 10px; display:flex; justify-content:space-between; align-items:center; }
-        .map-header h3 { font-family:'Playfair Display',serif; font-size:1.05rem; margin:0; }
-        .btn-gps { background:var(--wine); color:white; border:none; padding:8px 18px; border-radius:14px; cursor:pointer; font-weight:700; font-size:.82rem; font-family:'Inter',sans-serif; }
-        /* IMPORTANTE: o div do mapa tem altura fixa sempre, só muda visibilidade via opacity/position */
-        #mapa { width:100%; height:270px; }
-        .map-placeholder {
-            height:270px; background:linear-gradient(160deg,#f7e8ea,#fdf0f0);
-            display:flex; flex-direction:column; align-items:center;
-            justify-content:center; gap:10px; color:var(--wine); font-size:.88rem;
-        }
-        .map-placeholder span { font-size:2.8rem; }
-        .coords-row { padding:10px 18px 14px; font-size:.78rem; opacity:.55; font-family:monospace; display:none; }
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        /* Ações */
-        .action-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
-        .action-btn {
-            background:var(--white); border:none; border-radius:18px; padding:16px 12px;
-            cursor:pointer; box-shadow:var(--shadow); font-family:'Inter',sans-serif;
-            color:var(--wine); font-size:.82rem; font-weight:600;
-            display:flex; flex-direction:column; align-items:center; gap:7px; transition:transform .15s;
-        }
-        .action-btn:active { transform:scale(.96); }
-        .action-btn .ab-icon { font-size:1.6rem; }
-        .action-btn.highlight { background:linear-gradient(135deg,var(--wine),#a34555); color:white; }
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
-        /* Números */
-        .quick-nums { background:var(--white); border-radius:22px; padding:18px 20px; box-shadow:var(--shadow); margin-bottom:16px; }
-        .quick-nums h3 { font-family:'Playfair Display',serif; font-size:1rem; margin:0 0 14px; }
-        .num-list { display:flex; flex-direction:column; gap:10px; }
-        .num-item { display:flex; align-items:center; justify-content:space-between; padding:11px 14px; background:#fff8f6; border-radius:14px; border:1px solid rgba(125,52,65,.07); }
-        .num-item span { font-weight:600; font-size:.87rem; }
-        .call-link { background:var(--wine); color:white; padding:7px 14px; border-radius:12px; text-decoration:none; font-size:.82rem; font-weight:700; }
+<style>
 
-        /* Toast */
-        .toast-status {
-            position:fixed; top:20px; left:50%;
-            transform:translateX(-50%) translateY(-80px);
-            background:#1a1a1a; color:white; padding:12px 22px; border-radius:40px;
-            font-size:.88rem; font-weight:600; z-index:9999;
-            transition:transform .4s cubic-bezier(.34,1.56,.64,1);
-            max-width:320px; text-align:center; pointer-events:none;
-        }
-        .toast-status.show { transform:translateX(-50%) translateY(0); }
-        .toast-status.verde    { background:#1e5e2a; }
-        .toast-status.vermelho { background:#b71c1c; }
+:root{
+--bg:#fff8f8;
+--bg2:#ffeef4;
 
-        /* Nav */
-        .bottom-nav { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); width:90%; max-width:400px; background:white; padding:15px; border-radius:30px; display:flex; justify-content:space-around; box-shadow:0 10px 40px rgba(0,0,0,.1); z-index:100; }
-        .nav-item { text-decoration:none; font-size:1.5rem; }
+--wine:#6f3343;
+--rose:#ff7ea8;
+--pink:#ffd8e5;
 
-        /* Modal SOS */
-        .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.65); z-index:500; align-items:flex-end; justify-content:center; }
-        .modal-overlay.open { display:flex; }
-        .modal-sheet { background:white; width:100%; max-width:520px; border-radius:28px 28px 0 0; padding:28px 24px 44px; animation:slideUp .35s cubic-bezier(.34,1.56,.64,1); max-height:90vh; overflow-y:auto; }
-        @keyframes slideUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
-        .modal-sheet h2 { font-family:'Playfair Display',serif; font-size:1.5rem; margin:0 0 6px; color:#c0392b; }
-        .modal-sub { font-size:.85rem; opacity:.72; margin:0 0 20px; line-height:1.6; }
+--card:rgba(255,255,255,.72);
+--line:rgba(111,51,67,.08);
 
-        /* Log SOS animado */
-        .sos-log { display:none; background:#fff8f6; border-radius:16px; padding:14px; margin-bottom:18px; border-left:4px solid #c0392b; max-height:260px; overflow-y:auto; }
-        .sos-log.visible { display:block; }
-        .sos-log-item { display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px solid #fde8eb; animation:fadeInItem .4s ease; }
-        .sos-log-item:last-child { border-bottom:none; }
-        @keyframes fadeInItem { from { opacity:0; transform:translateX(-8px); } to { opacity:1; transform:translateX(0); } }
-        .log-icon { font-size:1.1rem; flex-shrink:0; margin-top:1px; }
-        .log-text strong { display:block; font-weight:700; font-size:.88rem; color:var(--wine); }
-        .log-text span   { font-size:.77rem; opacity:.62; }
-        .log-ok strong   { color:#2e7d32; }
+--shadow:
+0 25px 70px rgba(111,51,67,.10);
 
-        .modal-btn { display:block; width:100%; padding:15px; border-radius:18px; border:none; font-weight:700; font-size:.95rem; cursor:pointer; margin-bottom:11px; font-family:'Inter',sans-serif; text-decoration:none; text-align:center; transition:opacity .2s; }
-        .modal-btn:hover { opacity:.88; }
-        .modal-btn.red   { background:#c0392b; color:white; }
-        .modal-btn.wine  { background:var(--wine); color:white; }
-        .modal-btn.light { background:#f0f0f0; color:#555; }
-    </style>
+--glass:
+blur(22px);
+
+--success:#3d8b5b;
+
+--white:#fff;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Inter',sans-serif;
+
+background:
+radial-gradient(
+circle at top,
+#fff 0%,
+#fff8fa 40%,
+#ffeef4 100%
+);
+
+color:var(--wine);
+
+padding-bottom:150px;
+}
+
+/* HERO */
+
+.header{
+
+padding:
+
+42px
+26px
+22px;
+
+text-align:center;
+
+position:relative;
+}
+
+.header::after{
+
+content:"";
+
+width:260px;
+height:260px;
+
+background:
+
+radial-gradient(
+var(--pink),
+transparent 70%
+);
+
+position:absolute;
+
+top:-120px;
+left:50%;
+
+transform:translateX(-50%);
+
+opacity:.7;
+
+pointer-events:none;
+}
+
+h1{
+
+position:relative;
+
+font-family:
+'Playfair Display',
+serif;
+
+font-size:3rem;
+
+line-height:1;
+
+margin-bottom:10px;
+}
+
+.header p{
+
+position:relative;
+
+font-size:.95rem;
+
+opacity:.7;
+
+max-width:340px;
+
+margin:auto;
+
+line-height:1.8;
+}
+
+/* CONTAINER */
+
+.container{
+
+max-width:620px;
+
+margin:auto;
+
+padding:
+
+0
+22px;
+}
+
+/* SOS */
+
+.sos-wrapper{
+
+padding:12px 0 34px;
+
+text-align:center;
+}
+
+.sos-btn{
+
+width:160px;
+height:160px;
+
+border:none;
+
+border-radius:999px;
+
+cursor:pointer;
+
+font-size:2rem;
+
+color:white;
+
+background:
+
+linear-gradient(
+145deg,
+#b33b56,
+#6f3343
+);
+
+box-shadow:
+
+0 20px 50px rgba(179,59,86,.35);
+
+animation:pulse 2.5s infinite;
+
+transition:.3s;
+}
+
+.sos-btn:hover{
+
+transform:
+translateY(-8px);
+}
+
+@keyframes pulse{
+
+0%{
+
+box-shadow:
+0 0 0 0 rgba(179,59,86,.35);
+
+}
+
+70%{
+
+box-shadow:
+0 0 0 34px rgba(179,59,86,0);
+
+}
+
+100%{
+
+box-shadow:
+0 0 0 0 rgba(179,59,86,0);
+
+}
+
+}
+
+.sos-label{
+
+margin-top:16px;
+
+opacity:.6;
+
+font-size:.85rem;
+}
+
+/* CARD */
+
+.status-card,
+.map-card,
+.quick-nums{
+
+background:
+var(--card);
+
+backdrop-filter:
+var(--glass);
+
+border:
+
+1px solid
+var(--line);
+
+border-radius:32px;
+
+box-shadow:
+var(--shadow);
+}
+
+/* STATUS */
+
+.status-card{
+
+padding:22px;
+
+display:flex;
+
+align-items:center;
+
+gap:18px;
+
+margin-bottom:18px;
+}
+
+.status-icon{
+
+font-size:2rem;
+}
+
+.status-text h3{
+
+margin-bottom:5px;
+}
+
+.badge-status{
+
+padding:
+
+8px
+16px;
+
+border-radius:999px;
+
+font-weight:700;
+}
+
+.badge-off{
+
+background:#f6f2f3;
+}
+
+.badge-on{
+
+background:#ecfff3;
+
+color:#388a5a;
+}
+
+/* MAP */
+
+.map-card{
+
+overflow:hidden;
+
+margin-bottom:18px;
+}
+
+.map-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:22px;
+}
+
+.map-header h3{
+
+font-family:
+'Playfair Display',
+serif;
+
+font-size:1.4rem;
+}
+
+.btn-gps{
+
+background:
+
+linear-gradient(
+135deg,
+var(--wine),
+var(--rose)
+);
+
+border:none;
+
+color:white;
+
+padding:
+
+14px
+22px;
+
+border-radius:999px;
+
+cursor:pointer;
+
+font-weight:700;
+}
+
+#mapa{
+
+height:330px;
+}
+
+.map-placeholder{
+
+height:330px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+gap:12px;
+
+background:
+
+linear-gradient(
+180deg,
+#fff,
+#fff4f6
+);
+
+font-size:1rem;
+}
+
+.map-placeholder span{
+
+font-size:4rem;
+}
+
+.coords-row{
+
+padding:18px;
+
+font-family:monospace;
+
+opacity:.55;
+}
+
+/* AÇÕES */
+
+.action-grid{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:14px;
+
+margin-bottom:18px;
+}
+
+.action-btn{
+
+background:
+var(--card);
+
+border:none;
+
+border-radius:24px;
+
+padding:24px;
+
+cursor:pointer;
+
+font-size:.9rem;
+
+color:var(--wine);
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+gap:10px;
+
+box-shadow:
+var(--shadow);
+
+transition:.3s;
+}
+
+.action-btn:hover{
+
+transform:
+translateY(-6px);
+}
+
+.highlight{
+
+background:
+
+linear-gradient(
+135deg,
+var(--wine),
+#93445a
+);
+
+color:white;
+}
+
+/* AJUDA */
+
+.quick-nums{
+
+padding:28px;
+
+margin-bottom:20px;
+}
+
+.quick-nums h3{
+
+font-family:
+'Playfair Display',
+serif;
+
+font-size:1.4rem;
+
+margin-bottom:18px;
+}
+
+.num-item{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:16px;
+
+background:#fff;
+
+border-radius:18px;
+
+margin-bottom:12px;
+}
+
+.call-link{
+
+background:
+
+linear-gradient(
+135deg,
+var(--wine),
+var(--rose)
+);
+
+color:white;
+
+padding:
+
+10px
+18px;
+
+border-radius:999px;
+
+text-decoration:none;
+}
+
+/* NAV */
+
+.bottom-nav{
+
+position:fixed;
+
+bottom:24px;
+
+left:50%;
+
+transform:
+translateX(-50%);
+
+width:92%;
+
+max-width:480px;
+
+background:
+rgba(255,255,255,.8);
+
+backdrop-filter:
+blur(20px);
+
+padding:18px;
+
+border-radius:999px;
+
+display:flex;
+
+justify-content:space-around;
+
+box-shadow:
+var(--shadow);
+}
+
+.nav-item{
+
+font-size:1.7rem;
+
+text-decoration:none;
+
+transition:.3s;
+}
+
+.nav-item:hover{
+
+transform:
+translateY(-5px);
+}
+
+/* MODAL */
+
+.modal-overlay{
+
+background:
+rgba(30,18,22,.45);
+
+backdrop-filter:
+blur(14px);
+}
+
+.modal-sheet{
+
+background:
+
+linear-gradient(
+180deg,
+#fff,
+#fff7f8
+);
+
+border-radius:
+
+40px
+40px
+0
+0;
+
+padding:36px;
+}
+
+.modal-sheet h2{
+
+font-size:2rem;
+
+color:var(--wine);
+}
+
+.modal-btn{
+
+border:none;
+
+border-radius:999px;
+
+padding:18px;
+
+font-weight:700;
+
+cursor:pointer;
+}
+
+.red{
+
+background:
+
+linear-gradient(
+135deg,
+#b33b56,
+#6f3343
+);
+
+color:white;
+}
+
+.wine{
+
+background:
+var(--wine);
+
+color:white;
+}
+
+.light{
+
+background:#f6f2f4;
+}
+
+@media(max-width:700px){
+
+h1{
+font-size:2.3rem;
+}
+
+.sos-btn{
+
+width:130px;
+height:130px;
+
+}
+
+.action-grid{
+
+grid-template-columns:1fr;
+}
+
+}
+
+/* ===========================
+AÇÕES
+=========================== */
+
+.action-grid{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:14px;
+
+margin-bottom:18px;
+
+}
+
+.action-btn{
+
+border:none;
+
+cursor:pointer;
+
+background:var(--glass);
+
+backdrop-filter:blur(24px);
+
+border:
+
+1px solid
+var(--line);
+
+border-radius:28px;
+
+padding:
+
+24px
+18px;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+gap:10px;
+
+font-family:'Inter';
+
+font-size:.9rem;
+
+font-weight:600;
+
+color:var(--wine);
+
+box-shadow:var(--shadow);
+
+transition:.35s;
+
+}
+
+.action-btn:hover{
+
+transform:
+
+translateY(-6px);
+
+}
+
+.ab-icon{
+
+font-size:1.8rem;
+
+}
+
+.highlight{
+
+background:
+
+linear-gradient(
+135deg,
+var(--wine),
+#9b465d
+);
+
+color:white;
+
+}
+
+
+/* ===========================
+AJUDA
+=========================== */
+
+.quick-nums{
+
+padding:28px;
+
+margin-bottom:18px;
+
+}
+
+.quick-nums h3{
+
+font-family:
+'Playfair Display';
+
+font-size:1.4rem;
+
+margin-bottom:18px;
+
+}
+
+.num-list{
+
+display:flex;
+
+flex-direction:column;
+
+gap:12px;
+
+}
+
+.num-item{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:16px;
+
+background:
+
+rgba(255,255,255,.72);
+
+border-radius:22px;
+
+border:
+
+1px solid
+rgba(111,51,67,.05);
+
+}
+
+.num-item span{
+
+font-size:.88rem;
+
+font-weight:600;
+
+}
+
+.call-link{
+
+text-decoration:none;
+
+background:
+
+linear-gradient(
+135deg,
+var(--wine),
+var(--rose)
+);
+
+padding:
+
+11px
+18px;
+
+border-radius:999px;
+
+color:white;
+
+font-weight:700;
+
+transition:.3s;
+
+}
+
+.call-link:hover{
+
+transform:
+translateY(-3px);
+
+}
+
+
+/* ===========================
+TOAST
+=========================== */
+
+.toast-status{
+
+position:fixed;
+
+top:20px;
+
+left:50%;
+
+transform:
+
+translateX(-50%)
+translateY(-80px);
+
+background:#1f1f1f;
+
+color:white;
+
+padding:
+
+14px
+22px;
+
+border-radius:999px;
+
+font-size:.9rem;
+
+z-index:999;
+
+transition:.45s;
+
+box-shadow:
+
+0 20px 40px rgba(0,0,0,.18);
+
+}
+
+.toast-status.show{
+
+transform:
+
+translateX(-50%)
+translateY(0);
+
+}
+
+.verde{
+
+background:#347553;
+
+}
+
+.vermelho{
+
+background:#b03b53;
+
+}
+
+
+/* ===========================
+MODAL
+=========================== */
+
+.modal-overlay{
+
+display:none;
+
+position:fixed;
+
+inset:0;
+
+background:
+
+rgba(34,20,24,.40);
+
+backdrop-filter:
+
+blur(12px);
+
+align-items:flex-end;
+
+justify-content:center;
+
+z-index:500;
+
+}
+
+.modal-overlay.open{
+
+display:flex;
+
+}
+
+.modal-sheet{
+
+width:100%;
+
+max-width:580px;
+
+padding:
+
+42px
+28px
+46px;
+
+background:
+
+linear-gradient(
+180deg,
+#ffffff,
+#fff6f8
+);
+
+border-radius:
+
+42px
+42px
+0
+0;
+
+animation:
+
+modalOpen .45s;
+
+overflow:auto;
+
+max-height:90vh;
+
+}
+
+@keyframes modalOpen{
+
+from{
+
+opacity:0;
+
+transform:
+
+translateY(80px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:
+
+translateY(0);
+
+}
+
+}
+
+.modal-sheet h2{
+
+font-family:
+
+'Playfair Display';
+
+font-size:2rem;
+
+margin-bottom:10px;
+
+}
+
+.modal-sub{
+
+line-height:1.8;
+
+opacity:.72;
+
+margin-bottom:24px;
+
+}
+
+
+/* ===========================
+LOG SOS
+=========================== */
+
+.sos-log{
+
+display:flex;
+
+flex-direction:column;
+
+gap:10px;
+
+margin-bottom:18px;
+
+}
+
+.sos-log div{
+
+padding:16px;
+
+border-radius:20px;
+
+background:
+
+linear-gradient(
+180deg,
+#fff,
+#fff6f8
+);
+
+border:
+
+1px solid
+rgba(111,51,67,.05);
+
+animation:
+
+appear .35s;
+
+}
+
+@keyframes appear{
+
+from{
+
+opacity:0;
+
+transform:
+translateY(10px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:
+translateY(0);
+
+}
+
+}
+
+
+/* ===========================
+BOTÕES MODAL
+=========================== */
+
+.modal-btn{
+
+display:block;
+
+width:100%;
+
+margin-bottom:12px;
+
+padding:18px;
+
+border:none;
+
+border-radius:999px;
+
+cursor:pointer;
+
+font-weight:700;
+
+text-decoration:none;
+
+text-align:center;
+
+font-family:'Inter';
+
+transition:.3s;
+
+}
+
+.modal-btn:hover{
+
+transform:
+translateY(-3px);
+
+}
+
+.red{
+
+background:
+
+linear-gradient(
+135deg,
+#b03b53,
+#6f3343
+);
+
+color:white;
+
+}
+
+.wine{
+
+background:
+
+linear-gradient(
+135deg,
+var(--wine),
+#8f4257
+);
+
+color:white;
+
+}
+
+.light{
+
+background:#f6f2f3;
+
+color:var(--wine);
+
+}
+
+
+/* ===========================
+BOTTOM NAV
+=========================== */
+
+.bottom-nav{
+
+position:fixed;
+
+bottom:22px;
+
+left:50%;
+
+transform:
+translateX(-50%);
+
+width:92%;
+
+max-width:460px;
+
+padding:18px;
+
+background:
+
+rgba(255,255,255,.8);
+
+backdrop-filter:
+
+blur(24px);
+
+border-radius:999px;
+
+display:flex;
+
+justify-content:space-around;
+
+box-shadow:
+
+0 25px 60px rgba(111,51,67,.15);
+
+}
+
+.nav-item{
+
+text-decoration:none;
+
+font-size:1.6rem;
+
+transition:.3s;
+
+}
+
+.nav-item:hover{
+
+transform:
+translateY(-5px);
+
+}
+
+
+/* ===========================
+RESPONSIVO
+=========================== */
+
+@media(max-width:700px){
+
+.header h1{
+
+font-size:2.25rem;
+
+}
+
+.sos-btn{
+
+width:135px;
+
+height:135px;
+
+font-size:1.7rem;
+
+}
+
+.action-grid{
+
+grid-template-columns:1fr;
+
+}
+
+#mapa{
+
+height:260px;
+
+}
+
+.map-placeholder{
+
+height:260px;
+
+}
+
+.bottom-nav{
+
+bottom:14px;
+
+}
+
+.modal-sheet{
+
+padding:32px 22px;
+
+}
+
+}
+
+.navbar{
+
+position:sticky;
+
+top:0;
+
+z-index:500;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:
+
+18px 6%;
+
+background:
+
+rgba(255,255,255,.75);
+
+backdrop-filter:
+
+blur(18px);
+
+border-bottom:
+
+1px solid var(--border);
+
+}
+
+
+.logo{
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+text-decoration:none;
+
+color:inherit;
+
+}
+
+
+.logo img{
+
+height:46px;
+
+}
+
+
+.logo span{
+
+font-family:
+'Playfair Display';
+
+font-size:
+1.45rem;
+
+color:
+var(--wine);
+
+}
+
+
+.nav-actions{
+
+display:flex;
+
+gap:12px;
+
+}
+
+
+.nav-btn{
+
+padding:
+
+12px 18px;
+
+border-radius:
+
+999px;
+
+background:
+
+white;
+
+text-decoration:none;
+
+color:
+
+var(--wine);
+
+font-weight:
+600;
+
+border:
+
+1px solid var(--border);
+
+transition:
+.25s;
+
+}
+
+
+.nav-btn:hover{
+
+transform:
+translateY(-2px);
+
+}
+</style>
 </head>
+
 <body>
 
-<div class="header">
-    <h1>Localização</h1>
-    <p>Sua posição em tempo real — segura e privada</p>
+<!-- NAVBAR -->
+<header class="navbar">
+
+<a
+href="/"
+class="logo">
+
+<img
+src="./static/imagens/logo.png">
+
+<span>
+
+Minha Maquiagem
+
+</span>
+
+</a>
+
+
+<div class="nav-actions">
+
+<a
+href="/"
+class="nav-btn">
+
+Voltar
+
+</a>
+
 </div>
+
+</header>
+
+<div class="header">
+
+<h1>
+Minha<br>
+Localização
+</h1>
+
+<p>
+Compartilhe sua posição apenas quando quiser.
+Privacidade e proteção integradas.
+</p>
+
+</div>
+
 
 <div class="container">
 
-    <div class="sos-wrapper">
-        <button class="sos-btn" onclick="abrirModalSOS()">🆘 SOS</button>
-        <span class="sos-label">Pressione para acionar ajuda imediata</span>
-    </div>
+<!-- SOS -->
 
-    <div class="status-card">
-        <div class="status-icon">📍</div>
-        <div class="status-text">
-            <h3>GPS</h3>
-            <p id="statusTexto">Localização não ativada</p>
-        </div>
-        <span class="badge-status badge-off" id="badgeStatus">Desativado</span>
-    </div>
+<div class="sos-wrapper">
 
-    <div class="map-card">
-        <div class="map-header">
-            <h3>Meu Mapa</h3>
-            <button class="btn-gps" onclick="ativarGPS()">Ativar GPS</button>
-        </div>
-        <!-- placeholder e mapa ficam empilhados; JS alterna -->
-        <div id="mapaPlaceholder" class="map-placeholder">
-            <span>🗺️</span>
-            <p>Ative o GPS para ver sua localização</p>
-        </div>
-        <!-- div do mapa sempre no DOM, mas escondido até GPS ativo -->
-        <div id="mapa" style="display:none;"></div>
-        <div class="coords-row" id="coordsRow"></div>
-    </div>
+<button
+class="sos-btn"
+onclick="abrirModalSOS()">
 
-    <div class="action-grid">
-        <button class="action-btn highlight" onclick="compartilharLocalizacao()">
-            <span class="ab-icon">📤</span>Enviar localização
-        </button>
-        <button class="action-btn" onclick="copiarCoordenadas()">
-            <span class="ab-icon">📋</span>Copiar coordenadas
-        </button>
-    </div>
+🆘
 
-    <div class="quick-nums">
-        <h3>Ajuda imediata</h3>
-        <div class="num-list">
-            <div class="num-item"><span>🚨 Polícia Militar — DF</span><a href="tel:190" class="call-link">190</a></div>
-            <div class="num-item"><span>📞 Central da Mulher</span><a href="tel:180" class="call-link">180</a></div>
-            <div class="num-item"><span>🚑 SAMU</span><a href="tel:192" class="call-link">192</a></div>
-            <div class="num-item"><span>🔵 DEAM — Delegacia da Mulher DF</span><a href="tel:6132425813" class="call-link">Ligar</a></div>
-        </div>
-    </div>
+</button>
+<br>
+
+<span class="sos-label">
+
+Pressione para ajuda imediata
+
+</span>
 
 </div>
 
-<div id="toastStatus" class="toast-status"></div>
 
-<!-- MODAL SOS -->
-<div class="modal-overlay" id="modalSOS">
-    <div class="modal-sheet">
-        <h2>🆘 Emergência</h2>
-        <p class="modal-sub" id="modalSub">
-            Ao confirmar, será iniciada uma sequência de alerta:<br>
-            <strong>📲 Mensagem para seus contatos de segurança</strong><br>
-            <strong>🚨 Acionamento da Polícia do DF — 190</strong>
-        </p>
-        <div class="sos-log" id="sosLog"></div>
-        <div id="botoesIniciais">
-            <button class="modal-btn red" onclick="confirmarEmergencia()">🚨 Confirmar — Acionar ajuda agora</button>
-            <a href="tel:190" class="modal-btn wine">📞 Ligar direto — Polícia DF 190</a>
-            <a href="tel:180" class="modal-btn wine">📞 Ligar direto — Central da Mulher 180</a>
-            <button class="modal-btn light" onclick="fecharModal()">Cancelar</button>
-        </div>
-        <div id="botoesPosSOS" style="display:none;">
-            <a href="tel:190" class="modal-btn red">📞 Ligar agora para Polícia — 190</a>
-            <button class="modal-btn light" onclick="fecharModal()">Fechar</button>
-        </div>
-    </div>
+<!-- STATUS -->
+
+<div class="status-card">
+
+<div class="status-icon">
+📍
 </div>
+
+<div class="status-text">
+
+<h3>
+Localização Protegida
+</h3>
+
+<p id="statusTexto">
+
+Localização não ativada
+
+</p>
+
+</div>
+
+<span
+id="badgeStatus"
+class="badge-status badge-off">
+
+Desativado
+
+</span>
+
+</div>
+
+
+<!-- MAPA -->
+
+<div class="map-card">
+
+<div class="map-header">
+
+<h3>
+Meu mapa
+</h3>
+
+<button
+class="btn-gps"
+onclick="ativarGPS()">
+
+Ativar GPS
+
+</button>
+
+</div>
+
+
+<div
+id="mapaPlaceholder"
+class="map-placeholder">
+
+<span>
+🗺️
+</span>
+
+<p>
+Ative o GPS para visualizar
+</p>
+
+</div>
+
+
+<div
+id="mapa"
+style="display:none">
+</div>
+
+<div
+class="coords-row"
+id="coordsRow">
+</div>
+
+</div>
+
+
+<!-- AÇÕES -->
+
+<div class="action-grid">
+
+<button
+class="action-btn highlight"
+onclick="compartilharLocalizacao()">
+
+<div class="ab-icon">
+
+📤
+
+</div>
+
+Enviar localização
+
+</button>
+
+
+<button
+class="action-btn"
+onclick="copiarCoordenadas()">
+
+<div class="ab-icon">
+
+📋
+
+</div>
+
+Copiar coordenadas
+
+</button>
+
+</div>
+
+
+<!-- AJUDA -->
+
+<div class="quick-nums">
+
+<h3>
+
+Ajuda imediata
+
+</h3>
+
+
+<div class="num-list">
+
+<div class="num-item">
+
+<span>
+
+🚨 Polícia Militar
+
+</span>
+
+<a
+href="tel:190"
+class="call-link">
+
+190
+
+</a>
+
+</div>
+
+
+<div class="num-item">
+
+<span>
+
+📞 Central da Mulher
+
+</span>
+
+<a
+href="tel:180"
+class="call-link">
+
+180
+
+</a>
+
+</div>
+
+
+<div class="num-item">
+
+<span>
+
+🚑 SAMU
+
+</span>
+
+<a
+href="tel:192"
+class="call-link">
+
+192
+
+</a>
+
+</div>
+
+
+<div class="num-item">
+
+<span>
+
+🔵 Delegacia da Mulher
+
+</span>
+
+<a
+href="tel:6132425813"
+class="call-link">
+
+Ligar
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+id="toastStatus"
+class="toast-status">
+</div>
+
+
+<!-- MODAL -->
+
+<div
+class="modal-overlay"
+id="modalSOS">
+
+<div class="modal-sheet">
+
+<h2>
+
+Emergência
+
+</h2>
+
+<p class="modal-sub"
+id="modalSub">
+
+Ao confirmar:
+
+<br><br>
+
+📲 aviso para contatos
+
+<br>
+
+🚨 auxílio imediato
+
+</p>
+
+
+<div
+id="sosLog"
+class="sos-log">
+</div>
+
+
+<div id="botoesIniciais">
+
+<button
+class="modal-btn red"
+onclick="confirmarEmergencia()">
+
+🚨 Acionar agora
+
+</button>
+
+
+<a
+href="tel:190"
+class="modal-btn wine">
+
+📞 Polícia
+
+</a>
+
+
+<a
+href="tel:180"
+class="modal-btn wine">
+
+📞 Central da Mulher
+
+</a>
+
+
+<button
+class="modal-btn light"
+onclick="fecharModal()">
+
+Cancelar
+
+</button>
+
+</div>
+
+
+<div
+id="botoesPosSOS"
+style="display:none">
+
+<a
+href="tel:190"
+class="modal-btn red">
+
+📞 Ligar agora
+
+</a>
+
+<button
+class="modal-btn light"
+onclick="fecharModal()">
+
+Fechar
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- NAV -->
 
 <nav class="bottom-nav">
-    <a href="/home-secret" class="nav-item">🏠</a>
-    <a href="/localizacao" class="nav-item">📍</a>
-    <a href="/contatos" class="nav-item">👥</a>
-    <a href="/diario" class="nav-item">📝</a>
+
+<a
+href="/home-secret"
+class="nav-item">
+
+🏠
+
+</a>
+
+<a
+href="/localizacao"
+class="nav-item">
+
+📍
+
+</a>
+
+<a
+href="/contatos"
+class="nav-item">
+
+👥
+
+</a>
+
+<a
+href="/diario"
+class="nav-item">
+
+📝
+
+</a>
+
 </nav>
 
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <script>
-    let mapaLeaflet = null;
-    let marcador    = null;
-    let latAtual    = null;
-    let lngAtual    = null;
+let mapaLeaflet = null;
+let marcador = null;
 
-    function ativarGPS() {
-        if (!navigator.geolocation) { mostrarToast('GPS não suportado.','vermelho'); return; }
-        mostrarToast('⏳ Obtendo localização...','');
+let latAtual = null;
+let lngAtual = null;
 
-        navigator.geolocation.getCurrentPosition(pos => {
-            latAtual = pos.coords.latitude;
-            lngAtual = pos.coords.longitude;
+/* GPS */
 
-            // Status
-            document.getElementById('statusTexto').textContent = 'Localização ativa e segura';
-            const badge = document.getElementById('badgeStatus');
-            badge.textContent = 'Ativo'; badge.className = 'badge-status badge-on';
+function ativarGPS(){
 
-            // Coordenadas
-            const coordsRow = document.getElementById('coordsRow');
-            coordsRow.style.display = 'block';
-            coordsRow.textContent = `Lat: ${latAtual.toFixed(5)} | Lng: ${lngAtual.toFixed(5)}`;
+if(!navigator.geolocation){
 
-            // Trocar placeholder pelo mapa
-            document.getElementById('mapaPlaceholder').style.display = 'none';
-            const mapaEl = document.getElementById('mapa');
-            mapaEl.style.display = 'block';
+mostrarToast(
+'GPS não suportado',
+'vermelho'
+);
 
-            // CORREÇÃO DO BUG: só inicializa o Leaflet DEPOIS que o div está visível
-            if (!mapaLeaflet) {
-                // Pequeno timeout garante que o browser aplicou display:block antes do Leaflet medir o container
-                setTimeout(() => {
-                    mapaLeaflet = L.map('mapa', { zoomControl: true }).setView([latAtual, lngAtual], 16);
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '© OpenStreetMap', maxZoom: 19
-                    }).addTo(mapaLeaflet);
-                    adicionarMarcador();
-                }, 50);
-            } else {
-                mapaLeaflet.invalidateSize(); // corrige se o container mudou de tamanho
-                mapaLeaflet.setView([latAtual, lngAtual], 16);
-                adicionarMarcador();
-            }
+return;
 
-            mostrarToast('✅ Localização ativa!','verde');
-        }, err => {
-            mostrarToast('Não foi possível obter a localização. Verifique as permissões.','vermelho');
-        }, { enableHighAccuracy: true, timeout: 10000 });
-    }
+}
 
-    function adicionarMarcador() {
-        if (marcador) marcador.remove();
-        const icone = L.divIcon({
-            html: `<div style="background:#c0392b;width:18px;height:18px;border-radius:50%;border:3px solid white;box-shadow:0 2px 10px rgba(0,0,0,.4);"></div>`,
-            iconSize:[18,18], iconAnchor:[9,9], className:''
-        });
-        marcador = L.marker([latAtual, lngAtual], { icon: icone })
-            .addTo(mapaLeaflet)
-            .bindPopup('📍 Você está aqui')
-            .openPopup();
-    }
+mostrarToast(
+'Obtendo localização...',
+''
+);
 
-    function compartilharLocalizacao() {
-        if (!latAtual) { mostrarToast('Ative o GPS primeiro.','vermelho'); return; }
-        const url = `https://maps.google.com/?q=${latAtual},${lngAtual}`;
-        if (navigator.share) {
-            navigator.share({ title:'📍 Minha localização — Meu Escudo', url });
-        } else {
-            navigator.clipboard.writeText(url).then(() => mostrarToast('🔗 Link copiado! Cole no WhatsApp.','verde'));
-        }
-    }
+navigator.geolocation.getCurrentPosition(
 
-    function copiarCoordenadas() {
-        if (!latAtual) { mostrarToast('Ative o GPS primeiro.','vermelho'); return; }
-        navigator.clipboard.writeText(`${latAtual.toFixed(5)}, ${lngAtual.toFixed(5)}`)
-            .then(() => mostrarToast('📋 Coordenadas copiadas!','verde'));
-    }
+(pos)=>{
 
-    let toastTimer;
-    function mostrarToast(msg, tipo) {
-        const t = document.getElementById('toastStatus');
-        t.textContent = msg;
-        t.className = `toast-status show ${tipo}`;
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => t.classList.remove('show'), 3400);
-    }
+latAtual=
+pos.coords.latitude;
 
-    function abrirModalSOS() {
-        document.getElementById('modalSOS').classList.add('open');
-        document.getElementById('sosLog').classList.remove('visible');
-        document.getElementById('sosLog').innerHTML = '';
-        document.getElementById('botoesIniciais').style.display = 'block';
-        document.getElementById('botoesPosSOS').style.display = 'none';
-        document.getElementById('modalSub').style.display = 'block';
-    }
-    function fecharModal() { document.getElementById('modalSOS').classList.remove('open'); }
+lngAtual=
+pos.coords.longitude;
 
-    function confirmarEmergencia() {
-        document.getElementById('botoesIniciais').style.display = 'none';
-        document.getElementById('modalSub').style.display = 'none';
-        const log = document.getElementById('sosLog');
-        log.classList.add('visible'); log.innerHTML = '';
 
-        const locLink = latAtual ? `https://maps.google.com/?q=${latAtual},${lngAtual}` : null;
-        const locStr  = latAtual ? `Lat ${latAtual.toFixed(4)}, Lng ${lngAtual.toFixed(4)}` : 'GPS não ativo — ative o GPS para enviar coordenadas';
+/* STATUS */
 
-        const etapas = [
-            { icon:'📡', titulo:'Captando sua localização...', detalhe: locStr, classe:'', delay:0 },
-            { icon:'📲', titulo:'Enviando mensagem aos contatos de segurança', detalhe:'Sua localização foi compartilhada com seus contatos de confiança', classe:'', delay:1400 },
-            { icon:'💬', titulo:'Mensagem enviada: "PRECISO DE AJUDA"', detalhe: locLink ? `Localização: ${locLink}` : 'Sem coordenadas GPS', classe:'', delay:2500 },
-            { icon:'🚨', titulo:'Acionando Polícia Militar do DF — 190', detalhe:'Disque 190 e confirme sua localização ao atendente', classe:'', delay:3700 },
-            { icon:'📞', titulo:'Central da Mulher — 180 notificada', detalhe:'Atendimento 24h disponível para apoio especializado', classe:'', delay:4900 },
-            { icon:'✅', titulo:'Alerta disparado com sucesso', detalhe:'Seus contatos foram notificados. Ligue agora para confirmar o socorro.', classe:'log-ok', delay:6000 }
-        ];
+document
+.getElementById(
+'statusTexto'
+)
+.textContent=
 
-        etapas.forEach(({ icon, titulo, detalhe, classe, delay }) => {
-            setTimeout(() => {
-                const item = document.createElement('div');
-                item.className = `sos-log-item ${classe}`;
-                item.innerHTML = `<span class="log-icon">${icon}</span><div class="log-text"><strong>${titulo}</strong><span>${detalhe}</span></div>`;
-                log.appendChild(item);
-                log.scrollTop = log.scrollHeight;
-            }, delay);
-        });
+'Localização ativa';
 
-        setTimeout(() => { document.getElementById('botoesPosSOS').style.display = 'block'; }, 6600);
-    }
+
+const badge=
+document.getElementById(
+'badgeStatus'
+);
+
+badge.textContent=
+'Ativo';
+
+badge.className=
+'badge-status badge-on';
+
+
+/* COORDS */
+
+const coords=
+
+document.getElementById(
+'coordsRow'
+);
+
+coords.style.display=
+'block';
+
+coords.textContent=
+
+`Lat:
+${latAtual.toFixed(5)}
+
+|
+
+Lng:
+${lngAtual.toFixed(5)}`;
+
+
+/* TROCAR PLACEHOLDER */
+
+document
+.getElementById(
+'mapaPlaceholder'
+)
+.style.display=
+
+'none';
+
+
+const mapa=
+
+document
+.getElementById(
+'mapa'
+);
+
+mapa.style.display=
+'block';
+
+
+if(!mapaLeaflet){
+
+setTimeout(()=>{
+
+mapaLeaflet=
+
+L.map(
+'mapa'
+)
+
+.setView(
+[
+latAtual,
+lngAtual
+],
+16
+);
+
+
+L.tileLayer(
+
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+
+{
+
+attribution:
+'© OpenStreetMap',
+
+maxZoom:19
+
+}
+
+)
+
+.addTo(
+mapaLeaflet
+);
+
+
+adicionarMarcador();
+
+},100);
+
+}
+
+else{
+
+mapaLeaflet
+.invalidateSize();
+
+mapaLeaflet
+.setView(
+[
+latAtual,
+lngAtual
+],
+16
+);
+
+adicionarMarcador();
+
+}
+
+mostrarToast(
+'Localização ativa',
+'verde'
+);
+
+},
+
+()=>{
+
+mostrarToast(
+'Permissão negada',
+'vermelho'
+);
+
+},
+
+{
+
+enableHighAccuracy:true,
+
+timeout:10000
+
+}
+
+);
+
+}
+
+
+/* MARCADOR */
+
+function adicionarMarcador(){
+
+if(marcador){
+
+marcador.remove();
+
+}
+
+const icone=
+
+L.divIcon({
+
+html:
+
+`
+<div
+style="
+width:18px;
+height:18px;
+
+background:#b13c55;
+
+border:
+
+4px solid white;
+
+border-radius:50%;
+
+box-shadow:
+
+0 0 20px
+rgba(177,60,85,.45);
+
+"></div>
+`,
+
+iconSize:[18,18],
+
+className:''
+
+});
+
+marcador=
+
+L.marker(
+
+[
+latAtual,
+lngAtual
+],
+
+{
+
+icon:icone
+
+}
+
+)
+
+.addTo(
+mapaLeaflet
+)
+
+.bindPopup(
+'Você está aqui'
+)
+
+.openPopup();
+
+}
+
+
+/* COMPARTILHAR */
+
+function compartilharLocalizacao(){
+
+if(!latAtual){
+
+mostrarToast(
+'Ative o GPS',
+'vermelho'
+);
+
+return;
+
+}
+
+const url=
+
+`https://maps.google.com/?q=${latAtual},${lngAtual}`;
+
+if(
+navigator.share
+){
+
+navigator.share({
+
+title:
+'Minha Localização',
+
+url
+
+});
+
+}
+
+else{
+
+navigator.clipboard
+
+.writeText(
+url
+)
+
+.then(
+
+()=>{
+
+mostrarToast(
+'Link copiado',
+'verde'
+);
+
+}
+
+);
+
+}
+
+}
+
+
+/* COPIAR */
+
+function copiarCoordenadas(){
+
+if(!latAtual){
+
+mostrarToast(
+'Ative o GPS',
+'vermelho'
+);
+
+return;
+
+}
+
+navigator.clipboard
+
+.writeText(
+
+`${latAtual},
+${lngAtual}`
+
+)
+
+.then(
+
+()=>{
+
+mostrarToast(
+'Coordenadas copiadas',
+'verde'
+);
+
+}
+
+);
+
+}
+
+
+/* TOAST */
+
+let timerToast;
+
+function mostrarToast(
+msg,
+tipo
+){
+
+const toast=
+
+document
+.getElementById(
+'toastStatus'
+);
+
+toast.textContent=
+msg;
+
+toast.className=
+
+`toast-status
+show
+${tipo}`;
+
+clearTimeout(
+timerToast
+);
+
+timerToast=
+
+setTimeout(
+
+()=>{
+
+toast.classList.remove(
+'show'
+);
+
+},
+
+3200
+
+);
+
+}
+
+
+/* MODAL */
+
+function abrirModalSOS(){
+
+document
+
+.getElementById(
+'modalSOS'
+)
+
+.classList
+
+.add(
+'open'
+);
+
+document
+.getElementById(
+'sosLog'
+)
+.innerHTML='';
+
+}
+
+
+function fecharModal(){
+
+document
+
+.getElementById(
+'modalSOS'
+)
+
+.classList
+
+.remove(
+'open'
+);
+
+}
+
+
+/* SOS */
+
+function confirmarEmergencia(){
+
+const log=
+
+document
+.getElementById(
+'sosLog'
+);
+
+log.innerHTML='';
+
+
+document
+.getElementById(
+'botoesIniciais'
+)
+.style.display='none';
+
+
+document
+.getElementById(
+'modalSub'
+)
+.style.display='none';
+
+
+const etapas=[
+
+'📡 Captando posição',
+
+'📲 Enviando alerta',
+
+'💬 Compartilhando localização',
+
+'🚨 Ajuda acionada',
+
+'✅ Processo concluído'
+
+];
+
+etapas.forEach(
+
+(item,i)=>{
+
+setTimeout(()=>{
+
+log.innerHTML+=
+
+`
+<div
+style="
+padding:12px;
+margin-bottom:8px;
+
+background:#fff7f8;
+
+border-radius:18px;
+">
+
+${item}
+
+</div>
+`;
+
+},i*1200);
+
+}
+
+);
+
+
+setTimeout(()=>{
+
+document
+.getElementById(
+'botoesPosSOS'
+)
+.style.display='block';
+
+},6500);
+
+}
+
 </script>
+
 </body>
+
 </html>

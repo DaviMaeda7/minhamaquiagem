@@ -7,11 +7,17 @@ from src.repositorios.sqlite_repository import init_db, SQLiteUserRepository, SQ
 from src.servicos.auth import hash_password, verify_password, validate_signup_data, validate_login_data
 
 app = Flask(__name__)
-app.secret_key = "chave-secreta-temporaria-para-testes-em-desenvolvimento"
-CORS(app, supports_credentials=True, origins=[
-    "https://minhamaquiagem.vidadavi777.workers.dev",
-    "https://minhamaquiagem-production.up.railway.app"
-])
+app.config.update(
+    SECRET_KEY="chave-secreta-temporaria-para-testes-em-desenvolvimento",
+
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax"
+)
+CORS(
+    app,
+    supports_credentials=True
+)
 
 init_db()
 repo        = SQLiteUserRepository()

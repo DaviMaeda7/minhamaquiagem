@@ -6,195 +6,906 @@
     <title>Contatos de Confiança — Meu Escudo</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #fff8f6;
-            --wine: #7d3441;
-            --rose: #d98b93;
-            --white: #ffffff;
-            --shadow: 0 10px 30px rgba(125, 52, 65, 0.1);
-        }
-        * { box-sizing: border-box; }
-        body {
-            margin: 0; padding: 0 0 130px;
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg); color: var(--wine); min-height: 100vh;
-        }
-        .header { padding: 30px 20px 18px; text-align: center; }
-        h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 0 0 6px; }
-        .header p { font-size: 0.9rem; opacity: 0.72; margin: 0; }
+:root{
+--bg:#fff7f8;
+--bg-soft:#fff2f5;
 
-        .container { max-width: 500px; margin: 0 auto; padding: 0 18px; }
+--wine:#6e3140;
+--wine-dark:#552431;
 
-        /* Abas */
-        .tabs {
-            display: flex; gap: 6px; margin-bottom: 18px;
-            background: var(--white); padding: 5px;
-            border-radius: 22px; box-shadow: var(--shadow);
-        }
-        .tab-btn {
-            flex: 1; padding: 10px 4px; border: none;
-            border-radius: 17px; background: transparent;
-            color: var(--wine); font-family: 'Inter', sans-serif;
-            font-weight: 600; font-size: 0.78rem; cursor: pointer;
-            transition: all 0.22s;
-        }
-        .tab-btn.active { background: var(--wine); color: white; box-shadow: 0 4px 12px rgba(125,52,65,0.22); }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+--rose:#ff8fb1;
+--rose-soft:#ffe2ea;
 
-        /* Cards emergência */
-        .contact-list { display: flex; flex-direction: column; gap: 12px; }
-        .contact-card {
-            background: var(--white); padding: 16px 18px;
-            border-radius: 18px; box-shadow: var(--shadow);
-            display: flex; justify-content: space-between; align-items: center;
-            border: 1px solid rgba(125,52,65,0.05);
-        }
-        .contact-info h3 { margin: 0; font-size: 0.97rem; }
-        .contact-info p  { margin: 4px 0 0; font-size: 0.83rem; color: var(--rose); font-weight: 700; }
-        .btn-call {
-            text-decoration: none; background: #fdf0f0;
-            padding: 10px; border-radius: 50%; font-size: 1.2rem;
-            flex-shrink: 0;
-        }
+--gold:#d7a85f;
 
-        /* Voluntárias */
-        .aviso {
-            background: #fff8e1; border-left: 3px solid #e65100;
-            padding: 10px 14px; border-radius: 12px;
-            font-size: 0.81rem; margin-bottom: 16px; line-height: 1.5;
-        }
+--white:#fff;
 
-        .vol-card {
-            background: var(--white); padding: 18px;
-            border-radius: 20px; box-shadow: var(--shadow);
-            border: 1px solid rgba(125,52,65,0.05);
-            margin-bottom: 14px;
-        }
-        .vol-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-        .vol-avatar {
-            width: 46px; height: 46px; border-radius: 50%;
-            background: #fdf0f0; display: flex; align-items: center;
-            justify-content: center; font-size: 1.4rem; flex-shrink: 0;
-        }
-        .vol-nome { font-weight: 700; margin: 0; font-size: 0.97rem; }
-        .vol-area { font-size: 0.78rem; opacity: 0.6; margin: 2px 0 0; }
-        .vol-desc { font-size: 0.84rem; opacity: 0.78; margin: 0 0 10px; line-height: 1.5; }
-        .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-        .badge {
-            padding: 3px 12px; background: #fdf0f0;
-            border-radius: 20px; font-size: 0.73rem; font-weight: 700;
-        }
-        .vol-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-        .btn-contatar {
-            display: inline-block; background: var(--wine); color: white;
-            padding: 9px 16px; border-radius: 14px; font-weight: 700;
-            font-size: 0.82rem; text-decoration: none;
-        }
-        .btn-whats {
-            display: inline-block; background: #25D366; color: white;
-            padding: 9px 16px; border-radius: 14px; font-weight: 700;
-            font-size: 0.82rem; text-decoration: none;
-        }
+--glass:rgba(255,255,255,.72);
 
-        /* Busca voluntárias */
-        .search-box {
-            width: 100%; padding: 11px 14px;
-            border: 1.5px solid #f0d0d5; border-radius: 14px;
-            font-family: 'Inter', sans-serif; font-size: 0.93rem;
-            color: var(--wine); background: #fff8f6;
-            outline: none; margin-bottom: 16px;
-        }
-        .search-box:focus { border-color: var(--rose); }
+--shadow:
+0 30px 80px rgba(110,49,64,.08);
 
-        /* CTA ser voluntária dentro da aba */
-        .cta-vol {
-            background: linear-gradient(135deg, var(--wine), #a34555);
-            color: white; border-radius: 20px; padding: 18px;
-            margin-bottom: 16px; display: flex; align-items: center;
-            gap: 14px; text-decoration: none; cursor: pointer;
-            border: none; width: 100%; font-family: 'Inter', sans-serif;
-            transition: opacity 0.2s;
-        }
-        .cta-vol:active { opacity: 0.88; }
-        .cta-vol-icon { font-size: 1.8rem; flex-shrink: 0; }
-        .cta-vol-text { text-align: left; }
-        .cta-vol-text h3 { margin: 0; font-family: 'Playfair Display', serif; font-size: 1rem; color: white; }
-        .cta-vol-text p  { margin: 4px 0 0; font-size: 0.8rem; opacity: 0.85; }
-        .cta-vol-arrow { margin-left: auto; font-size: 1.2rem; opacity: 0.8; }
+--shadow-soft:
+0 12px 40px rgba(110,49,64,.08);
 
-        /* Formulário adicionar */
-        .add-section { margin-top: 4px; }
-        .field { margin-bottom: 12px; }
-        .field label { display: block; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; opacity: 0.65; }
-        .field input, .field select, .field textarea {
-            width: 100%; padding: 11px 14px;
-            border: 1.5px solid #f0d0d5; border-radius: 14px;
-            font-family: 'Inter', sans-serif; font-size: 0.93rem;
-            color: var(--wine); background: #fff8f6; outline: none; resize: none;
-        }
-        .field input:focus, .field select:focus { border-color: var(--rose); }
-        .btn-add {
-            background: var(--wine); color: white; border: none;
-            padding: 14px 30px; border-radius: 30px; font-weight: bold;
-            cursor: pointer; width: 100%; font-size: 0.95rem;
-            box-shadow: 0 5px 15px rgba(125,52,65,0.2); margin-top: 8px;
-            font-family: 'Inter', sans-serif;
-        }
-        .msg { display: none; margin-top: 10px; padding: 10px; border-radius: 12px; font-size: 0.88rem; }
-        .msg.ok  { display: block; background: #e8f5e9; color: #2e7d32; }
-        .msg.err { display: block; background: #fdecea; color: #b71c1c; }
+--border:
+rgba(255,255,255,.65);
+}
 
-        /* Nav */
-        .bottom-nav {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 400px; background: white; padding: 15px;
-            border-radius: 30px; display: flex; justify-content: space-around;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1); z-index: 100;
-        }
-        .nav-item { text-decoration: none; font-size: 1.5rem; }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-        /* Modal voluntária */
-        .modal-overlay {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,0.6); z-index: 500;
-            align-items: flex-end; justify-content: center;
-        }
-        .modal-overlay.open { display: flex; }
-        .modal-sheet {
-            background: white; width: 100%; max-width: 520px;
-            border-radius: 28px 28px 0 0; padding: 30px 24px 44px;
-            animation: slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
-            max-height: 90vh; overflow-y: auto;
-        }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .modal-sheet h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin: 0 0 6px; }
-        .msub { font-size: 0.84rem; opacity: 0.7; margin: 0 0 20px; line-height: 1.5; }
-        .btn-enviar {
-            width: 100%; background: linear-gradient(135deg, var(--wine), #a34555);
-            color: white; border: none; padding: 15px; border-radius: 20px;
-            font-weight: 700; font-size: 0.95rem; cursor: pointer;
-            font-family: 'Inter', sans-serif; margin-top: 6px;
-        }
-        .btn-cancelar {
-            width: 100%; background: #f0f0f0; color: #555; border: none;
-            padding: 13px; border-radius: 20px; font-weight: 600;
-            font-size: 0.9rem; cursor: pointer; font-family: 'Inter', sans-serif; margin-top: 10px;
-        }
-        .msg-ok-modal {
-            display: none; background: #e8f5e9; color: #2e7d32;
-            padding: 12px 16px; border-radius: 14px; font-size: 0.88rem;
-            margin-top: 12px; line-height: 1.5;
-        }
-        .msg-ok-modal.show { display: block; }
+body{
 
-        .empty-state {
-            text-align: center; padding: 30px 10px; opacity: 0.5; font-size: 0.88rem;
-        }
-        .empty-state span { display: block; font-size: 2.5rem; margin-bottom: 8px; }
-    </style>
+font-family:'Inter';
+
+background:
+radial-gradient(
+circle at top,
+#fff,
+#fff8fa,
+#fff2f5
+);
+
+color:var(--wine);
+
+min-height:100vh;
+
+padding-bottom:150px;
+
+overflow-x:hidden;
+
+}
+
+body::before{
+
+content:'';
+
+position:fixed;
+
+top:-200px;
+right:-100px;
+
+width:500px;
+height:500px;
+
+background:
+radial-gradient(
+circle,
+rgba(255,143,177,.18),
+transparent 70%
+);
+
+pointer-events:none;
+
+z-index:-1;
+
+}
+
+/* HEADER */
+
+.header{
+
+padding:42px 20px;
+
+text-align:center;
+
+position:relative;
+
+}
+
+.header h1{
+
+font-family:'Playfair Display';
+
+font-size:clamp(
+2rem,
+4vw,
+3rem
+);
+
+}
+
+.header p{
+
+margin-top:10px;
+
+opacity:.6;
+
+}
+
+.header::after{
+
+content:'';
+
+position:absolute;
+
+bottom:0;
+
+left:50%;
+
+transform:translateX(-50%);
+
+width:90px;
+
+height:2px;
+
+background:
+linear-gradient(
+90deg,
+transparent,
+var(--rose),
+transparent
+);
+
+}
+
+/* CONTAINER */
+
+.container{
+
+max-width:650px;
+
+margin:auto;
+
+padding:0 20px;
+
+}
+
+/* TABS */
+
+.tabs{
+
+display:flex;
+
+gap:10px;
+
+padding:8px;
+
+border-radius:999px;
+
+background:
+rgba(255,255,255,.7);
+
+backdrop-filter:blur(20px);
+
+margin-bottom:26px;
+
+box-shadow:
+var(--shadow);
+
+}
+
+.tab-btn{
+
+flex:1;
+
+padding:16px;
+
+border:none;
+
+cursor:pointer;
+
+border-radius:999px;
+
+background:transparent;
+
+color:var(--wine);
+
+font-weight:700;
+
+transition:.25s;
+
+}
+
+.tab-btn.active{
+
+background:
+linear-gradient(
+135deg,
+var(--wine),
+#96455a
+);
+
+color:white;
+
+}
+
+.tab-btn:hover{
+
+transform:translateY(-2px);
+
+}
+
+/* ABAS */
+
+.tab-content{
+
+display:none;
+
+animation:fade .35s;
+
+}
+
+.tab-content.active{
+
+display:block;
+
+}
+
+@keyframes fade{
+
+from{
+opacity:0;
+transform:translateY(10px);
+}
+
+to{
+opacity:1;
+transform:none;
+}
+
+}
+
+/* CARDS */
+
+.contact-card,
+.vol-card{
+
+background:
+var(--glass);
+
+backdrop-filter:blur(18px);
+
+border-radius:30px;
+
+padding:28px;
+
+margin-bottom:18px;
+
+box-shadow:
+var(--shadow-soft);
+
+border:
+1px solid
+var(--border);
+
+transition:.3s;
+
+}
+
+.contact-card:hover,
+.vol-card:hover{
+
+transform:
+translateY(-4px);
+
+}
+
+.contact-card{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+.contact-info h3{
+
+margin-bottom:8px;
+
+}
+
+.contact-info p{
+
+color:var(--rose);
+
+font-weight:700;
+
+}
+
+/* CARD AVISO */
+
+.warning-card{
+
+display:flex;
+
+gap:18px;
+
+padding:22px;
+
+margin-bottom:20px;
+
+border-radius:26px;
+
+background:
+linear-gradient(
+135deg,
+#fff,
+#fff5f7
+);
+
+box-shadow:
+0 12px 35px
+rgba(110,49,64,.08);
+
+}
+
+.warning-icon{
+
+width:50px;
+
+height:50px;
+
+flex-shrink:0;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+border-radius:18px;
+
+background:
+var(--rose-soft);
+
+font-size:1.4rem;
+
+}
+
+.warning-card p{
+
+margin-top:8px;
+
+opacity:.75;
+
+line-height:1.7;
+
+}
+
+/* BUSCA */
+
+.search-box,
+.field input,
+.field select,
+.field textarea{
+
+width:100%;
+
+padding:16px;
+
+border-radius:18px;
+
+border:
+
+1px solid
+rgba(217,139,147,.2);
+
+outline:none;
+
+margin-top:8px;
+
+margin-bottom:18px;
+
+background:
+rgba(255,255,255,.75);
+
+}
+
+.search-box:focus,
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+
+box-shadow:
+0 10px 20px
+rgba(217,139,147,.15);
+
+}
+
+/* VOLUNTÁRIAS */
+
+.vol-top{
+
+display:flex;
+
+gap:18px;
+
+align-items:center;
+
+}
+
+.vol-avatar{
+
+width:80px;
+
+height:80px;
+
+border-radius:50%;
+
+background:
+linear-gradient(
+135deg,
+#fff,
+var(--rose-soft)
+);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:2rem;
+
+}
+
+.vol-nome{
+
+font-size:1.2rem;
+
+font-weight:800;
+
+}
+
+.vol-area{
+
+opacity:.6;
+
+margin-top:4px;
+
+}
+
+.vol-desc{
+
+margin-top:22px;
+
+line-height:1.9;
+
+}
+
+/* COMPETÊNCIAS */
+
+.competencias{
+
+margin-top:20px;
+
+padding:18px;
+
+border-radius:22px;
+
+background:
+linear-gradient(
+135deg,
+#fff,
+#fff8fa
+);
+
+}
+
+.comp-title{
+
+font-size:.8rem;
+
+font-weight:800;
+
+letter-spacing:.1em;
+
+opacity:.65;
+
+margin-bottom:14px;
+
+text-transform:uppercase;
+
+}
+
+.badges{
+
+display:flex;
+
+flex-wrap:wrap;
+
+gap:10px;
+
+}
+
+.badge{
+
+padding:10px 16px;
+
+border-radius:999px;
+
+background:
+linear-gradient(
+135deg,
+#fff,
+var(--rose-soft)
+);
+
+font-size:.8rem;
+
+font-weight:700;
+
+}
+
+.badge::before{
+
+content:"✦ ";
+
+color:var(--rose);
+
+}
+
+/* BOTÕES */
+
+.vol-actions{
+
+display:flex;
+
+gap:12px;
+
+margin-top:20px;
+
+}
+
+.btn-call,
+.btn-contatar,
+.btn-whats,
+.btn-add,
+.btn-enviar{
+
+border:none;
+
+cursor:pointer;
+
+text-decoration:none;
+
+padding:16px 20px;
+
+border-radius:18px;
+
+font-weight:700;
+
+display:inline-flex;
+
+align-items:center;
+
+justify-content:center;
+
+transition:.3s;
+
+}
+
+.btn-call,
+.btn-contatar,
+.btn-add,
+.btn-enviar{
+
+background:
+linear-gradient(
+135deg,
+var(--wine),
+#9f5062
+);
+
+color:white;
+
+}
+
+.btn-whats{
+
+background:#25d366;
+
+color:white;
+
+}
+
+.btn-call:hover,
+.btn-contatar:hover,
+.btn-whats:hover,
+.btn-add:hover,
+.btn-enviar:hover{
+
+transform:
+translateY(-3px);
+
+}
+
+/* EMPTY */
+
+.empty-state{
+
+text-align:center;
+
+padding:60px;
+
+opacity:.7;
+
+}
+
+.empty-state span{
+
+font-size:3rem;
+
+display:block;
+
+margin-bottom:14px;
+
+}
+
+/* MODAL */
+
+.modal-overlay{
+
+display:none;
+
+position:fixed;
+
+inset:0;
+
+background:
+rgba(0,0,0,.5);
+
+align-items:flex-end;
+
+z-index:300;
+
+}
+
+.modal-overlay.open{
+
+display:flex;
+
+}
+
+.modal-sheet{
+
+width:100%;
+
+background:
+
+linear-gradient(
+180deg,
+#fff,
+#fff7f8
+);
+
+padding:34px;
+
+border-radius:
+
+34px 34px 0 0;
+
+}
+
+/* NAV */
+
+.bottom-nav{
+
+position:fixed;
+
+bottom:20px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+width:90%;
+
+max-width:420px;
+
+display:flex;
+
+justify-content:space-around;
+
+padding:18px;
+
+border-radius:28px;
+
+background:
+rgba(255,255,255,.82);
+
+backdrop-filter:blur(22px);
+
+box-shadow:
+0 18px 50px
+rgba(0,0,0,.08);
+
+}
+
+.nav-item{
+
+font-size:1.5rem;
+
+text-decoration:none;
+
+}
+
+.nav-item:hover{
+
+transform:translateY(-4px);
+
+}
+
+/* MOBILE */
+
+@media(max-width:680px){
+
+.vol-actions{
+
+flex-direction:column;
+
+}
+
+.tabs{
+
+border-radius:26px;
+
+}
+
+}
+
+.navbar{
+
+position:sticky;
+
+top:0;
+
+z-index:500;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:
+
+18px 6%;
+
+background:
+
+rgba(255,255,255,.75);
+
+backdrop-filter:
+
+blur(18px);
+
+border-bottom:
+
+1px solid var(--border);
+
+}
+
+
+.logo{
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+text-decoration:none;
+
+color:inherit;
+
+}
+
+
+.logo img{
+
+height:46px;
+
+}
+
+
+.logo span{
+
+font-family:
+'Playfair Display';
+
+font-size:
+1.45rem;
+
+color:
+var(--wine);
+
+}
+
+
+.nav-actions{
+
+display:flex;
+
+gap:12px;
+
+}
+
+
+.nav-btn{
+
+padding:
+
+12px 18px;
+
+border-radius:
+
+999px;
+
+background:
+
+white;
+
+text-decoration:none;
+
+color:
+
+var(--wine);
+
+font-weight:
+600;
+
+border:
+
+1px solid var(--border);
+
+transition:
+.25s;
+
+}
+
+
+.nav-btn:hover{
+
+transform:
+translateY(-2px);
+
+}
+</style>
+
 </head>
+
 <body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+
+<a
+href="/"
+class="logo">
+
+<img
+src="./static/imagens/logo.png">
+
+<span>
+
+Minha Maquiagem
+
+</span>
+
+</a>
+
+
+<div class="nav-actions">
+
+<a
+href="/"
+class="nav-btn">
+
+Voltar
+
+</a>
+
+</div>
+
+</header>
 
 <div class="header">
     <h1>Contatos de Confiança</h1>
@@ -202,270 +913,941 @@
 </div>
 
 <div class="container">
-    <div class="tabs">
-        <button class="tab-btn active" onclick="mudarAba('emergencia', this)">🆘 Emergência</button>
-        <button class="tab-btn" onclick="mudarAba('voluntarias', this)">🤝 Voluntárias</button>
-        <button class="tab-btn" onclick="mudarAba('adicionar', this)">＋ Adicionar</button>
-    </div>
 
-    <!-- ABA EMERGÊNCIA -->
-    <div id="aba-emergencia" class="tab-content active">
-        <div class="contact-list" id="listaContatos">
-            <div class="contact-card">
-                <div class="contact-info"><h3>🚨 Polícia Militar — DF</h3><p>190</p></div>
-                <a href="tel:190" class="btn-call">📞</a>
-            </div>
-            <div class="contact-card">
-                <div class="contact-info"><h3>📞 Central da Mulher</h3><p>180</p></div>
-                <a href="tel:180" class="btn-call">📞</a>
-            </div>
-            <div class="contact-card">
-                <div class="contact-info"><h3>🚑 SAMU</h3><p>192</p></div>
-                <a href="tel:192" class="btn-call">📞</a>
-            </div>
-            <div class="contact-card">
-                <div class="contact-info"><h3>🔵 DEAM — Delegacia da Mulher DF</h3><p>(61) 3242-5813</p></div>
-                <a href="tel:01932425813" class="btn-call">📞</a>
-            </div>
-            <div class="contact-card">
-                <div class="contact-info"><h3>🏠 Casa da Mulher Brasileira — DF</h3><p>(61) 3204-0033</p></div>
-                <a href="tel:01932040033" class="btn-call">📞</a>
-            </div>
-        </div>
-    </div>
+<!-- TABS -->
+<div class="tabs">
 
-    <!-- ABA VOLUNTÁRIAS -->
-    <div id="aba-voluntarias" class="tab-content">
+<button class="tab-btn active" data-tab="emergencia">
+🆘 Emergência
+</button>
 
-        <div class="aviso">⚠️ Contato para orientação inicial — não substitui o 190 em situações de perigo.</div>
+<button class="tab-btn" data-tab="voluntarias">
+🤝 Voluntárias
+</button>
 
-        <!-- Busca -->
-        <input type="text" class="search-box" placeholder="🔍 Buscar por nome ou área..." oninput="filtrarVol(this.value)">
-
-        <div id="listaVoluntarias"></div>
-
-    </div>
-
-    <!-- ABA ADICIONAR -->
-    <div id="aba-adicionar" class="tab-content">
-        <div class="add-section">
-            <div class="field">
-                <label>Tipo de Cadastro</label>
-                <select id="tipoRegistro" onchange="toggleCampos()">
-                    <option value="emergencia">Contato de Emergência</option>
-                    <option value="voluntaria">Nova Voluntária</option>
-                </select>
-            </div>
-            <div class="field">
-                <label>Nome</label>
-                <input type="text" id="novoNome" placeholder="Ex: Maria Silva">
-            </div>
-            <div id="campoVoluntaria" style="display:none;">
-                <div class="field">
-                    <label>Área (Ex: Advogada)</label>
-                    <input type="text" id="novaArea" placeholder="Ex: Psicóloga">
-                </div>
-            </div>
-            <div class="field">
-                <label>Telefone</label>
-                <input type="tel" id="novoTel" placeholder="(61) 99999-9999">
-            </div>
-            <button class="btn-add" onclick="processarCadastro()">+ Salvar Registro</button>
-            <div id="msgAdd" class="msg"></div>
-        </div>
-    </div>
+<button class="tab-btn" data-tab="adicionar">
+＋ Adicionar
+</button>
 
 </div>
 
-<!-- MODAL SER VOLUNTÁRIA -->
+
+<!-- ========================= -->
+<!-- ABA EMERGÊNCIA -->
+<!-- ========================= -->
+
+<div id="aba-emergencia" class="tab-content active">
+
+<div class="contact-list" id="listaContatos">
+
+<div class="contact-card">
+
+<div class="contact-info">
+<h3>🚨 Polícia Militar — DF</h3>
+<p>190</p>
+</div>
+
+<a href="tel:190" class="btn-call">
+📞
+</a>
+
+</div>
+
+
+<div class="contact-card">
+
+<div class="contact-info">
+<h3>📞 Central da Mulher</h3>
+<p>180</p>
+</div>
+
+<a href="tel:180" class="btn-call">
+📞
+</a>
+
+</div>
+
+
+<div class="contact-card">
+
+<div class="contact-info">
+<h3>🚑 SAMU</h3>
+<p>192</p>
+</div>
+
+<a href="tel:192" class="btn-call">
+📞
+</a>
+
+</div>
+
+
+<div class="contact-card">
+
+<div class="contact-info">
+<h3>🔵 DEAM — Delegacia da Mulher DF</h3>
+<p>(61) 3242-5813</p>
+</div>
+
+<a href="tel:6132425813" class="btn-call">
+📞
+</a>
+
+</div>
+
+
+<div class="contact-card">
+
+<div class="contact-info">
+<h3>🏠 Casa da Mulher Brasileira — DF</h3>
+<p>(61) 3204-0033</p>
+</div>
+
+<a href="tel:6132040033" class="btn-call">
+📞
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- VOLUNTÁRIAS -->
+<!-- ========================= -->
+
+<div id="aba-voluntarias" class="tab-content">
+
+<div class="warning-card">
+
+<div class="warning-icon">
+⚠️
+</div>
+
+<div>
+
+<strong>Apoio inicial e acolhimento</strong>
+
+<p>
+As voluntárias oferecem orientação inicial.
+Em situações de risco imediato ligue 190.
+</p>
+
+</div>
+
+</div>
+
+
+<input
+class="search-box"
+type="text"
+placeholder="🔍 Buscar por nome ou área..."
+>
+
+
+<div id="listaVoluntarias">
+
+
+<!-- CARD -->
+
+<div class="vol-card">
+
+<div class="vol-top">
+
+<div class="vol-avatar">
+👩‍⚖️
+</div>
+
+<div>
+
+<div class="vol-nome">
+Dra. Carla Mendes
+</div>
+
+<div class="vol-area">
+Advogada
+</div>
+
+</div>
+
+</div>
+
+<p class="vol-desc">
+
+Orientação jurídica gratuita para casos de violência doméstica,
+medidas protetivas e encaminhamento legal.
+
+</p>
+
+
+<div class="competencias">
+
+<div class="comp-title">
+
+Como pode ajudar
+
+</div>
+
+<div class="badges">
+
+<div class="badge">
+Jurídico
+</div>
+
+<div class="badge">
+Medida Protetiva
+</div>
+
+<div class="badge">
+Boletim de Ocorrência
+</div>
+
+</div>
+
+</div>
+
+
+<div class="vol-actions">
+
+<a
+href="tel:61999990001"
+class="btn-contatar"
+>
+📞 Ligar
+</a>
+
+<a
+href="#"
+class="btn-whats"
+>
+💬 WhatsApp
+</a>
+
+</div>
+
+</div>
+
+
+<!-- CARD -->
+
+<div class="vol-card">
+
+<div class="vol-top">
+
+<div class="vol-avatar">
+🧠
+</div>
+
+<div>
+
+<div class="vol-nome">
+Psic. Renata Oliveira
+</div>
+
+<div class="vol-area">
+Psicóloga
+</div>
+
+</div>
+
+</div>
+
+<p class="vol-desc">
+
+Suporte emocional e acolhimento especializado.
+
+</p>
+
+<div class="competencias">
+
+<div class="comp-title">
+
+Como pode ajudar
+
+</div>
+
+<div class="badges">
+
+<div class="badge">
+Escuta
+</div>
+
+<div class="badge">
+Trauma
+</div>
+
+<div class="badge">
+Atendimento Online
+</div>
+
+</div>
+
+</div>
+
+
+<div class="vol-actions">
+
+<a href="#" class="btn-contatar">
+📞 Ligar
+</a>
+
+<a href="#" class="btn-whats">
+💬 WhatsApp
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- ADICIONAR -->
+<!-- ========================= -->
+
+<div id="aba-adicionar" class="tab-content">
+
+<div class="contact-card">
+
+<h3
+style="
+margin-bottom:20px;
+"
+>
+
+➕ Adicionar contato de emergência
+
+</h3>
+
+
+<div class="field">
+
+<label>
+Nome
+</label>
+
+<input
+type="text"
+id="novoNome"
+placeholder="Ex: Maria Silva"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Telefone
+</label>
+
+<input
+type="tel"
+id="novoTel"
+placeholder="(61) 99999-9999"
+>
+
+</div>
+
+
+<button class="btn-add">
+
+Salvar contato
+
+</button>
+
+<div id="msgAdd"></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- MODAL -->
+
 <div class="modal-overlay" id="modalVol">
-    <div class="modal-sheet">
-        <h2>🤝 Quero ser Voluntária</h2>
-        <p class="msub">Preencha seus dados. Nossa equipe validará seu cadastro antes de você aparecer na rede.</p>
-        <div class="field">
-            <label>Nome completo</label>
-            <input type="text" id="volNome" placeholder="Seu nome completo">
-        </div>
-        <div class="field">
-            <label>Área de atuação</label>
-            <select id="volArea">
-                <option value="">Selecione...</option>
-                <option>Advogada / Jurídico</option>
-                <option>Psicóloga</option>
-                <option>Assistente Social</option>
-                <option>Médica / Enfermeira</option>
-                <option>Educadora</option>
-                <option>Outra área</option>
-            </select>
-        </div>
-        <div class="field">
-            <label>Telefone / WhatsApp</label>
-            <input type="tel" id="volTel" placeholder="(61) 99999-9999">
-        </div>
-        <div class="field">
-            <label>Como você quer ajudar?</label>
-            <textarea id="volDesc" rows="3" placeholder="Descreva brevemente como quer contribuir..."></textarea>
-        </div>
-        <button class="btn-enviar" onclick="enviarCadastroVol()">Enviar cadastro →</button>
-        <button class="btn-cancelar" onclick="fecharModalVol()">Cancelar</button>
-        <div class="msg-ok-modal" id="msgOkModal">
-            ✅ <strong>Cadastro recebido com sucesso!</strong><br>
-            Nossa equipe analisará suas informações e entrará em contato em breve. Obrigada por querer fazer a diferença! 💜
-        </div>
-    </div>
+
+<div class="modal-sheet">
+
+<h2>
+🤝 Quero ser Voluntária
+</h2>
+
+<p class="msub">
+
+Preencha seus dados.
+Nossa equipe validará o cadastro.
+
+</p>
+
+
+<div class="field">
+
+<label>
+Nome
+</label>
+
+<input type="text">
+
 </div>
+
+
+<div class="field">
+
+<label>
+Área
+</label>
+
+<select>
+
+<option>
+Selecione
+</option>
+
+<option>
+Advogada
+</option>
+
+<option>
+Psicóloga
+</option>
+
+<option>
+Assistente Social
+</option>
+
+<option>
+Outra
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Telefone
+</label>
+
+<input type="tel">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Como deseja ajudar?
+</label>
+
+<textarea rows="4"></textarea>
+
+</div>
+
+
+<button class="btn-enviar">
+
+Enviar cadastro →
+
+</button>
+
+</div>
+
+</div>
+
 
 <nav class="bottom-nav">
-    <a href="/home-secret" class="nav-item">🏠</a>
-    <a href="/localizacao" class="nav-item">📍</a>
-    <a href="/contatos" class="nav-item">👥</a>
-    <a href="/diario" class="nav-item">📝</a>
+
+<a href="/home-secret" class="nav-item">
+🏠
+</a>
+
+<a href="/localizacao" class="nav-item">
+📍
+</a>
+
+<a href="/contatos" class="nav-item">
+👥
+</a>
+
+<a href="/diario" class="nav-item">
+📝
+</a>
+
 </nav>
 
 <script>
-    let voluntarias = [
-        {
-            emoji: '👩‍⚖️', nome: 'Dra. Carla Mendes', area: 'Advogada',
-            desc: 'Orientação jurídica gratuita em casos de violência doméstica. Medidas protetivas e Boletim de Ocorrência.',
-            tags: ['Jurídico', 'Medida Protetiva', 'BO'], tel: '61999990001', whats: '38999142866'
-        },
-        {
-            emoji: '🧠', nome: 'Psic. Renata Oliveira', area: 'Psicóloga',
-            desc: 'Suporte emocional especializado para vítimas de violência. Atendimento online disponível.',
-            tags: ['Psicológico', 'Online', 'Trauma'], tel: '61999990002', whats: '6181636444'
-        },
-        {
-            emoji: '🤝', nome: 'Felipe Garrido', area: 'Assistente Social',
-            desc: 'Auxílio com documentação, abrigos e encaminhamentos para serviços sociais do DF.',
-            tags: ['Social', 'Abrigos', 'Documentos'], tel: '61999990003', whats: '5561999990003'
-        },
-        {
-            emoji: '⚕️', nome: 'Dr. Eduardo Branquinho', area: 'Médico',
-            desc: 'Orientação sobre laudos médicos para processos judiciais e atendimento de saúde prioritário.',
-            tags: ['Saúde', 'Laudos', 'Médico'], tel: '61999990004', whats: '5561999990004'
-        }
-    ];
+    // ======================
+// DADOS VOLUNTÁRIAS
+// ======================
 
-    let voluntariasFiltradas = [...voluntarias];
+const voluntarias = [
 
-    function renderizarVoluntarias(lista) {
-        const container = document.getElementById('listaVoluntarias');
-        if (lista.length === 0) {
-            container.innerHTML = `<div class="empty-state"><span>🔍</span>Nenhuma voluntária encontrada para essa busca.</div>`;
-            return;
-        }
-        container.innerHTML = lista.map(v => `
-            <div class="vol-card">
-                <div class="vol-top">
-                    <div class="vol-avatar">${v.emoji}</div>
-                    <div>
-                        <p class="vol-nome">${v.nome}</p>
-                        <p class="vol-area">${v.area}</p>
-                    </div>
-                </div>
-                <p class="vol-desc">${v.desc}</p>
-                <div class="badges">${v.tags.map(t => `<span class="badge">${t}</span>`).join('')}</div>
-                <div class="vol-actions">
-                    <a href="tel:${v.tel}" class="btn-contatar">📞 Ligar</a>
-                    <a href="https://wa.me/${v.whats}?text=Olá, vi seu contato no Meu Escudo e preciso de apoio." 
-                       class="btn-whats" target="_blank">💬 WhatsApp</a>
-                </div>
-            </div>
-        `).join('');
-    }
+{
+emoji:"👩‍⚖️",
+nome:"Dra. Carla Mendes",
+area:"Advogada",
+desc:"Orientação jurídica gratuita para casos de violência doméstica, medidas protetivas e encaminhamento legal.",
+tags:[
+"Jurídico",
+"Medida Protetiva",
+"Boletim de Ocorrência"
+],
+tel:"61999990001",
+whats:"5561999990001"
+},
 
-    function filtrarVol(termo) {
-        const t = termo.toLowerCase();
-        voluntariasFiltradas = voluntarias.filter(v =>
-            v.nome.toLowerCase().includes(t) ||
-            v.area.toLowerCase().includes(t) ||
-            v.tags.some(tag => tag.toLowerCase().includes(t))
-        );
-        renderizarVoluntarias(voluntariasFiltradas);
-    }
+{
+emoji:"🧠",
+nome:"Psic. Renata Oliveira",
+area:"Psicóloga",
+desc:"Suporte emocional e acolhimento especializado.",
+tags:[
+"Escuta",
+"Trauma",
+"Atendimento Online"
+],
+tel:"61999990002",
+whats:"5561999990002"
+}
 
-    function mudarAba(id, btn) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-        document.getElementById('aba-' + id).classList.add('active');
-        btn.classList.add('active');
-    }
+];
 
-    function ativarAbaPorHash() {
-        const hash = window.location.hash.replace('#', '');
-        if (!hash) return;
-        const btn = Array.from(document.querySelectorAll('.tab-btn')).find(el => el.getAttribute('onclick')?.includes(`'${hash}'`));
-        if (btn && document.getElementById('aba-' + hash)) {
-            mudarAba(hash, btn);
-        }
-    }
+let listaAtual=[...voluntarias];
 
-    window.addEventListener('DOMContentLoaded', ativarAbaPorHash);
-    window.addEventListener('hashchange', ativarAbaPorHash);
 
-    function toggleCampos() {
-        const tipo = document.getElementById('tipoRegistro').value;
-        document.getElementById('campoVoluntaria').style.display = tipo === 'voluntaria' ? 'block' : 'none';
-    }
+// ======================
+// RENDER
+// ======================
 
-    function processarCadastro() {
-        const tipo = document.getElementById('tipoRegistro').value;
-        const nome = document.getElementById('novoNome').value.trim();
-        const tel  = document.getElementById('novoTel').value.trim();
-        const msg  = document.getElementById('msgAdd');
-        if (!nome || !tel) {
-            msg.className = 'msg err';
-            msg.textContent = 'Preencha os campos obrigatórios.';
-            return;
-        }
-        if (tipo === 'voluntaria') {
-            const area = document.getElementById('novaArea').value || 'Voluntária';
-            voluntarias.push({
-                emoji: '🤝', nome, area,
-                desc: 'Nova colaboradora da rede de apoio.',
-                tags: ['Nova'], tel: tel.replace(/\D/g,''),
-                whats: '55' + tel.replace(/\D/g,'')
-            });
-            renderizarVoluntarias(voluntarias);
-        } else {
-            const lista = document.getElementById('listaContatos');
-            const card  = document.createElement('div');
-            card.className = 'contact-card';
-            card.innerHTML = `<div class="contact-info"><h3>${nome}</h3><p>${tel}</p></div><a href="tel:${tel.replace(/\D/g,'')}" class="btn-call">📞</a>`;
-            lista.appendChild(card);
-        }
-        msg.className = 'msg ok';
-        msg.textContent = 'Adicionado com sucesso!';
-        setTimeout(() => {
-            msg.className = 'msg';
-            const idx = tipo === 'voluntaria' ? 1 : 0;
-            mudarAba(tipo === 'voluntaria' ? 'voluntarias' : 'emergencia', document.querySelectorAll('.tab-btn')[idx]);
-        }, 1200);
-    }
+function renderizarVoluntarias(lista){
 
-    // Modal voluntária
-    function abrirModalVol() {
-        document.getElementById('modalVol').classList.add('open');
-        document.getElementById('msgOkModal').classList.remove('show');
-        document.querySelector('.btn-enviar').style.display = 'block';
-    }
-    function fecharModalVol() {
-        document.getElementById('modalVol').classList.remove('open');
-    }
-    function enviarCadastroVol() {
-        const nome = document.getElementById('volNome').value.trim();
-        const area = document.getElementById('volArea').value;
-        const tel  = document.getElementById('volTel').value.trim();
-        if (!nome || !area || !tel) {
-            alert('Por favor, preencha nome, área e telefone.');
-            return;
-        }
-        document.querySelector('.btn-enviar').style.display = 'none';
-        document.getElementById('msgOkModal').classList.add('show');
-        setTimeout(() => fecharModalVol(), 3800);
-    }
+const container=
+document.getElementById(
+"listaVoluntarias"
+);
 
-    renderizarVoluntarias(voluntarias);
+if(!container)return;
+
+if(lista.length===0){
+
+container.innerHTML=`
+<div class="empty-state">
+
+<span>🔍</span>
+
+Nenhuma voluntária encontrada.
+
+</div>
+`;
+
+return;
+
+}
+
+container.innerHTML=
+lista.map(v=>`
+
+<div class="vol-card">
+
+<div class="vol-top">
+
+<div class="vol-avatar">
+
+${v.emoji}
+
+</div>
+
+<div>
+
+<div class="vol-nome">
+
+${v.nome}
+
+</div>
+
+<div class="vol-area">
+
+${v.area}
+
+</div>
+
+</div>
+
+</div>
+
+
+<p class="vol-desc">
+
+${v.desc}
+
+</p>
+
+
+<div class="competencias">
+
+<div class="comp-title">
+
+Como pode ajudar
+
+</div>
+
+
+<div class="badges">
+
+${v.tags.map(
+tag=>
+`<div class="badge">${tag}</div>`
+).join('')}
+
+</div>
+
+</div>
+
+
+<div class="vol-actions">
+
+<a
+href="tel:${v.tel}"
+class="btn-contatar"
+>
+
+📞 Ligar
+
+</a>
+
+
+<a
+target="_blank"
+
+href="https://wa.me/${v.whats}"
+
+class="btn-whats"
+>
+
+💬 WhatsApp
+
+</a>
+
+</div>
+
+</div>
+
+`).join('');
+
+}
+
+
+// ======================
+// BUSCA
+// ======================
+
+function filtrarVol(valor){
+
+const termo=
+valor.toLowerCase();
+
+listaAtual=
+voluntarias.filter(v=>
+
+v.nome
+.toLowerCase()
+.includes(termo)
+
+||
+
+v.area
+.toLowerCase()
+.includes(termo)
+
+||
+
+v.tags.some(
+t=>
+t.toLowerCase()
+.includes(termo)
+)
+
+);
+
+renderizarVoluntarias(
+listaAtual
+);
+
+}
+
+document
+.querySelector(
+".search-box"
+)
+?.addEventListener(
+"input",
+e=>
+filtrarVol(
+e.target.value
+)
+);
+
+
+// ======================
+// ABAS
+// ======================
+
+const tabs=
+document.querySelectorAll(
+".tab-btn"
+);
+
+const conteudos=
+document.querySelectorAll(
+".tab-content"
+);
+
+function mudarAba(nome){
+
+conteudos.forEach(c=>
+c.classList.remove(
+"active"
+)
+);
+
+tabs.forEach(t=>
+t.classList.remove(
+"active"
+)
+);
+
+document
+.getElementById(
+`aba-${nome}`
+)
+?.classList
+.add(
+"active"
+);
+
+document
+.querySelector(
+`[data-tab="${nome}"]`
+)
+?.classList
+.add(
+"active"
+);
+
+history.replaceState(
+null,
+"",
+`#${nome}`
+);
+
+}
+
+tabs.forEach(btn=>{
+
+btn.addEventListener(
+"click",
+()=>{
+
+mudarAba(
+btn.dataset.tab
+);
+
+}
+
+);
+
+});
+
+window.addEventListener(
+"load",
+()=>{
+
+const hash=
+location.hash
+.replace(
+"#",
+""
+);
+
+if(hash){
+
+mudarAba(
+hash
+);
+
+}
+
+renderizarVoluntarias(
+voluntarias
+);
+
+}
+);
+
+
+// ======================
+// ADICIONAR CONTATO
+// ======================
+
+function processarCadastro(){
+
+const nome=
+document
+.getElementById(
+"novoNome"
+)
+.value
+.trim();
+
+const tel=
+document
+.getElementById(
+"novoTel"
+)
+.value
+.trim();
+
+const msg=
+document
+.getElementById(
+"msgAdd"
+);
+
+if(
+!nome||
+!tel
+){
+
+msg.innerHTML=
+"Preencha todos os campos.";
+
+return;
+
+}
+
+const lista=
+document
+.getElementById(
+"listaContatos"
+);
+
+lista.innerHTML+=`
+
+<div class="contact-card">
+
+<div class="contact-info">
+
+<h3>
+
+${nome}
+
+</h3>
+
+<p>
+
+${tel}
+
+</p>
+
+</div>
+
+<a
+href="tel:${tel.replace(/\D/g,'')}"
+class="btn-call"
+>
+
+📞
+
+</a>
+
+</div>
+
+`;
+
+document
+.getElementById(
+"novoNome"
+).value='';
+
+document
+.getElementById(
+"novoTel"
+).value='';
+
+msg.innerHTML=
+"Contato salvo ✓";
+
+setTimeout(()=>{
+
+msg.innerHTML='';
+
+mudarAba(
+"emergencia"
+);
+
+},1200);
+
+}
+
+document
+.querySelector(
+".btn-add"
+)
+?.addEventListener(
+"click",
+processarCadastro
+);
+
+
+// ======================
+// MODAL
+// ======================
+
+function abrirModalVol(){
+
+document
+.getElementById(
+"modalVol"
+)
+.classList
+.add(
+"open"
+);
+
+}
+
+function fecharModalVol(){
+
+document
+.getElementById(
+"modalVol"
+)
+.classList
+.remove(
+"open"
+);
+
+}
+
+function enviarCadastroVol(){
+
+alert(
+"Cadastro enviado!"
+);
+
+fecharModalVol();
+
+}
 </script>
 </body>
 </html>

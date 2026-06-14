@@ -38,12 +38,29 @@ body{font-family:Inter,sans-serif;background:var(--cream);color:var(--dark)}
 @media(max-width:768px){
 .hero-content h1{font-size:2.2rem}
 .question{font-size:1.2rem}
+/* FOOTER */
+
+footer{
+  background:white;
+  padding:40px;
+  text-align:center;
+  border-top:1px solid #eee;
+}
+
+footer a{
+  text-decoration:none;
+  color:#777;
+  margin:0 10px;
+}
+
+footer a:hover{
+  color:var(--wine);
+}
 }
 </style>
 </head>
 <body>
 <section class="hero">
-<img src="./static/imagens/img-index2.jpeg" alt="Hero">
 <div class="hero-content">
 <h1>Descubra Seu Estilo</h1>
 <p>Um quiz divertido para encontrar seu perfil de maquiagem.</p>
@@ -65,10 +82,13 @@ body{font-family:Inter,sans-serif;background:var(--cream);color:var(--dark)}
 <h2 id="title"></h2>
 <p id="desc"></p>
 <button class="btn" onclick="location.reload()">Refazer Quiz</button>
+<button class="btn" onclick="location.href = '/'">Voltar</button>
 </div>
 </div>
 </div>
 </div>
+
+
 
 <script>
 const questions=[

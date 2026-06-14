@@ -1,675 +1,1755 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Minha Maquiagem</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
-  <style>
-    :root{
-
-      --rose:#ff7ea8;
-      --pink:#ffd7e5;
-      --cream:#fff8f8;
-      --wine:#5f3041;
-      --gold:#d4a853;
-      --dark:#2b2528;
-
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: var(--bg-main);
-      font-family: 'Inter', sans-serif;
-      color: var(--text-main);
-    }
-
-    /* NAVBAR */
-
-    .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 30px;
-      background: rgba(255, 249, 249, 0.92);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid #f0dddd;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
-      color: var(--accent-deep);
-    }
-
-    .logo img {
-      height: 48px;
-      width: auto;
-    }
-
-    .menu {
-      display: flex;
-      gap: 28px;
-    }
-
-    .menu a {
-      text-decoration: none;
-      color: #7a4b4b;
-      font-weight: 500;
-      transition: 0.2s;
-    }
-
-    .menu a:hover {
-      color: var(--accent-deep);
-    }
-
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 4px;
-    }
-
-    .hamburger span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--accent-deep);
-      border-radius: 2px;
-      transition: 0.3s;
-    }
-
-    @media (max-width: 600px) {
-      .hamburger {
-        display: flex;
-      }
-
-      .menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        flex-direction: column;
-        background: rgba(255, 249, 249, 0.97);
-        border-bottom: 1px solid #f0dddd;
-        padding: 16px 24px;
-        gap: 16px;
-        backdrop-filter: blur(10px);
-      }
-
-      .menu.aberto {
-        display: flex;
-      }
-    }
-
-    /* HERO */
-
-    .hero {
-      padding: 42px 24px 20px;
-    }
-
-    .hero-tag {
-      background: var(--accent-soft);
-      color: var(--accent-deep);
-      padding: 5px 14px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      display: inline-block;
-      margin-bottom: 12px;
-      font-weight: 600;
-    }
-
-    .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.7rem;
-      margin-bottom: 10px;
-    }
-
-    .hero-title span {
-      color: var(--accent-deep);
-      font-style: italic;
-    }
-
-    .hero-desc {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
-
-    /* HERO IMAGE */
-
-    .image-frame {
-      width: 95%;
-      height: 420px;
-      margin: 20px auto 40px;
-      border-radius: 32px;
-      overflow: hidden;
-      position: relative;
-      box-shadow:
-        0 20px 40px rgba(140, 75, 85, 0.15),
-        0 8px 20px rgba(140, 75, 85, 0.08);
-    }
-
-    .image-frame::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(
-          180deg,
-          rgba(255,255,255,0.05),
-          rgba(0,0,0,0.18)
-        );
-    }
-
-    .image-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s ease;
-    }
-
-    .image-frame:hover img {
-      transform: scale(1.05);
-    }
-
-    /* CATEGORIES */
-
-    .categories {
-      padding: 24px;
-      background: var(--white);
-      margin-bottom: 30px;
-    }
-
-    .category-menu {
-      display: flex;
-      justify-content: center;
-      gap: 28px;
-      flex-wrap: wrap;
-    }
-
-    .category-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: var(--text-main);
-      background: #fff7f7;
-      padding: 12px 18px;
-      border-radius: 999px;
-      box-shadow: 0 8px 20px rgba(140, 75, 85, 0.08);
-      transition: 0.25s;
-    }
-
-    .category-item:hover {
-      transform: translateY(-4px);
-      background: var(--accent-soft);
-    }
-
-    .category-icon {
-      width: 45px;
-      height: 45px;
-      background: var(--accent-deep);
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-    }
-
-    .category-arrow {
-      font-size: 1.5rem;
-      color: var(--accent-deep);
-    }
-
-    /* PRODUCTS */
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-      padding: 0 24px 60px;
-    }
-
-    .product-card {
-      position: relative;
-      background: var(--white);
-      border-radius: 28px;
-      overflow: hidden;
-      box-shadow:
-        0 10px 30px rgba(140, 75, 85, 0.10),
-        0 2px 8px rgba(140, 75, 85, 0.06);
-      transition: all 0.35s ease;
-      cursor: pointer;
-      border: 1px solid rgba(243, 225, 225, 0.9);
-    }
-
-    .product-card:hover {
-      transform: translateY(-10px);
-      box-shadow:
-        0 25px 45px rgba(140, 75, 85, 0.18),
-        0 8px 20px rgba(140, 75, 85, 0.12);
-    }
-
-    .product-badge {
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      z-index: 5;
-
-      background: linear-gradient(
-        135deg,
-        #8c4b55,
-        #b76c77
-      );
-
-      color: white;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-
-      padding: 7px 12px;
-      border-radius: 999px;
-
-      box-shadow:
-        0 6px 18px rgba(140, 75, 85, 0.25);
-    }
-
-    .product-image {
-      position: relative;
-      height: 320px;
-      overflow: hidden;
-
-      background:
-        radial-gradient(circle at top, #fff 0%, #fff6f6 45%, #fbeaea 100%);
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .product-image::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-
-      background:
-        linear-gradient(
-          180deg,
-          rgba(255,255,255,0.5) 0%,
-          rgba(255,255,255,0) 30%
-        );
-
-      z-index: 1;
-    }
-
-    .product-image::after {
-      content: "";
-      position: absolute;
-      width: 220px;
-      height: 220px;
-      background: rgba(255,255,255,0.35);
-      border-radius: 50%;
-      filter: blur(30px);
-      top: -40px;
-      right: -40px;
-    }
-
-    .product-image img {
-      position: relative;
-      z-index: 2;
-
-      width: 85%;
-      height: 85%;
-      object-fit: contain;
-
-      transition:
-        transform 0.45s ease,
-        filter 0.35s ease;
-
-      filter:
-        drop-shadow(0 20px 25px rgba(0,0,0,0.15));
-    }
-
-    .product-card:hover .product-image img {
-      transform: scale(1.08) rotate(-2deg);
-    }
-
-    .product-info {
-      padding: 20px 18px 22px;
-      background: white;
-    }
-
-    .product-name {
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .product-brand {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      margin-bottom: 14px;
-      letter-spacing: 0.5px;
-    }
-
-    .product-price {
-      color: var(--accent-deep);
-      font-weight: 800;
-      font-size: 1.2rem;
-    }
-
-    /* FAVORITE BUTTON */
-
-    .favorite-btn {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      z-index: 5;
-
-      width: 42px;
-      height: 42px;
-
-      border: none;
-      border-radius: 50%;
-
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(10px);
-
-      color: var(--accent-deep);
-      font-size: 20px;
-      cursor: pointer;
-
-      box-shadow:
-        0 8px 20px rgba(0,0,0,0.12);
-
-      transition: all 0.3s ease;
-    }
-
-    .favorite-btn:hover {
-      transform: scale(1.12);
-      background: white;
-    }
-
-    .favorite-btn.active {
-      background: linear-gradient(
-        135deg,
-        #8c4b55,
-        #b76c77
-      );
-
-      color: white;
-    }
-
-    /* FOOTER */
-
-    footer {
-      text-align: center;
-      padding: 32px 24px;
-      border-top: 1px solid #f0dddd;
-      color: var(--text-muted);
-      font-size: 0.8rem;
-      line-height: 2;
-    }
-
-    footer a {
-      color: var(--text-muted);
-      text-decoration: none;
-      margin: 0 10px;
-    }
-
-    footer a:hover {
-      color: var(--accent-deep);
-    }
-
-    @media (max-width: 768px) {
-      .hero-title {
-        font-size: 2rem;
-      }
-
-      .image-frame {
-        height: 280px;
-      }
-
-      .product-image {
-        height: 260px;
-      }
-    }
-  </style>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>
+Minha Maquiagem
+</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+<style>
+
+:root{
+
+--rose:#ff7ea8;
+--pink:#ffd7e5;
+
+--cream:#fff8f8;
+
+--wine:#5f3041;
+
+--gold:#d4a853;
+
+--dark:#2b2528;
+
+--white:#ffffff;
+
+}
+
+*{
+
+margin:0;
+
+padding:0;
+
+box-sizing:border-box;
+
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+
+font-family:
+'Inter',
+sans-serif;
+
+background:
+var(--cream);
+
+color:
+var(--dark);
+
+overflow-x:hidden;
+
+}
+
+/* NAVBAR */
+
+.navbar{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+z-index:999;
+
+padding:
+18px 6%;
+
+display:flex;
+
+justify-content:
+space-between;
+
+align-items:
+center;
+
+background:
+rgba(255,255,255,.78);
+
+backdrop-filter:
+blur(20px);
+
+border-bottom:
+1px solid rgba(0,0,0,.05);
+
+}
+
+.logo{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+text-decoration:none;
+
+}
+
+.logo img{
+height:50px;
+}
+
+.logo span{
+
+font-family:
+'Playfair Display',
+serif;
+
+font-size:
+1.7rem;
+
+font-weight:
+700;
+
+color:
+var(--wine);
+
+}
+
+.menu{
+
+display:flex;
+
+gap:
+30px;
+
+}
+
+.menu a{
+
+text-decoration:
+none;
+
+font-weight:
+600;
+
+color:
+var(--dark);
+
+transition:
+.3s;
+
+}
+
+.menu a:hover{
+color:var(--rose);
+}
+
+/* HERO */
+
+.hero{
+
+min-height:
+100vh;
+
+padding:
+140px 6% 120px;
+
+position:
+relative;
+
+display:
+flex;
+
+align-items:
+center;
+
+overflow:
+hidden;
+
+background:
+
+linear-gradient(
+135deg,
+#fff6f9,
+#ffe6ef
+);
+
+}
+
+.hero::before{
+
+content:"";
+
+position:absolute;
+
+width:
+900px;
+
+height:
+900px;
+
+border-radius:
+50%;
+
+right:
+-350px;
+
+top:
+-250px;
+
+background:
+
+radial-gradient(
+circle,
+rgba(255,126,168,.20),
+transparent
+);
+
+}
+
+.hero::after{
+
+content:"";
+
+position:absolute;
+
+width:
+400px;
+
+height:
+400px;
+
+left:
+-100px;
+
+bottom:
+-120px;
+
+border-radius:
+50%;
+
+background:
+
+rgba(
+212,
+168,
+83,
+.08
+);
+
+}
+
+.hero-content{
+
+position:
+relative;
+
+z-index:
+2;
+
+max-width:
+760px;
+
+}
+
+.hero-tag{
+
+display:
+inline-block;
+
+padding:
+10px 18px;
+
+border-radius:
+999px;
+
+background:
+rgba(255,255,255,.8);
+
+backdrop-filter:
+blur(12px);
+
+color:
+var(--wine);
+
+font-size:
+.8rem;
+
+font-weight:
+700;
+
+margin-bottom:
+28px;
+
+}
+
+.hero h1{
+
+font-family:
+'Playfair Display',
+serif;
+
+font-size:
+5.2rem;
+
+line-height:
+1.02;
+
+color:
+var(--wine);
+
+margin-bottom:
+26px;
+
+}
+
+.hero h1 span{
+color:var(--rose);
+}
+
+.hero p{
+
+font-size:
+1.15rem;
+
+line-height:
+1.9;
+
+max-width:
+650px;
+
+color:
+#5e5457;
+
+margin-bottom:
+40px;
+
+}
+
+.hero-buttons{
+
+display:flex;
+
+gap:14px;
+
+flex-wrap:wrap;
+
+}
+
+.hero-buttons a{
+
+padding:
+16px 30px;
+
+border-radius:
+999px;
+
+font-weight:
+700;
+
+text-decoration:
+none;
+
+transition:
+.35s;
+
+}
+
+.btn-primary{
+
+background:
+var(--wine);
+
+color:
+white;
+
+}
+
+.btn-secondary{
+
+border:
+1px solid var(--wine);
+
+color:
+var(--wine);
+
+}
+
+.hero-buttons a:hover{
+
+transform:
+translateY(-6px);
+
+}
+
+/* STATS */
+
+.hero-stats{
+
+padding:
+0 6%;
+
+margin-top:
+-50px;
+
+position:
+relative;
+
+z-index:
+4;
+
+}
+
+.stats-card{
+
+background:
+white;
+
+border-radius:
+40px;
+
+padding:
+40px;
+
+display:
+grid;
+
+grid-template-columns:
+repeat(
+3,
+1fr
+);
+
+gap:
+30px;
+
+box-shadow:
+0 18px 50px rgba(0,0,0,.06);
+
+}
+
+.stat{
+
+text-align:
+center;
+
+}
+
+.stat strong{
+
+display:block;
+
+font-size:
+3rem;
+
+color:
+var(--wine);
+
+font-family:
+'Playfair Display',
+serif;
+
+}
+
+.stat span{
+
+color:
+#666;
+
+}
+
+.section-title{
+
+text-align:
+center;
+
+margin-bottom:
+70px;
+
+}
+
+.section-title h2{
+
+font-family:
+'Playfair Display',
+serif;
+
+font-size:
+3rem;
+
+color:
+var(--wine);
+
+}
+
+.section-title p{
+
+margin-top:
+12px;
+
+color:
+#777;
+
+}
+
+@media(max-width:900px){
+
+.hero h1{
+font-size:3rem;
+}
+
+.stats-card{
+
+grid-template-columns:
+1fr;
+
+}
+
+}
+
+@media(max-width:600px){
+
+.menu{
+display:none;
+}
+
+.hero{
+
+padding-top:
+110px;
+
+}
+
+.hero h1{
+font-size:2.3rem;
+}
+
+}
+
+/* TOOLS */
+
+.tools{
+
+padding:
+140px 6%;
+
+background:
+
+linear-gradient(
+180deg,
+var(--cream),
+white
+);
+
+}
+
+.tools-grid{
+
+display:grid;
+
+grid-template-columns:
+1.4fr 1fr 1fr;
+
+gap:
+28px;
+
+}
+
+.tool-card{
+
+background:
+white;
+
+padding:
+42px;
+
+border-radius:
+38px;
+
+box-shadow:
+0 18px 55px rgba(0,0,0,.05);
+
+transition:
+.35s;
+
+position:
+relative;
+
+overflow:hidden;
+
+}
+
+.tool-card:hover{
+
+transform:
+translateY(-10px);
+
+}
+
+.destaque{
+
+background:
+
+linear-gradient(
+135deg,
+#ffffff,
+#fff4f8
+);
+
+grid-row:
+span 2;
+
+}
+
+.destaque::before{
+
+content:"";
+
+position:absolute;
+
+width:320px;
+
+height:320px;
+
+border-radius:50%;
+
+right:-150px;
+
+top:-150px;
+
+background:
+
+rgba(
+255,
+126,
+168,
+.12
+);
+
+}
+
+.tool-badge{
+
+display:inline-block;
+
+padding:
+10px 16px;
+
+border-radius:
+999px;
+
+background:
+var(--wine);
+
+color:
+white;
+
+font-size:
+.75rem;
+
+font-weight:
+700;
+
+margin-bottom:
+24px;
+
+}
+
+.tool-card h3{
+
+font-size:
+1.8rem;
+
+color:
+var(--wine);
+
+margin-bottom:
+14px;
+
+}
+
+.tool-card p{
+
+line-height:
+1.9;
+
+color:
+#666;
+
+}
+
+.tool-benefits{
+
+margin:
+30px 0;
+
+list-style:none;
+
+}
+
+.tool-benefits li{
+
+padding:
+10px 0;
+
+color:#555;
+
+}
+
+.tool-btn{
+
+display:inline-block;
+
+padding:
+16px 28px;
+
+border-radius:
+999px;
+
+background:
+var(--wine);
+
+color:white;
+
+text-decoration:none;
+
+font-weight:
+700;
+
+transition:.3s;
+
+}
+
+.tool-btn:hover{
+
+transform:
+translateY(-4px);
+
+}
+
+.tool-icon{
+
+font-size:
+3rem;
+
+margin-bottom:
+18px;
+
+}
+
+/* QUIZ */
+
+.quiz{
+
+padding:
+150px 6%;
+
+}
+
+.quiz-box{
+
+background:
+
+linear-gradient(
+135deg,
+var(--pink),
+#fff4f8
+);
+
+padding:
+90px;
+
+border-radius:
+44px;
+
+text-align:
+center;
+
+max-width:
+1100px;
+
+margin:auto;
+
+position:
+relative;
+
+overflow:hidden;
+
+}
+
+.quiz-box::before{
+
+content:"";
+
+position:absolute;
+
+width:
+420px;
+
+height:
+420px;
+
+background:
+
+rgba(
+255,
+255,
+255,
+.25
+);
+
+border-radius:
+50%;
+
+right:
+-180px;
+
+top:
+-180px;
+
+}
+
+.quiz h2{
+
+position:relative;
+
+font-family:
+'Playfair Display',
+serif;
+
+font-size:
+4rem;
+
+color:
+var(--wine);
+
+margin-bottom:
+20px;
+
+}
+
+.quiz p{
+
+position:relative;
+
+max-width:
+700px;
+
+margin:
+auto;
+
+line-height:
+1.9;
+
+color:
+#665b60;
+
+}
+
+.quiz button{
+
+margin-top:
+34px;
+
+border:none;
+
+padding:
+18px 34px;
+
+border-radius:
+999px;
+
+background:
+var(--wine);
+
+color:white;
+
+font-size:
+1rem;
+
+font-weight:
+700;
+
+cursor:pointer;
+
+transition:
+.35s;
+
+position:
+relative;
+
+}
+
+.quiz button:hover{
+
+transform:
+translateY(-5px);
+
+}
+
+@media(max-width:1000px){
+
+.tools-grid{
+
+grid-template-columns:
+1fr;
+
+}
+
+.destaque{
+
+grid-row:auto;
+
+}
+
+}
+
+@media(max-width:600px){
+
+.quiz-box{
+
+padding:
+60px 35px;
+
+}
+
+.quiz h2{
+
+font-size:
+2.4rem;
+
+}
+
+}
+
+/* INSPIRAÇÕES */
+
+.inspiracoes{
+
+padding:
+140px 6%;
+
+background:
+white;
+
+}
+
+.masonry{
+
+columns:4;
+
+column-gap:22px;
+
+}
+
+.item{
+
+position:relative;
+
+overflow:hidden;
+
+border-radius:
+34px;
+
+margin-bottom:
+22px;
+
+box-shadow:
+0 18px 50px rgba(0,0,0,.05);
+
+}
+
+.item img{
+
+width:100%;
+
+display:block;
+
+transition:
+.5s;
+
+}
+
+.item:hover img{
+
+transform:
+scale(1.08);
+
+}
+
+.item::after{
+
+content:"";
+
+position:absolute;
+
+inset:0;
+
+background:
+
+linear-gradient(
+transparent,
+rgba(0,0,0,.18)
+);
+
+opacity:0;
+
+transition:.35s;
+
+}
+
+.item:hover::after{
+
+opacity:1;
+
+}
+
+/* ARTICLES */
+
+.articles{
+
+padding:
+150px 6%;
+
+background:
+
+linear-gradient(
+180deg,
+white,
+var(--cream)
+);
+
+}
+
+.article-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(320px,1fr)
+);
+
+gap:
+28px;
+
+}
+
+.article-card{
+
+padding:
+40px;
+
+background:
+white;
+
+border-radius:
+36px;
+
+box-shadow:
+0 16px 50px rgba(0,0,0,.05);
+
+transition:
+.35s;
+
+}
+
+.article-card:hover{
+
+transform:
+translateY(-8px);
+
+}
+
+.article-card span{
+
+display:inline-block;
+
+padding:
+8px 14px;
+
+border-radius:
+999px;
+
+background:
+#fff1f5;
+
+color:
+var(--rose);
+
+font-size:
+.75rem;
+
+font-weight:
+700;
+
+margin-bottom:
+18px;
+
+}
+
+.article-card h3{
+
+font-size:
+1.7rem;
+
+color:
+var(--wine);
+
+margin-bottom:
+16px;
+
+}
+
+.article-card p{
+
+line-height:
+1.9;
+
+color:
+#666;
+
+}
+
+/* CTA */
+
+.cta{
+
+padding:
+170px 6%;
+
+text-align:
+center;
+
+background:
+
+linear-gradient(
+135deg,
+#fff2f7,
+white
+);
+
+position:
+relative;
+
+overflow:hidden;
+
+}
+
+.cta::before{
+
+content:"";
+
+position:absolute;
+
+width:
+650px;
+
+height:
+650px;
+
+border-radius:
+50%;
+
+background:
+
+rgba(
+255,
+126,
+168,
+.10
+);
+
+right:
+-250px;
+
+top:
+-250px;
+
+}
+
+.cta h2{
+
+position:relative;
+
+font-family:
+'Playfair Display',
+serif;
+
+font-size:
+5rem;
+
+line-height:
+1.05;
+
+color:
+var(--wine);
+
+margin-bottom:
+24px;
+
+}
+
+.cta p{
+
+position:relative;
+
+font-size:
+1.1rem;
+
+color:
+#666;
+
+max-width:
+650px;
+
+margin:
+auto;
+
+margin-bottom:
+34px;
+
+}
+
+.cta a{
+
+display:inline-block;
+
+padding:
+18px 34px;
+
+border-radius:
+999px;
+
+background:
+var(--wine);
+
+color:
+white;
+
+text-decoration:
+none;
+
+font-weight:
+700;
+
+transition:
+.35s;
+
+}
+
+.cta a:hover{
+
+transform:
+translateY(-6px);
+
+}
+
+/* FOOTER */
+
+footer{
+
+background:
+white;
+
+padding:
+60px;
+
+text-align:
+center;
+
+border-top:
+1px solid #eee;
+
+}
+
+footer a{
+
+text-decoration:none;
+
+margin:
+0 14px;
+
+color:
+#777;
+
+transition:
+.3s;
+
+}
+
+footer a:hover{
+
+color:
+var(--wine);
+
+}
+
+footer p{
+
+margin-top:
+18px;
+
+color:
+#888;
+
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+.masonry{
+
+columns:2;
+
+}
+
+.cta h2{
+
+font-size:
+3rem;
+
+}
+
+}
+
+@media(max-width:600px){
+
+.masonry{
+
+columns:1;
+
+}
+
+.cta{
+
+padding:
+110px 8%;
+
+}
+
+.cta h2{
+
+font-size:
+2.2rem;
+
+}
+
+}
+
+</style>
+
 </head>
 
 <body>
 
 <header class="navbar">
-  <div class="logo">
-    <a href="/">
-      <img src="./static/imagens/logo.png" alt="Logo">
-    </a>
-    <span>Minha Maquiagem</span>
-  </div>
 
-  <button class="hamburger" id="hamburger" aria-label="Abrir menu">
-    <span></span><span></span><span></span>
-  </button>
+<a href="/" class="logo">
 
-  <nav class="menu" id="menu">
-    <a href="/">Início</a>
-    <a href="/favoritos">Favoritos</a>
-    <a href="/login">Perfil</a>
-  </nav>
+<img
+src="./static/imagens/logo.png">
+
+<span>
+
+Minha Maquiagem
+
+</span>
+
+</a>
+
+<nav class="menu">
+
+<a href="/">Início</a>
+<a href="#ferramentas">Ferramentas</a>
+<a href="/login">Perfil</a>
+
+</nav>
+
 </header>
 
 <section class="hero">
-  <span class="hero-tag">Coleção 2026</span>
-  <h1 class="hero-title">Realce sua <span>beleza</span></h1>
-  <p class="hero-desc">Descubra sua melhor versão</p>
-</section>
 
-<div class="image-frame">
-  <img src="./static/imagens/img-index2.jpeg" alt="Imagem principal">
+<div class="hero-content">
+
+<div class="hero-tag">
+
+✨ DESCUBRA • APRENDA • CRIE
+
 </div>
 
-<section class="categories">
-  <div class="category-menu">
+<h1>
 
-    <a href="/novidades" class="category-item">
-      <div class="category-icon">✦</div>
-      <div><strong>NOVIDADES</strong></div>
-      <span class="category-arrow">›</span>
-    </a>
+Sua maquiagem
+começa pelo
+<span>
 
-    <a href="/make" class="category-item">
-      <div class="category-icon">💄</div>
-      <div><strong>MAKE</strong></div>
-      <span class="category-arrow">›</span>
-    </a>
+autoconhecimento
 
-    <a href="/skincare" class="category-item">
-      <div class="category-icon">🧴</div>
-      <div><strong>SKINCARE</strong></div>
-      <span class="category-arrow">›</span>
-    </a>
+</span>
 
-  </div>
-</section>
+</h1>
 
-<section class="product-grid">
+<p>
 
-  <!-- PRODUTO 1 -->
+Descubra seu tom,
+encontre sua combinação ideal
+e transforme inspiração em
+uma rotina feita para você.
 
-  <div class="product-card">
+</p>
 
-    <div class="product-badge">BEST SELLER</div>
+<div class="hero-buttons">
 
-    <button class="favorite-btn" onclick="toggleFavorito(this, {
-      nome: 'Iluminador Glow',
-      marca: 'Velvêt',
-      preco: 'R$ 120',
-      imagem: './static/imagens/iluminador_v.png'
-    })">♡</button>
+<a
+href="/tom-de-pele"
+class="btn-primary">
 
-    <div class="product-image">
-      <img src="./static/imagens/iluminador_v.png" alt="Iluminador Glow">
-    </div>
+Descobrir meu tom
 
-    <div class="product-info">
-      <div class="product-name">Iluminador Glow</div>
-      <div class="product-brand">Velvêt</div>
-      <div class="product-price">R$ 120</div>
-    </div>
+</a>
 
-  </div>
+<a
+href="#inspiracoes"
+class="btn-secondary">
 
-  <!-- PRODUTO 2 -->
+Ver inspirações
 
-  <div class="product-card">
+</a>
 
-    <div class="product-badge">TRENDING</div>
+</div>
 
-    <button class="favorite-btn" onclick="toggleFavorito(this, {
-      nome: 'Blush Rosé',
-      marca: 'Lumé',
-      preco: 'R$ 85',
-      imagem: './static/imagens/blush-rose.jpg'
-    })">♡</button>
-
-    <div class="product-image">
-      <img src="./static/imagens/blush-rose.jpg" alt="Blush Rosé">
-    </div>
-
-    <div class="product-info">
-      <div class="product-name">Blush Rosé</div>
-      <div class="product-brand">Lumé</div>
-      <div class="product-price">R$ 85</div>
-    </div>
-
-  </div>
-
-  <!-- PRODUTO 3 -->
-
-  <div class="product-card">
-
-    <div class="product-badge">NEW</div>
-
-    <button class="favorite-btn" onclick="toggleFavorito(this, {
-      nome: 'Batom Matte',
-      marca: 'Rosé Beauty',
-      preco: 'R$ 89',
-      imagem: './static/imagens/batom-matte.jpg'
-    })">♡</button>
-
-    <div class="product-image">
-      <img src="./static/imagens/batom-matte.jpg" alt="Batom Matte">
-    </div>
-
-    <div class="product-info">
-      <div class="product-name">Batom Matte</div>
-      <div class="product-brand">Rosé Beauty</div>
-      <div class="product-price">R$ 89</div>
-    </div>
-
-  </div>
-
-  <!-- PRODUTO 4 -->
-
-  <div class="product-card">
-
-    <div class="product-badge">POPULAR</div>
-
-    <button class="favorite-btn" onclick="toggleFavorito(this, {
-      nome: 'Base Líquida',
-      marca: 'Lumé',
-      preco: 'R$ 99',
-      imagem: './static/imagens/base-liquida.avif'
-    })">♡</button>
-
-    <div class="product-image">
-      <img src="./static/imagens/base-liquida.avif" alt="Base Líquida">
-    </div>
-
-    <div class="product-info">
-      <div class="product-name">Base Líquida</div>
-      <div class="product-brand">Lumé</div>
-      <div class="product-price">R$ 99</div>
-    </div>
-
-  </div>
+</div>
 
 </section>
+
+<section class="hero-stats">
+
+<div class="stats-card">
+
+<div class="stat">
+
+<strong>
++100
+</strong>
+
+<span>
+
+combinações
+
+</span>
+
+</div>
+
+<div class="stat">
+
+<strong>
+100%
+</strong>
+
+<span>
+
+personalizado
+
+</span>
+
+</div>
+
+<div class="stat">
+
+<strong>
+24h
+</strong>
+
+<span>
+
+para explorar
+
+</span>
+
+</div>
+
+</div>
+
+</section>
+
+<section
+class="tools"
+id="ferramentas">
+
+<div class="section-title">
+
+<h2>
+
+Ferramentas Inteligentes
+
+</h2>
+
+<p>
+
+Experiências feitas para descobrir,
+testar e aprender.
+
+</p>
+
+</div>
+
+<div class="tools-grid">
+
+<div class="tool-card destaque">
+
+<div class="tool-badge">
+
+MAIS UTILIZADA
+
+</div>
+
+<h3>
+
+Descubra sua combinação perfeita
+
+</h3>
+
+<p>
+
+Analise seu tom de pele,
+descubra seu subtom e receba
+recomendações alinhadas ao seu estilo.
+
+</p>
+
+<ul class="tool-benefits">
+
+<li>
+✓ Descoberta do subtom
+</li>
+
+<li>
+✓ Sugestão de bases
+</li>
+
+<li>
+✓ Recomendações personalizadas
+</li>
+
+<li>
+✓ Resultado visual premium
+</li>
+
+</ul>
+
+<a href="/tom-de-pele" class="tool-btn">Começar análise</a>
+
+</div>
+
+<div class="tool-card">
+
+<div class="tool-icon">
+
+💄
+
+</div>
+
+<h3>
+
+Guia de Base
+
+</h3>
+
+<p>
+
+Encontre cobertura,
+acabamento e cor ideal.
+
+</p>
+
+</div>
+
+<div class="tool-card">
+
+<div class="tool-icon">
+
+🪞
+
+</div>
+
+<h3>
+
+Formato do rosto
+
+</h3>
+
+<p>
+
+Dicas personalizadas
+para destacar seus traços.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="quiz">
+
+<div class="quiz-box">
+
+<h2>
+
+Qual é seu estilo?
+
+</h2>
+
+<p>
+
+Responda perguntas rápidas
+e descubra tendências,
+cores e técnicas que combinam
+com você.
+
+</p>
+
+<button onclick="location.href='/quizmake'">
+
+Começar Quiz
+
+</button>
+
+</div>
+
+</section>
+
+<section
+class="inspiracoes"
+id="inspiracoes">
+
+<div class="section-title">
+
+<h2>
+
+Inspire-se
+
+</h2>
+
+<p>
+
+Descubra tendências e referências.
+
+</p>
+
+</div>
+
+<div class="masonry">
+
+<div class="item">
+<img src="./static/imagens/img-index2.jpeg">
+</div>
+
+<div class="item">
+<img src="./static/imagens/blush-rose.jpg">
+</div>
+
+<div class="item">
+<img src="./static/imagens/batom-matte.jpg">
+</div>
+
+<div class="item">
+<img src="./static/imagens/base-liquida.avif">
+</div>
+
+<div class="item">
+<img src="./static/imagens/iluminador_v.png">
+</div>
+
+<div class="item">
+<img src="./static/imagens/img-index2.jpeg">
+</div>
+
+</div>
+
+</section>
+
+<section class="cta">
+
+<h2>
+
+Sua beleza.
+Sua identidade.
+Sua história.
+
+</h2>
+
+<p>
+
+Descubra, aprenda e construa
+uma rotina feita para você.
+
+</p>
+
+<a href="#">
+
+Começar agora
+
+</a>
+
+</section>
+
 
 <footer>
-  <div>
-    <a href="#">Sobre nós</a>
-    <a href="#">Política de Privacidade</a>
-    <a href="#">Trocas e Devoluções</a>
-    <a href="#">Contato</a>
-  </div>
 
-  <div style="margin-top: 12px;">
-    © 2026 Minha Maquiagem. Todos os direitos reservados.
-  </div>
+<div>
+
+<a href="#">
+Sobre
+</a>
+
+<a href="#">
+Contato
+</a>
+
+<a href="#">
+Privacidade
+</a>
+
+<a href="#">
+Ajuda
+</a>
+
+</div>
+
+<p>
+
+© 2026 Minha Maquiagem
+
+</p>
+
 </footer>
 
-<script>
-  const hamburger = document.getElementById('hamburger');
-  const menu = document.getElementById('menu');
-
-  hamburger.addEventListener('click', () => {
-    menu.classList.toggle('aberto');
-  });
-
-  function toggleFavorito(btn, produto) {
-    let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
-
-    const existe = favoritos.find(p => p.nome === produto.nome);
-
-    if (existe) {
-      favoritos = favoritos.filter(p => p.nome !== produto.nome);
-      btn.classList.remove("active");
-      btn.innerHTML = "♡";
-    } else {
-      favoritos.push(produto);
-      btn.classList.add("active");
-      btn.innerHTML = "❤️";
-    }
-
-    localStorage.setItem("favoritos", JSON.stringify(favoritos));
-  }
-
-  function marcarFavoritosAtivos() {
-    const favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
-
-    document.querySelectorAll(".favorite-btn").forEach(btn => {
-      const onclick = btn.getAttribute("onclick");
-
-      favoritos.forEach(produto => {
-        if (onclick.includes(produto.nome)) {
-          btn.classList.add("active");
-          btn.innerHTML = "❤️";
-        }
-      });
-    });
-  }
-
-  marcarFavoritosAtivos();
-</script>
 
 </body>
 </html>
