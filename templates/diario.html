@@ -760,9 +760,34 @@ Voltar
 
 <h2>Meu Diário Seguro</h2>
 
+<!-- ── Formulário de nova anotação ── -->
 <div class="card">
     <h3 class="card-title">Nova anotação</h3>
+
     <textarea id="texto" placeholder="Escreva aqui o que sentir... Este espaço é só seu."></textarea>
+
+    <!-- SEÇÃO DE ANEXOS -->
+    <div class="anexo-label">
+        <span>📎</span> Anexar documentos / provas
+    </div>
+
+    <div class="dropzone" id="dropzone">
+        <input
+            type="file"
+            id="inputArquivos"
+            multiple
+            accept="image/*,.pdf,.doc,.docx,.txt,.mp4,.mov,.mp3,.ogg"
+            onchange="adicionarArquivos(this.files)"
+        />
+        <span class="dropzone-icon">📁</span>
+        <span class="dropzone-hint">
+            <strong>Clique para selecionar</strong> ou arraste arquivos aqui<br>
+            Fotos, PDFs, vídeos, áudios e documentos
+        </span>
+    </div>
+
+    <div id="listaAnexos"></div>
+
     <button class="btn" onclick="salvar()">Salvar registro</button>
     <div id="msg" class="msg"></div>
 </div>
@@ -797,69 +822,6 @@ const files = [];
 
 /* ===========================
    MENSAGENS
-=========================== */
-
-function exibirMsg(tipo, texto){
-    const el = document.getElementById("msg");
-
-    el.className = `msg ${tipo}`;
-    el.textContent = texto;
-
-    setTimeout(()=>{
-        el.className = "msg";
-    },3000);
-}
-
-function escaparHTML(str){
-    return String(str)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;");
-}
-
-function formatarData(raw){
-    try{
-        return new Date(raw).toLocaleString("pt-BR");
-    }catch{
-        return raw;
-    }
-}
-
-/* ===========================
-   CARREGAR DIÁRIO
-=========================== */
-
-async function carregarEntradas(){
-
-    try{
-
-        const res = await fetch(
-            API,
-            {
-                credentials:"include"
-            }
-        );
-
-        if(!res.ok){
-
-            const txt =
-            await res.text();
-
-            console.log(txt);
-
-            throw new Error(
-                `Erro ${res.status}`
-            );
-
-        }
-
-        const entradas =
-        await res.json();
-
-        renderEntradas(
-            entradas
-        );
-
     }
 
     catch(err){
@@ -993,33 +955,6 @@ async function salvar(){
 
 /* ===========================
    APAGAR
-=========================== */
-
-async function apagarEntrada(id){
-
-    if(
-        !confirm(
-            "Apagar este registro?"
-        )
-    ){
-        return;
-    }
-
-    try{
-
-        const res =
-        await fetch(
-            `${API}/${id}`,
-            {
-                method:"DELETE",
-                credentials:"include"
-            }
-        );
-
-        if(!res.ok){
-
-            throw new Error();
-
         }
 
         carregarEntradas();
