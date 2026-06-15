@@ -291,10 +291,15 @@ Usuário: {mensagem}
 
         result = response.json()
 
+        if response.status_code != 200:
+            return jsonify({"response": "Erro na IA (HF indisponível no momento)."})
+
+        if isinstance(result, dict) and "error" in result:
+            return jsonify({"response": "Modelo ainda carregando. Tente novamente em alguns segundos."})
+
         if isinstance(result, list) and "generated_text" in result[0]:
-            text = result[0]["generated_text"]
-        elif isinstance(result, dict) and "generated_text" in result:
-            text = result["generated_text"]
+            full = result[0]["generated_text"]
+            text = full.split("Usuário:")[-1].strip() if "Usuário:" in full else full
         else:
             text = "Não consegui gerar resposta no momento."
 
@@ -323,14 +328,14 @@ def api_tom_de_pele():
             return jsonify({"error": "Imagem inválida"}), 400
 
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
         faces = face_cascade.detectMultiScale(gray, 1.1, 5)
 
         if len(faces) == 0:
-            return jsonify({"error": "Nenhum rosto detectado"}), 400
+            return jsonify({"error": "Nenhum rosto detectado (tente iluminação melhor)"}), 400
 
-        (x, y, w, h) = faces[0]
+        x, y, w, h = faces[0]
 
-        # clamp de segurança
         h_img, w_img = img.shape[:2]
 
         x1 = max(0, x + int(w * 0.2))
@@ -338,18 +343,18 @@ def api_tom_de_pele():
         y1 = max(0, y + int(h * 0.3))
         y2 = min(h_img, y + int(h * 0.7))
 
+        if x2 <= x1 or y2 <= y1:
+            return jsonify({"error": "Região inválida"}), 400
+
         roi = img[y1:y2, x1:x2]
 
         if roi.size == 0:
-            return jsonify({"error": "Falha ao extrair região da pele"}), 400
+            return jsonify({"error": "Falha ao extrair pele"}), 400
 
         ycrcb = cv2.cvtColor(roi, cv2.COLOR_BGR2YCrCb)
 
-        cr = ycrcb[:, :, 1]
-        cb = ycrcb[:, :, 2]
-
-        mean_cr = float(np.mean(cr))
-        mean_cb = float(np.mean(cb))
+        mean_cr = float(np.mean(ycrcb[:, :, 1]))
+        mean_cb = float(np.mean(ycrcb[:, :, 2]))
 
         if mean_cr > 150 and mean_cb < 120:
             tom, subtom = "Claro", "Quente"
