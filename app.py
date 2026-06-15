@@ -80,7 +80,7 @@ def tom_de_pele():
 def inspiracoes():
     return render_template('inspiracoes.html')
 
-@app.route('/inspiracoes/beginner')
+@app.route('/inspiracoes/easy')
 def inspiracoes_beginner():
     return render_template('easy.html')
 
@@ -88,15 +88,15 @@ def inspiracoes_beginner():
 def inspiracoes_natural():
     return render_template('natural.html')
 
-@app.route('/inspiracoes/soft')
+@app.route('/inspiracoes/soft-glam')
 def inspiracoes_soft():
     return render_template('soft.html')
 
-@app.route('/inspiracoes/glam')
+@app.route('/inspiracoes/full-glam')
 def inspiracoes_glam():
     return render_template('full.html')
 
-@app.route('/inspiracoes/creative')
+@app.route('/inspiracoes/criativa')
 def inspiracoes_creative():
     return render_template('criativa.html')
 
