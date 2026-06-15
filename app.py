@@ -258,11 +258,14 @@ def adicionar_contato():
 
 @app.route('/api/ia/chat', methods=['POST'])
 def chat_ia():
-    dados    = request.get_json()
-    mensagem = dados.get("message", "")
+    dados = request.get_json()
+    mensagem = dados.get("message", "").strip()
 
     if not mensagem:
         return jsonify({"error": "Mensagem vazia"}), 400
+
+    if not os.getenv("HF_API_KEY"):
+        return jsonify({"error": "HF_API_KEY não configurada"}), 500
 
     prompt = f"""Você é uma maquiadora especialista.
 Responda de forma simples, amigável e prática.
@@ -272,18 +275,31 @@ Usuário: {mensagem}
 
     payload = {
         "inputs": prompt,
-        "parameters": {"max_new_tokens": 200, "temperature": 0.7}
+        "parameters": {
+            "max_new_tokens": 200,
+            "temperature": 0.7
+        }
     }
 
-    response = requests.post(HF_API_URL, headers=hf_headers, json=payload)
-
     try:
+        response = requests.post(
+            HF_API_URL,
+            headers=hf_headers,
+            json=payload,
+            timeout=20
+        )
+
         result = response.json()
-        if isinstance(result, list):
-            text = result[0].get("generated_text", "")
+
+        if isinstance(result, list) and "generated_text" in result[0]:
+            text = result[0]["generated_text"]
+        elif isinstance(result, dict) and "generated_text" in result:
+            text = result["generated_text"]
         else:
-            text = result.get("generated_text", "")
+            text = "Não consegui gerar resposta no momento."
+
         return jsonify({"response": text})
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -292,44 +308,67 @@ Usuário: {mensagem}
 
 @app.route('/api/ia/tom-de-pele', methods=['POST'])
 def api_tom_de_pele():
-    dados          = request.get_json()
-    imagem_base64  = dados.get("image")
+    dados = request.get_json()
+    imagem_base64 = dados.get("image")
 
     if not imagem_base64:
         return jsonify({"error": "Sem imagem"}), 400
 
-    img_data = base64.b64decode(imagem_base64.split(",")[1])
-    np_arr   = np.frombuffer(img_data, np.uint8)
-    img      = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+    try:
+        img_data = base64.b64decode(imagem_base64.split(",")[1])
+        np_arr = np.frombuffer(img_data, np.uint8)
+        img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 
-    gray  = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, 1.1, 5)
+        if img is None:
+            return jsonify({"error": "Imagem inválida"}), 400
 
-    if len(faces) == 0:
-        return jsonify({"error": "Nenhum rosto detectado"}), 400
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        faces = face_cascade.detectMultiScale(gray, 1.1, 5)
 
-    (x, y, w, h) = faces[0]
+        if len(faces) == 0:
+            return jsonify({"error": "Nenhum rosto detectado"}), 400
 
-    roi = img[
-        y + int(h * 0.3): y + int(h * 0.7),
-        x + int(w * 0.2): x + int(w * 0.8)
-    ]
+        (x, y, w, h) = faces[0]
 
-    ycrcb   = cv2.cvtColor(roi, cv2.COLOR_BGR2YCrCb)
-    mean_cr = float(np.mean(ycrcb[:, :, 1]))
-    mean_cb = float(np.mean(ycrcb[:, :, 2]))
+        # clamp de segurança
+        h_img, w_img = img.shape[:2]
 
-    if mean_cr > 150 and mean_cb < 120:
-        tom, subtom = "Claro",       "Quente"
-    elif mean_cr > 140:
-        tom, subtom = "Médio Claro", "Neutro Quente"
-    elif mean_cr > 130:
-        tom, subtom = "Médio",       "Neutro"
-    else:
-        tom, subtom = "Escuro",      "Frio / Neutro"
+        x1 = max(0, x + int(w * 0.2))
+        x2 = min(w_img, x + int(w * 0.8))
+        y1 = max(0, y + int(h * 0.3))
+        y2 = min(h_img, y + int(h * 0.7))
 
-    return jsonify({"tom": tom, "subtom": subtom, "cr": mean_cr, "cb": mean_cb})
+        roi = img[y1:y2, x1:x2]
 
+        if roi.size == 0:
+            return jsonify({"error": "Falha ao extrair região da pele"}), 400
+
+        ycrcb = cv2.cvtColor(roi, cv2.COLOR_BGR2YCrCb)
+
+        cr = ycrcb[:, :, 1]
+        cb = ycrcb[:, :, 2]
+
+        mean_cr = float(np.mean(cr))
+        mean_cb = float(np.mean(cb))
+
+        if mean_cr > 150 and mean_cb < 120:
+            tom, subtom = "Claro", "Quente"
+        elif mean_cr > 140:
+            tom, subtom = "Médio Claro", "Neutro Quente"
+        elif mean_cr > 130:
+            tom, subtom = "Médio", "Neutro"
+        else:
+            tom, subtom = "Escuro", "Frio / Neutro"
+
+        return jsonify({
+            "tom": tom,
+            "subtom": subtom,
+            "cr": mean_cr,
+            "cb": mean_cb
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
