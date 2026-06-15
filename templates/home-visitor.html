@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Ajuda Rápida — Meu Escudo</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #fff8f6;
+      --wine: #7d3441;
+      --rose: #d98b93;
+      --white: #ffffff;
+      --danger: #c0392b;
+      --shadow: 0 10px 30px rgba(125, 52, 65, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--wine);
+      min-height: 100vh;
+      padding-bottom: 120px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .back-btn {
+      text-decoration: none;
+      color: var(--wine);
+      font-size: 0.82rem;
+      opacity: 0.6;
+      font-weight: 600;
+    }
+
+    .quick-exit {
+      border: none;
+      background: rgba(192,57,43,0.1);
+      color: var(--danger);
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .header {
+      text-align: center;
+      padding: 10px 24px 24px;
+    }
+
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 0.92rem;
+      opacity: 0.7;
+      line-height: 1.6;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .visitor-badge {
+      display: inline-block;
+      margin-top: 14px;
+      background: rgba(125,52,65,0.08);
+      color: var(--wine);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .sos-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 20px 30px;
+    }
+
+    .sos-btn {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, #c0392b, #7d1f2a);
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 10px 35px rgba(192,57,43,0.35);
+      animation: pulse 2s infinite;
+    }
+
+    .sos-btn:active {
+      transform: scale(0.95);
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow:
+          0 0 0 0 rgba(192,57,43,0.5),
+          0 10px 35px rgba(192,57,43,0.3);
+      }
+
+      70% {
+        box-shadow:
+          0 0 0 28px rgba(192,57,43,0),
+          0 10px 35px rgba(192,57,43,0.3);
+      }
+
+      100% {
+        box-shadow:
+          0 0 0 0 rgba(192,57,43,0),
+          0 10px 35px rgba(192,57,43,0.3);
+      }
+    }
+
+    .sos-text {
+      margin-top: 14px;
+      font-size: 0.88rem;
+      opacity: 0.7;
+    }
+
+    .cards {
+      padding: 0 20px;
+      display: grid;
+      gap: 14px;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 22px;
+      padding: 22px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    .card-info h2 {
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .card-info p {
+      font-size: 0.82rem;
+      opacity: 0.7;
+      line-height: 1.5;
+    }
+
+    .danger-card {
+      background: linear-gradient(135deg, #c0392b, #922b21);
+      color: white;
+    }
+
+    .danger-card p {
+      opacity: 0.88;
+    }
+
+    .bottom-warning {
+      margin: 28px auto 0;
+      max-width: 520px;
+      padding: 0 20px;
+    }
+
+    .warning-box {
+      background: rgba(125,52,65,0.06);
+      border: 1px solid rgba(125,52,65,0.08);
+      border-radius: 18px;
+      padding: 18px;
+      font-size: 0.82rem;
+      line-height: 1.7;
+      opacity: 0.82;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 420px;
+      background: white;
+      border-radius: 30px;
+      padding: 15px;
+      display: flex;
+      justify-content: space-around;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+    }
+
+    .nav-item {
+      text-decoration: none;
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="top-bar">
+    <a href="/" class="back-btn">
+      ← voltar à loja
+    </a>
+
+    <button
+      class="quick-exit"
+      onclick="saidaRapida()"
+    >
+      ✕ saída rápida
+    </button>
+  </div>
+
+  <header class="header">
+    <h1>Ajuda Rápida</h1>
+
+    <p>
+      Acesse recursos essenciais imediatamente,
+      sem precisar criar conta.
+    </p>
+
+    <span class="visitor-badge">
+      MODO VISITANTE
+    </span>
+  </header>
+
+  <section class="sos-wrapper">
+    <button
+      class="sos-btn"
+      onclick="acionarSOS()"
+    >
+      🆘 SOS
+    </button>
+
+    <p class="sos-text">
+      Pressione em caso de emergência
+    </p>
+  </section>
+
+  <section class="cards">
+
+    <a href="/localizacao" class="card">
+      <span class="card-icon">📍</span>
+
+      <div class="card-info">
+        <h2>Compartilhar localização</h2>
+        <p>
+          Envie sua localização atual rapidamente.
+        </p>
+      </div>
+    </a>
+
+    <a href="/questionario" class="card">
+      <span class="card-icon">📋</span>
+
+      <div class="card-info">
+        <h2>Avaliar situação</h2>
+        <p>
+          Responda perguntas para entender seu nível de risco.
+        </p>
+      </div>
+    </a>
+
+    <a href="tel:180" class="card">
+      <span class="card-icon">☎️</span>
+
+      <div class="card-info">
+        <h2>Ligar 180</h2>
+        <p>
+          Central de Atendimento à Mulher.
+        </p>
+      </div>
+    </a>
+
+    <a href="tel:190" class="card danger-card">
+      <span class="card-icon">🚓</span>
+
+      <div class="card-info">
+        <h2>Ligar 190</h2>
+        <p>
+          Emergência policial imediata.
+        </p>
+      </div>
+    </a>
+
+  </section>
+
+  <section class="bottom-warning">
+    <div class="warning-box">
+      ⚠️ Seus dados não serão armazenados no modo visitante.
+      Caso precise de mais recursos e acompanhamento contínuo,
+      recomendamos criar uma conta protegida.
+    </div>
+  </section>
+
+  <nav class="bottom-nav">
+    <a href="/home-visitor" class="nav-item">🏠</a>
+    <a href="/localizacao" class="nav-item">📍</a>
+    <a href="/questionario" class="nav-item">📋</a>
+    <a href="/" class="nav-item">🛍️</a>
+  </nav>
+
+  <script>
+    function saidaRapida() {
+      window.location.href = '/';
+    }
+
+    function acionarSOS() {
+      window.location.href = '/localizacao';
+    }
+
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.clear();
+    });
+  </script>
+
+</body>
+</html>
