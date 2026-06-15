@@ -765,31 +765,6 @@ Voltar
     <h3 class="card-title">Nova anotação</h3>
 
     <textarea id="texto" placeholder="Escreva aqui o que sentir... Este espaço é só seu."></textarea>
-
-    <!-- SEÇÃO DE ANEXOS -->
-    <div class="anexo-label">
-        <span>📎</span> Anexar documentos / provas
-    </div>
-
-    <div class="dropzone" id="dropzone">
-        <input
-            type="file"
-            id="inputArquivos"
-            multiple
-            accept="image/*,.pdf,.doc,.docx,.txt,.mp4,.mov,.mp3,.ogg"
-            onchange="adicionarArquivos(this.files)"
-        />
-        <span class="dropzone-icon">📁</span>
-        <span class="dropzone-hint">
-            <strong>Clique para selecionar</strong> ou arraste arquivos aqui<br>
-            Fotos, PDFs, vídeos, áudios e documentos
-        </span>
-    </div>
-
-    <div id="listaAnexos"></div>
-
-    <button class="btn" onclick="salvar()">Salvar registro</button>
-    <div id="msg" class="msg"></div>
 </div>
 
 <div class="card">
