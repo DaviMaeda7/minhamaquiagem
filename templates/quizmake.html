@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quiz - Minha Maquiagem</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--rose:#ff7ea8;
+--pink:#ffd7e5;
+--cream:#fff8f8;
+--wine:#5f3041;
+--dark:#2b2528;
+--white:#ffffff;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Inter',sans-serif;
+background:var(--cream);
+color:var(--dark);
+}
+
+/* NAVBAR (igual home) */
+.navbar{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:999;
+padding:18px 6%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:rgba(255,255,255,.78);
+backdrop-filter:blur(20px);
+border-bottom:1px solid rgba(0,0,0,.05);
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+text-decoration:none;
+}
+
+.logo img{height:50px;}
+
+.logo span{
+font-family:'Playfair Display';
+font-size:1.7rem;
+color:var(--wine);
+}
+
+.menu{
+display:flex;
+gap:30px;
+position:relative;
+}
+
+.menu a{
+text-decoration:none;
+font-weight:600;
+color:var(--dark);
+cursor:pointer;
+}
+
+.menu a:hover{color:var(--rose);}
+
+.dropdown{
+position:absolute;
+top:45px;
+left:0;
+background:white;
+border-radius:18px;
+box-shadow:0 18px 40px rgba(0,0,0,.08);
+padding:12px;
+display:none;
+flex-direction:column;
+min-width:220px;
+z-index:999;
+}
+
+.dropdown a{
+padding:12px;
+border-radius:12px;
+text-decoration:none;
+color:var(--dark);
+font-weight:500;
+}
+
+.dropdown a:hover{background:#fff2f6;}
+
+/* HERO pequeno padrão */
+.hero{
+padding:140px 6% 60px;
+text-align:center;
+background:linear-gradient(135deg,#fff6f9,#ffe6ef);
+}
+
+.hero h1{
+font-family:'Playfair Display';
+font-size:3.5rem;
+color:var(--wine);
+}
+
+.hero p{
+margin-top:10px;
+color:#666;
+}
+
+/* QUIZ CONTAINER (mesmo estilo cards home) */
+.quiz-wrapper{
+max-width:900px;
+margin:-40px auto 80px;
+padding:20px;
+}
+
+.quiz-card{
+background:white;
+border-radius:38px;
+padding:40px;
+box-shadow:0 18px 55px rgba(0,0,0,.05);
+}
+
+/* PROGRESS */
+.progress{
+height:10px;
+background:#eee;
+border-radius:999px;
+overflow:hidden;
+margin-bottom:25px;
+}
+
+.bar{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,var(--rose),var(--wine));
+transition:.3s;
+}
+
+/* PERGUNTA */
+.question-number{
+color:#777;
+margin-bottom:10px;
+}
+
+.question{
+font-size:1.5rem;
+font-weight:700;
+color:var(--wine);
+margin-bottom:20px;
+}
+
+/* OPÇÕES */
+.options{
+display:grid;
+gap:12px;
+}
+
+.option{
+padding:16px;
+border-radius:18px;
+border:2px solid #eee;
+cursor:pointer;
+transition:.3s;
+background:white;
+}
+
+.option:hover,
+.option.selected{
+border-color:var(--rose);
+background:#fff1f6;
+}
+
+/* BOTÃO */
+.btn{
+margin-top:25px;
+border:none;
+background:var(--wine);
+color:white;
+padding:14px 24px;
+border-radius:999px;
+cursor:pointer;
+font-weight:700;
+transition:.3s;
+}
+
+.btn:hover{
+transform:translateY(-3px);
+}
+
+/* RESULTADO */
+.result{
+display:none;
+text-align:center;
+}
+
+.result h2{
+font-family:'Playfair Display';
+font-size:2.5rem;
+color:var(--wine);
+margin-bottom:20px;
+}
+
+.result-box{
+background:linear-gradient(135deg,#fff,#fff2f7);
+padding:30px;
+border-radius:28px;
+}
+
+/* FOOTER */
+footer{
+background:white;
+padding:40px;
+text-align:center;
+border-top:1px solid #eee;
+margin-top:60px;
+}
+
+footer a{
+text-decoration:none;
+color:#777;
+margin:0 10px;
+}
+
+footer a:hover{
+color:var(--wine);
+}
+
+/* RESPONSIVO */
+@media(max-width:768px){
+.hero h1{font-size:2.2rem;}
+.question{font-size:1.2rem;}
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+<a href="/" class="logo">
+<img src="../static/imagens/logo.png">
+<span>Minha Maquiagem</span>
+</a>
+
+<nav class="menu">
+<a href="/">Início</a>
+<a onclick="toggleMenu()">Ferramentas ▾</a>
+
+<div class="dropdown" id="menuTools">
+  <a href="/tom-de-pele">Descobrir meu Tom</a>
+  <a href="/inspiracoes">Inspirações</a>
+  <a href="/quizmake">Descubra seu estilo</a>
+  <a href="/chat-box">Chat de Beleza</a>
+</div>
+
+<a href="/login">Perfil</a>
+</nav>
+</header>
+
+<section class="hero">
+<h1>Descubra Seu Estilo</h1>
+<p>Um quiz rápido para entender sua identidade de beleza.</p>
+</section>
+
+<div class="quiz-wrapper">
+
+<div class="quiz-card">
+
+<div id="quiz">
+<div class="progress"><div class="bar" id="bar"></div></div>
+
+<div class="question-number" id="number"></div>
+<div class="question" id="question"></div>
+<div class="options" id="options"></div>
+
+<button class="btn" onclick="nextQuestion()">Próxima</button>
+</div>
+
+<div id="result" class="result">
+<div class="result-box">
+<h2 id="title"></h2>
+<p id="desc"></p>
+
+<button class="btn" id="inspi-btn" style="display:none;background:linear-gradient(135deg,var(--rose),var(--wine));">✨ Ver Inspirações para mim</button>
+<button class="btn" onclick="location.reload()">Refazer</button>
+<button class="btn" onclick="location.href='/'">Voltar</button>
+</div>
+</div>
+
+</div>
+</div>
+
+<script>
+// ── Referências ao DOM declaradas explicitamente ──────────────────────────────
+const barEl      = document.getElementById("bar");
+const numberEl   = document.getElementById("number");
+const questionEl = document.getElementById("question");
+const optionsEl  = document.getElementById("options");
+const quizEl     = document.getElementById("quiz");
+const resultEl   = document.getElementById("result");
+const titleEl    = document.getElementById("title");
+const descEl     = document.getElementById("desc");
+
+// ── Fechar dropdown ao clicar fora do menu ────────────────────────────────────
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".menu")) {
+    document.getElementById("menuTools").style.display = "none";
+  }
+});
+
+function toggleMenu() {
+  const menu = document.getElementById("menuTools");
+  menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+}
+
+// ── Dados do quiz ─────────────────────────────────────────────────────────────
+const questions = [
+  {q:"Como você costuma se maquiar no dia a dia?",         o:[["Não me maquio","easy"],["Algo bem leve","natural"],["Gosto de ficar elegante","soft"],["Faço produções completas","full"]]},
+  {q:"Qual produto você usa com mais frequência?",          o:[["Nenhum","easy"],["Protetor com cor","natural"],["Blush","soft"],["Delineador ou cílios","full"]]},
+  {q:"Seu relacionamento com batom é:",                     o:[["Não costumo usar","easy"],["Uso raramente","natural"],["Prefiro tons neutros","soft"],["Adoro cores marcantes","creative"]]},
+  {q:"Quanto tempo leva para se arrumar?",                  o:[["Menos de 5 min","easy"],["Até 10 min","natural"],["15 a 30 min","soft"],["Mais de 30 min","full"]]},
+  {q:"O que mais te interessa aprender?",                   o:[["Tudo do básico","easy"],["Base ideal","natural"],["Olhos e contorno","soft"],["Maquiagens criativas","creative"]]},
+  {q:"Você acompanha tendências?",                          o:[["Nunca","easy"],["Pouco","natural"],["Às vezes","soft"],["Sempre","creative"]]},
+  {q:"Como você define seu estilo?",                        o:[["Iniciante","easy"],["Natural","natural"],["Elegante","soft"],["Ousado","creative"]]},
+  {q:"Qual look escolheria para uma festa?",                o:[["Nenhum","easy"],["Clean Girl","natural"],["Soft Glam","soft"],["Editorial","creative"]]},
+  {q:"O que chama mais atenção em uma maquiagem?",          o:[["Não sei ainda","easy"],["Pele bonita","natural"],["Harmonia","soft"],["Criatividade","creative"]]},
+  {q:"Como você se sente sobre maquiagem?",                 o:[["Estou começando","easy"],["Gosto da praticidade","natural"],["Amo me produzir","full"],["É uma forma de arte","creative"]]}
+];
+
+const scores  = { easy:0, natural:0, soft:0, full:0, creative:0 };
+let current   = 0;
+let selected  = null;
+
+// ── Carrega a pergunta atual ──────────────────────────────────────────────────
+function loadQuestion() {
+  const q = questions[current];
+
+  numberEl.innerText  = `Pergunta ${current + 1} de ${questions.length}`;
+  questionEl.innerText = q.q;
+  optionsEl.innerHTML  = "";
+
+  // Barra de progresso reflete a pergunta atual (não a anterior)
+  barEl.style.width = ((current + 1) / questions.length * 100) + "%";
+
+  q.o.forEach(opt => {
+    const div = document.createElement("div");
+    div.className  = "option";
+    div.innerText  = opt[0];
+    div.onclick = () => {
+      document.querySelectorAll(".option").forEach(x => x.classList.remove("selected"));
+      div.classList.add("selected");
+      selected = opt[1];
+    };
+    optionsEl.appendChild(div);
+  });
+}
+
+// ── Avança para a próxima pergunta ou exibe resultado ─────────────────────────
+function nextQuestion() {
+  if (!selected) { alert("Selecione uma opção."); return; }
+
+  scores[selected]++;
+  current++;
+  selected = null;
+
+  if (current >= questions.length) { showResult(); return; }
+  loadQuestion();
+}
+
+// ── Exibe o resultado final ───────────────────────────────────────────────────
+function showResult() {
+  quizEl.style.display  = "none";
+  resultEl.style.display = "block";
+
+  const winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+
+  const data = {
+    easy: ["🌸 Iniciante",   "Você está começando sua jornada na maquiagem. Comece descobrindo seu subtom e aprendendo preparação de pele."],
+    natural:  ["🌿 Natural",     "Você valoriza leveza, praticidade e beleza natural."],
+    soft:     ["✨ Soft Glam",   "Você gosta de equilíbrio entre elegância e naturalidade."],
+    full:     ["👑 Full Glam",   "Você ama produções marcantes e sofisticadas."],
+    creative: ["🎨 Criativa",    "Você vê maquiagem como expressão artística e adora experimentar."]
+  };
+
+  titleEl.innerText = data[winner][0];
+  descEl.innerText  = data[winner][1];
+
+  const inspBtn = document.getElementById("inspi-btn");
+  inspBtn.style.display = "inline-block";
+  inspBtn.onclick = () => location.href = `/inspiracoes/${winner}`;
+}
+
+// ── Inicia o quiz ─────────────────────────────────────────────────────────────
+loadQuestion();
+</script>
+</body>
+</html>

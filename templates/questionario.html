@@ -4,125 +4,568 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Questionário de Segurança — Meu Escudo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --bg:#fff8f6; --wine:#7d3441; --rose:#d98b93; --soft-rose:#fdf0f0; --white:#ffffff; --shadow:0 10px 30px rgba(125,52,65,.1); }
-        * { box-sizing:border-box; }
-        body { margin:0; padding:0 0 120px; font-family:'Inter',sans-serif; background:var(--bg); color:var(--wine); }
+        :root {
+            --cream: #fff8f8;
+            --soft: #fff2f4;
+            --rose: #ff7ea8;
+            --rose-soft: #ffdce7;
+            --wine: #5f3041;
+            --text: #34292d;
+            --muted: #7f7075;
+            --white: #ffffff;
+            --border: #f5dfe6;
+            --shadow: 0 22px 50px rgba(95,48,65,.08);
+        }
 
-        .header { padding:32px 20px 18px; text-align:center; }
-        h1 { margin:0 0 10px; font-family:'Playfair Display',serif; font-size:2rem; }
-        .subtitle { margin:0 auto; max-width:520px; font-size:.95rem; line-height:1.5; opacity:.8; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .container { width:100%; max-width:640px; margin:0 auto; padding:0 20px; }
+        html { scroll-behavior: smooth; }
 
-        .back-link { display:block; text-align:center; margin:0 0 18px; color:var(--wine); font-size:.88rem; text-decoration:none; opacity:.65; }
-        .back-link:hover { opacity:1; }
+        body {
+            background: radial-gradient(circle at top, #fffdfd, #fff6f8);
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: 140px;
+        }
 
-        .question-card { background:var(--white); margin-bottom:18px; padding:22px; border-radius:24px; box-shadow:var(--shadow); border:1px solid rgba(125,52,65,.06); }
-        .question-title { margin:0 0 14px; font-size:1rem; line-height:1.4; }
+        /* NAVBAR */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 6%;
+            background: rgba(255,255,255,.75);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border);
+        }
 
-        .option { display:block; margin-top:10px; padding:13px 14px; background:var(--soft-rose); border:1px solid transparent; border-radius:18px; cursor:pointer; font-size:.93rem; transition:all .18s; }
-        .option input { margin-right:8px; accent-color:var(--wine); }
-        .option:has(input:checked) { background:#f8dfe3; border-color:var(--rose); font-weight:600; }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: inherit;
+        }
 
-        .finish-card { background:var(--white); padding:22px; border-radius:24px; box-shadow:var(--shadow); text-align:center; }
-        .btn-finish { width:100%; max-width:320px; background:var(--wine); color:white; border:none; padding:14px 22px; border-radius:24px; font-weight:bold; cursor:pointer; font-size:1rem; font-family:'Inter',sans-serif; transition:opacity .2s; }
-        .btn-finish:hover { opacity:.85; }
+        .logo span {
+            font-family: 'Playfair Display';
+            font-size: 1.45rem;
+            color: var(--wine);
+        }
 
-        .message { display:none; margin-top:16px; padding:14px; border-radius:18px; line-height:1.5; text-align:left; }
-        .message.error   { display:block; background:#fff1d6; color:#7d3441; }
-        .message.success { display:block; background:#e8f5e9; color:#2e7d32; }
-        .message.alert   { display:block; background:#fdecea; color:#b71c1c; }
-        .message.warning { display:block; background:#fff8e1; color:#e65100; }
+        .nav-btn {
+            padding: 12px 18px;
+            border-radius: 999px;
+            background: white;
+            text-decoration: none;
+            color: var(--wine);
+            font-weight: 600;
+            border: 1px solid var(--border);
+            transition: .25s;
+            font-size: .9rem;
+        }
 
-        .risco-badge { display:inline-block; margin:8px 0; padding:5px 16px; border-radius:20px; font-weight:700; font-size:.88rem; }
-        .baixo  { background:#e8f5e9; color:#2e7d32; }
-        .medio  { background:#fff8e1; color:#e65100; }
-        .alto   { background:#fdecea; color:#b71c1c; }
+        .nav-btn:hover { transform: translateY(-2px); }
 
-        .bottom-nav { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); width:90%; max-width:400px; background:white; padding:15px; border-radius:30px; display:flex; justify-content:space-around; box-shadow:0 10px 40px rgba(0,0,0,.1); z-index:100; }
-        .nav-item { text-decoration:none; font-size:1.5rem; }
+        /* HERO */
+        .hero {
+            padding: 50px 7% 30px;
+            text-align: center;
+        }
 
-        .btn-voluntarios { display:block; margin:12px auto 0; background:var(--wine); color:white; border:none; padding:8px 14px; border-radius:18px; font-weight:bold; cursor:pointer; font-size:.88rem; text-align: center; }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, white, var(--rose-soft));
+            color: var(--wine);
+            font-size: .78rem;
+            font-weight: 700;
+            margin-bottom: 26px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display';
+            font-size: clamp(1.9rem, 5vw, 2.8rem);
+            line-height: 1.1;
+            color: var(--wine);
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.9;
+            color: var(--muted);
+            font-size: .97rem;
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 36px 7% 0;
+        }
+
+        /* QUESTION CARD */
+        .question-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .question-number {
+            font-size: .75rem;
+            font-weight: 700;
+            color: var(--rose);
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .question-title {
+            font-family: 'Playfair Display';
+            font-size: 1.15rem;
+            color: var(--wine);
+            line-height: 1.45;
+            margin-bottom: 18px;
+            font-weight: 500;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 10px;
+            padding: 14px 16px;
+            background: var(--soft);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            cursor: pointer;
+            font-size: .92rem;
+            color: var(--text);
+            transition: .2s;
+        }
+
+        .option:hover {
+            background: #ffedf2;
+            border-color: var(--rose-soft);
+        }
+
+        .option input {
+            accent-color: var(--wine);
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .option:has(input:checked) {
+            background: linear-gradient(135deg, #fff0f4, #ffdce7);
+            border-color: var(--rose);
+            font-weight: 600;
+            color: var(--wine);
+        }
+
+        /* FINISH CARD */
+        .finish-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .finish-card p {
+            color: var(--muted);
+            font-size: .88rem;
+            margin-bottom: 22px;
+            line-height: 1.7;
+        }
+
+        .btn-finish {
+            width: 100%;
+            max-width: 340px;
+            padding: 18px;
+            border: none;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--wine), #87485b);
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: .3s;
+            box-shadow: 0 16px 36px rgba(95,48,65,.22);
+        }
+
+        .btn-finish:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 44px rgba(95,48,65,.30);
+        }
+
+        /* MENSAGEM RESULTADO */
+        .message {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 22px;
+            line-height: 1.65;
+            text-align: left;
+            font-size: .9rem;
+            border: 1px solid transparent;
+        }
+
+        .message.error {
+            display: block;
+            background: #fff8ec;
+            color: var(--wine);
+            border-color: #f5dfc0;
+        }
+
+        .message.success {
+            display: block;
+            background: #f0faf2;
+            color: #2a6636;
+            border-color: #c3e6cb;
+        }
+
+        .message.alert {
+            display: block;
+            background: #fff2f4;
+            color: #8b1c2e;
+            border-color: #f5c0cb;
+        }
+
+        .message.warning {
+            display: block;
+            background: #fff9ec;
+            color: #7a4800;
+            border-color: #f5e0b0;
+        }
+
+        .risco-badge {
+            display: inline-block;
+            margin: 8px 0;
+            padding: 6px 18px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: .82rem;
+            letter-spacing: .04em;
+        }
+
+        .baixo  { background: #e6f6ea; color: #1e6630; border: 1px solid #b8dfc2; }
+        .medio  { background: #fff3db; color: #7a4800; border: 1px solid #f5d88a; }
+        .alto   { background: #fde8ec; color: #8b1c2e; border: 1px solid #f5b8c4; }
+
+        .btn-voluntarios {
+            display: inline-block;
+            margin-top: 12px;
+            background: linear-gradient(135deg, var(--wine), #87485b);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 999px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: .85rem;
+            text-decoration: none;
+            transition: .25s;
+        }
+
+        .btn-voluntarios:hover { transform: translateY(-2px); }
+
+        /* BOTTOM NAV */
+        .bottom-nav {
+            position: fixed;
+            left: 50%;
+            bottom: 22px;
+            transform: translateX(-50%);
+            width: 92%;
+            max-width: 480px;
+            padding: 14px;
+            background: rgba(255,255,255,.88);
+            backdrop-filter: blur(18px);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 20px 50px rgba(95,48,65,.12);
+            z-index: 500;
+        }
+
+        .bottom-nav a {
+            text-decoration: none;
+            font-size: 1.45rem;
+            transition: .25s;
+        }
+
+        .bottom-nav a:hover { transform: translateY(-3px); }
+
+        @media(max-width: 480px) {
+            .hero h1 { font-size: 1.75rem; }
+            .question-card { padding: 22px; }
+            .finish-card { padding: 24px; }
+        }
+
+        .navbar{
+
+position:sticky;
+
+top:0;
+
+z-index:500;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:
+
+18px 6%;
+
+background:
+
+rgba(255,255,255,.75);
+
+backdrop-filter:
+
+blur(18px);
+
+border-bottom:
+
+1px solid var(--border);
+
+}
+
+
+.logo{
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+text-decoration:none;
+
+color:inherit;
+
+}
+
+
+.logo img{
+
+height:46px;
+
+}
+
+
+.logo span{
+
+font-family:
+'Playfair Display';
+
+font-size:
+1.45rem;
+
+color:
+var(--wine);
+
+}
+
+
+.nav-actions{
+
+display:flex;
+
+gap:12px;
+
+}
+
+
+.nav-btn{
+
+padding:
+
+12px 18px;
+
+border-radius:
+
+999px;
+
+background:
+
+white;
+
+text-decoration:none;
+
+color:
+
+var(--wine);
+
+font-weight:
+600;
+
+border:
+
+1px solid var(--border);
+
+transition:
+.25s;
+
+}
+
+
+.nav-btn:hover{
+
+transform:
+translateY(-2px);
+
+}
     </style>
 </head>
 <body>
-    <header class="header">
-        <h1>Questionário de Segurança</h1>
-        <p class="subtitle">Responda com calma. Este questionário é uma reflexão inicial e não substitui ajuda profissional.</p>
-    </header>
 
-    <main class="container">
-        <a href="/home-secret" class="back-link">← Voltar</a>
-        <form id="formQuestionario">
-            <div id="listaPerguntas"></div>
-            <div class="finish-card">
-                <button class="btn-finish" type="submit">Finalizar questionário</button>
-                <div id="mensagemFinal" class="message"></div>
-            </div>
-        </form>
-    </main>
+<!-- NAVBAR -->
+<header class="navbar">
 
-    <nav class="bottom-nav">
-        <a href="/home-secret" class="nav-item">🏠</a>
-        <a href="/localizacao" class="nav-item">📍</a>
-        <a href="/contatos" class="nav-item">👥</a>
-        <a href="/diario" class="nav-item">📝</a>
-    </nav>
+<a
+href="/"
+class="logo">
 
-    <script>
-        const perguntas = [
-            { texto:'Com que frequência você se sente insegura em casa?', opcoes:[{texto:'Nunca',peso:0},{texto:'Raramente',peso:1},{texto:'Às vezes',peso:2},{texto:'Frequentemente',peso:3}] },
-            { texto:'Seu parceiro(a) controla seu dinheiro ou bens?', opcoes:[{texto:'Não',peso:0},{texto:'Um pouco',peso:1},{texto:'Sim, bastante',peso:2},{texto:'Controle total',peso:3}] },
-            { texto:'Você já foi impedida de ver familiares ou amigos?', opcoes:[{texto:'Nunca',peso:0},{texto:'Poucas vezes',peso:1},{texto:'Com frequência',peso:2},{texto:'Sou totalmente isolada',peso:3}] },
-            { texto:'Já sofreu ameaças verbais ou físicas?', opcoes:[{texto:'Nunca',peso:0},{texto:'Verbais leves',peso:1},{texto:'Verbais graves',peso:2},{texto:'Físicas',peso:3}] },
-            { texto:'Você tem acesso a documentos pessoais (RG, CPF, certidões)?', opcoes:[{texto:'Sim, todos comigo',peso:0},{texto:'Alguns estão com outra pessoa',peso:2},{texto:'Não tenho acesso',peso:3}] },
-            { texto:'Você sente medo de contrariar seu parceiro(a)?', opcoes:[{texto:'Não',peso:0},{texto:'Às vezes',peso:1},{texto:'Sim, sempre',peso:3}] }
-        ];
+<img
+src="../static/imagens/logo.png">
 
-        const respostas = {};
-        const listaEl = document.getElementById('listaPerguntas');
+<span>
 
-        perguntas.forEach((pergunta, i) => {
-            const num  = i + 1;
-            const card = document.createElement('section');
-            card.className = 'question-card';
-            card.innerHTML = `<h2 class="question-title">Pergunta ${num}: ${pergunta.texto}</h2>` +
-                pergunta.opcoes.map(op => `<label class="option"><input type="radio" name="p${num}" value="${op.peso}" data-texto="${op.texto}">${op.texto}</label>`).join('');
-            listaEl.appendChild(card);
-        });
+Minha Maquiagem
 
-        listaEl.addEventListener('change', e => {
-            if (e.target.type === 'radio') respostas[e.target.name] = { peso: parseInt(e.target.value), texto: e.target.dataset.texto };
-        });
+</span>
 
-        document.getElementById('formQuestionario').addEventListener('submit', e => {
-            e.preventDefault();
-            const mf = document.getElementById('mensagemFinal');
-            if (Object.keys(respostas).length < perguntas.length) {
-                mf.className = 'message error';
-                mf.innerHTML = 'Responda todas as perguntas antes de finalizar.';
-                return;
-            }
-            const pontos = Object.values(respostas).reduce((acc, r) => acc + r.peso, 0);
-            const pct    = pontos / (perguntas.length * 3);
-            let nivel, label, classe, msgClasse;
-            if (pct <= .33) { nivel='baixo'; label='Risco Baixo'; classe='baixo'; msgClasse='success'; }
-            else if (pct <= .66) { nivel='medio'; label='Risco Médio'; classe='medio'; msgClasse='warning'; }
-            else { nivel='alto'; label='Risco Alto'; classe='alto'; msgClasse='alert'; }
+</a>
 
-            const msgs = {
-                baixo: 'Suas respostas indicam uma situação de baixo risco no momento. Continue atenta e cuide-se.',
-                medio: 'Suas respostas indicam sinais de alerta. Considere conversar com alguém de confiança ou buscar apoio profissional. Se quiser, acesse nossa rede de voluntárias <a href="/contatos#voluntarias" class="btn-voluntarios">Ir para Voluntárias</a>',
-                alto:  '⚠️ Suas respostas indicam risco elevado. Busque ajuda agora: ligue <strong>180</strong> (Central da Mulher) ou <strong>190</strong> (Polícia do DF). <br>Considere também acessar nossa rede de voluntárias <a href="/contatos#voluntarias" class="btn-voluntarios">Ir para Voluntárias</a>'
-            };
 
-            mf.className = `message ${msgClasse}`;
-            mf.innerHTML = `Questionário finalizado. Obrigada por responder.<br><br>
-                <span class="risco-badge ${classe}">${label}</span><br><br>${msgs[nivel]}`;
-            mf.scrollIntoView({ behavior:'smooth', block:'center' });
-        });
-    </script>
+<div class="nav-actions">
+
+<a
+href="/"
+class="nav-btn">
+
+Voltar
+
+</a>
+
+</div>
+
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <h1>Questionário de Segurança</h1>
+    <p>
+        Responda com calma. Este questionário é uma reflexão inicial
+        e não substitui ajuda profissional.
+    </p>
+</section>
+
+<!-- FORM -->
+<main class="container">
+    <form id="formQuestionario">
+        <div id="listaPerguntas"></div>
+
+        <div class="finish-card">
+            <p>Após responder todas as perguntas, clique abaixo para ver sua avaliação personalizada.</p>
+            <button class="btn-finish" type="submit">Finalizar questionário →</button>
+            <div id="mensagemFinal" class="message"></div>
+        </div>
+    </form>
+</main>
+
+<!-- NAV -->
+<nav class="bottom-nav">
+    <a href="/home-secret">🏠</a>
+    <a href="/localizacao">📍</a>
+    <a href="/contatos">👥</a>
+    <a href="/diario">📝</a>
+</nav>
+
+<script>
+    const perguntas = [
+        { texto: 'Com que frequência você se sente insegura em casa?', opcoes: [{texto:'Nunca',peso:0},{texto:'Raramente',peso:1},{texto:'Às vezes',peso:2},{texto:'Frequentemente',peso:3}] },
+        { texto: 'Seu parceiro(a) controla seu dinheiro ou bens?', opcoes: [{texto:'Não',peso:0},{texto:'Um pouco',peso:1},{texto:'Sim, bastante',peso:2},{texto:'Controle total',peso:3}] },
+        { texto: 'Você já foi impedida de ver familiares ou amigos?', opcoes: [{texto:'Nunca',peso:0},{texto:'Poucas vezes',peso:1},{texto:'Com frequência',peso:2},{texto:'Sou totalmente isolada',peso:3}] },
+        { texto: 'Já sofreu ameaças verbais ou físicas?', opcoes: [{texto:'Nunca',peso:0},{texto:'Verbais leves',peso:1},{texto:'Verbais graves',peso:2},{texto:'Físicas',peso:3}] },
+        { texto: 'Você tem acesso a documentos pessoais (RG, CPF, certidões)?', opcoes: [{texto:'Sim, todos comigo',peso:0},{texto:'Alguns estão com outra pessoa',peso:2},{texto:'Não tenho acesso',peso:3}] },
+        { texto: 'Você sente medo de contrariar seu parceiro(a)?', opcoes: [{texto:'Não',peso:0},{texto:'Às vezes',peso:1},{texto:'Sim, sempre',peso:3}] }
+    ];
+
+    const respostas = {};
+    const listaEl = document.getElementById('listaPerguntas');
+
+    perguntas.forEach((pergunta, i) => {
+        const num  = i + 1;
+        const card = document.createElement('section');
+        card.className = 'question-card';
+        card.innerHTML =
+            `<div class="question-number">Pergunta ${num} de ${perguntas.length}</div>` +
+            `<h2 class="question-title">${pergunta.texto}</h2>` +
+            pergunta.opcoes.map(op =>
+                `<label class="option"><input type="radio" name="p${num}" value="${op.peso}" data-texto="${op.texto}">${op.texto}</label>`
+            ).join('');
+        listaEl.appendChild(card);
+    });
+
+    listaEl.addEventListener('change', e => {
+        if (e.target.type === 'radio')
+            respostas[e.target.name] = { peso: parseInt(e.target.value), texto: e.target.dataset.texto };
+    });
+
+    document.getElementById('formQuestionario').addEventListener('submit', e => {
+        e.preventDefault();
+        const mf = document.getElementById('mensagemFinal');
+
+        if (Object.keys(respostas).length < perguntas.length) {
+            mf.className = 'message error';
+            mf.innerHTML = '⚠️ Responda todas as perguntas antes de finalizar.';
+            return;
+        }
+
+        const pontos = Object.values(respostas).reduce((acc, r) => acc + r.peso, 0);
+        const pct    = pontos / (perguntas.length * 3);
+
+        let nivel, label, classe, msgClasse;
+        if (pct <= .33)       { nivel='baixo'; label='Risco Baixo'; classe='baixo'; msgClasse='success'; }
+        else if (pct <= .66)  { nivel='medio'; label='Risco Médio'; classe='medio'; msgClasse='warning'; }
+        else                  { nivel='alto';  label='Risco Alto';  classe='alto';  msgClasse='alert';   }
+
+        const msgs = {
+            baixo: 'Suas respostas indicam uma situação de baixo risco no momento. Continue atenta, cuide-se e lembre-se que você pode acessar os recursos do aplicativo quando precisar.',
+            medio: 'Suas respostas indicam sinais de alerta. Considere conversar com alguém de confiança ou buscar apoio profissional.<br><br><a href="/contatos#voluntarias" class="btn-voluntarios">👥 Ver rede de voluntárias →</a>',
+            alto:  '⚠️ Suas respostas indicam risco elevado. Busque ajuda agora: ligue <strong>180</strong> (Central da Mulher) ou <strong>190</strong> (Polícia). Você não está sozinha.<br><br><a href="/contatos#voluntarias" class="btn-voluntarios">👥 Ver rede de voluntárias →</a>'
+        };
+
+        mf.className = `message ${msgClasse}`;
+        mf.innerHTML = `
+            Questionário finalizado. Obrigada por responder.<br><br>
+            <span class="risco-badge ${classe}">${label}</span><br><br>
+            ${msgs[nivel]}
+        `;
+        mf.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+</script>
 </body>
 </html>

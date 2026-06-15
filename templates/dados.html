@@ -3,257 +3,351 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
 <title>Violência contra a Mulher no DF — Minha Maquiagem</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-    --bg:#fff8f6;
-    --wine:#7d3441;
-    --rose:#d98b93;
-    --soft:#fdf0f0;
-    --white:#ffffff;
-    --shadow:0 10px 30px rgba(125,52,65,.10);
+:root {
+    --cream: #fff8f8;
+    --soft: #fff2f4;
+    --rose: #ff7ea8;
+    --rose-soft: #ffdce7;
+    --wine: #5f3041;
+    --text: #34292d;
+    --muted: #7f7075;
+    --white: #ffffff;
+    --border: #f5dfe6;
+    --shadow: 0 22px 50px rgba(95,48,65,.08);
 }
 
-*{
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-    margin:0;
-    padding:0 0 130px;
-    background:var(--bg);
-    color:var(--wine);
-    font-family:'Inter',sans-serif;
+html {
+    scroll-behavior: smooth;
 }
 
-/* HEADER */
-
-.header{
-    padding:35px 22px 20px;
-    text-align:center;
+body {
+    background: radial-gradient(circle at top, #fffdfd, #fff6f8);
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 140px;
 }
 
-h1{
-    margin:0 0 10px;
-    font-size:2rem;
-    font-family:'Playfair Display',serif;
+/* NAVBAR */
+
+.navbar{
+
+position:sticky;
+
+top:0;
+
+z-index:500;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:
+
+18px 6%;
+
+background:
+
+rgba(255,255,255,.75);
+
+backdrop-filter:
+
+blur(18px);
+
+border-bottom:
+
+1px solid var(--border);
+
 }
 
-.subtitle{
-    margin:auto;
-    max-width:520px;
-    font-size:.92rem;
-    line-height:1.6;
-    opacity:.75;
+
+.logo{
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+text-decoration:none;
+
+color:inherit;
+
+}
+
+
+.logo img{
+
+height:46px;
+
+}
+
+
+.logo span{
+
+font-family:
+'Playfair Display';
+
+font-size:
+1.45rem;
+
+color:
+var(--wine);
+
+}
+
+
+.nav-actions{
+
+display:flex;
+
+gap:12px;
+
+}
+
+
+.nav-btn{
+
+padding:
+
+12px 18px;
+
+border-radius:
+
+999px;
+
+background:
+
+white;
+
+text-decoration:none;
+
+color:
+
+var(--wine);
+
+font-weight:
+600;
+
+border:
+
+1px solid var(--border);
+
+transition:
+.25s;
+
+}
+
+
+.nav-btn:hover{
+
+transform:
+translateY(-2px);
+
+}
+
+/* HERO */
+.hero {
+    padding: 50px 7% 30px;
+    text-align: center;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, white, var(--rose-soft));
+    color: var(--wine);
+    font-size: .78rem;
+    font-weight: 700;
+    margin-bottom: 26px;
+}
+
+.hero h1 {
+    font-family: 'Playfair Display';
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.1;
+    color: var(--wine);
+    margin-bottom: 16px;
+}
+
+.hero p {
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.9;
+    color: var(--muted);
+    font-size: 1rem;
 }
 
 /* CONTAINER */
+.container {
+    max-width: 760px;
+    margin: auto;
+    padding: 0 7%;
+}
 
-.container{
-    max-width:600px;
-    margin:auto;
-    padding:0 18px;
+/* STATS GRID */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 36px auto;
+    max-width: 760px;
+    padding: 0 7%;
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 24px 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: .25s;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+}
+
+.stat-number {
+    font-family: 'Playfair Display';
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--wine);
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: .78rem;
+    line-height: 1.5;
+    color: var(--muted);
 }
 
 /* CARDS */
-
-.card{
-    background:var(--white);
-    border-radius:24px;
-    padding:22px;
-    margin-bottom:18px;
-    box-shadow:var(--shadow);
-    border:1px solid rgba(125,52,65,.05);
+.card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 30px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    transition: .25s;
 }
 
-.card h2{
-    margin:0 0 18px;
-    font-family:'Playfair Display',serif;
-    font-size:1.15rem;
-}
-
-/* STATS */
-
-.stats-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-    margin-bottom:20px;
-}
-
-.stat-card{
-    background:white;
-    padding:18px;
-    border-radius:22px;
-    text-align:center;
-    box-shadow:var(--shadow);
-}
-
-.stat-number{
-    font-size:2rem;
-    line-height:1;
-    margin-bottom:7px;
-    font-family:'Playfair Display',serif;
-    font-weight:700;
-}
-
-.stat-label{
-    font-size:.78rem;
-    line-height:1.45;
-    opacity:.75;
+.card h2 {
+    font-family: 'Playfair Display';
+    font-size: 1.5rem;
+    color: var(--wine);
+    margin-bottom: 22px;
 }
 
 /* BARS */
-
-.bar-row{
-    margin-bottom:16px;
-}
-
-.bar-label{
-    display:flex;
-    justify-content:space-between;
-    font-size:.82rem;
-    margin-bottom:6px;
-}
-
-.bar-track{
-    height:10px;
-    border-radius:20px;
-    background:var(--soft);
-    overflow:hidden;
-}
-
-.bar-fill{
-    height:100%;
-    width:0;
-    border-radius:20px;
-    background:linear-gradient(90deg,var(--wine),var(--rose));
-    transition:1.2s ease;
-}
-
-/* INFO LIST */
-
-.tipo-item{
-    display:flex;
-    align-items:flex-start;
-    gap:12px;
-    padding:13px 0;
-    border-bottom:1px solid #fde8eb;
-}
-
-.tipo-item:last-child{
-    border-bottom:none;
-}
-
-.tipo-icon{
-    font-size:1.3rem;
-    margin-top:2px;
-    flex-shrink:0;
-}
-
-.tipo-info h4{
-    margin:0 0 4px;
-    font-size:.93rem;
-}
-
-.tipo-info p{
-    margin:0;
-    font-size:.82rem;
-    line-height:1.5;
-    opacity:.72;
-}
-
-/* HELP */
-
-.alerta-ajuda{
-    background:linear-gradient(135deg,var(--wine),#a34555);
-    color:white;
-    border-radius:26px;
-    padding:22px;
-    margin-top:10px;
-    box-shadow:var(--shadow);
-}
-
-.alerta-ajuda h3{
-    margin:0 0 10px;
-    font-family:'Playfair Display',serif;
-    font-size:1.15rem;
-}
-
-.alerta-ajuda p{
-    margin:0 0 15px;
-    line-height:1.5;
-    font-size:.86rem;
-    opacity:.92;
-}
-
-.numeros{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-}
-
-.num-btn{
-    text-decoration:none;
-    color:white;
-    border:1px solid rgba(255,255,255,.35);
-    background:rgba(255,255,255,.15);
-    padding:9px 18px;
-    border-radius:20px;
-    font-size:.88rem;
-    font-weight:600;
-    transition:.2s;
-}
-
-.num-btn:hover{
-    background:rgba(255,255,255,.25);
-}
-
-/* FOOTER */
-
-.fonte{
-    text-align:right;
-    margin-top:12px;
-    font-size:.72rem;
-    opacity:.5;
-}
-
-/* NAV */
-
-.bottom-nav{
-    position:fixed;
-    bottom:20px;
-    left:50%;
-    transform:translateX(-50%);
-    width:90%;
-    max-width:400px;
-    background:white;
-    padding:15px;
-    border-radius:30px;
-    display:flex;
-    justify-content:space-around;
-    box-shadow:0 10px 40px rgba(0,0,0,.12);
-    z-index:100;
-}
-
-.nav-item{
-    font-size:1.5rem;
-    text-decoration:none;
-}
-
-/* RELATÓRIO DA EQUIPE */
-
-.card-relatorio {
-    background: linear-gradient(145deg, #fff5f7, #ffffff);
-    border-radius: 24px;
-    padding: 24px;
+.bar-row {
     margin-bottom: 18px;
+}
+
+.bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: .83rem;
+    color: var(--text);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.bar-label span:last-child {
+    color: var(--muted);
+}
+
+.bar-track {
+    height: 10px;
+    border-radius: 20px;
+    background: var(--soft);
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.bar-fill {
+    height: 100%;
+    width: 0;
+    border-radius: 20px;
+    background: linear-gradient(90deg, var(--wine), #b06070);
+    transition: 1.2s ease;
+}
+
+/* TIPOS */
+.tipo-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.tipo-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.tipo-icon {
+    font-size: 1.4rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #fff5f7, #ffe3ea);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tipo-info h4 {
+    margin: 0 0 5px;
+    font-size: .95rem;
+    color: var(--wine);
+    font-weight: 600;
+}
+
+.tipo-info p {
+    margin: 0;
+    font-size: .83rem;
+    line-height: 1.6;
+    color: var(--muted);
+}
+
+/* FONTE */
+.fonte {
+    text-align: right;
+    margin-top: 16px;
+    font-size: .72rem;
+    color: var(--muted);
+    opacity: .65;
+}
+
+/* RELATÓRIO */
+.card-relatorio {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 30px;
+    margin-bottom: 20px;
     box-shadow: var(--shadow);
-    border: 1.5px solid rgba(125,52,65,.10);
     position: relative;
     overflow: hidden;
 }
@@ -278,63 +372,90 @@ h1{
 .relatorio-header {
     display: flex;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 14px;
+    gap: 16px;
+    margin-bottom: 16px;
 }
 
 .relatorio-icone {
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, var(--wine), #a34555);
-    border-radius: 14px;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #fff5f7, #ffe3ea);
+    border-radius: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     flex-shrink: 0;
-}
-
-.relatorio-titulo {
-    flex: 1;
+    border: 1px solid var(--border);
 }
 
 .relatorio-titulo h2 {
-    margin: 0 0 3px;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.12rem;
+    font-family: 'Playfair Display';
+    font-size: 1.4rem;
     color: var(--wine);
+    margin: 0 0 4px;
 }
 
 .relatorio-titulo span {
     font-size: .75rem;
-    opacity: .55;
+    color: var(--muted);
     font-weight: 500;
     letter-spacing: .4px;
     text-transform: uppercase;
 }
 
 .relatorio-desc {
-    font-size: .86rem;
-    line-height: 1.65;
-    opacity: .72;
-    margin-bottom: 18px;
+    font-size: .88rem;
+    line-height: 1.75;
+    color: var(--muted);
+    margin-bottom: 20px;
+}
+
+.relatorio-preview {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.preview-item {
+    flex: 1;
+    background: var(--soft);
+    border-radius: 18px;
+    padding: 14px 10px;
+    text-align: center;
+    border: 1px solid var(--border);
+}
+
+.preview-item .p-num {
+    font-family: 'Playfair Display';
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--wine);
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.preview-item .p-label {
+    font-size: .7rem;
+    color: var(--muted);
+    line-height: 1.4;
 }
 
 .relatorio-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 7px;
-    margin-bottom: 20px;
+    gap: 8px;
+    margin-bottom: 22px;
 }
 
 .tag {
     background: var(--soft);
     color: var(--wine);
-    padding: 5px 12px;
-    border-radius: 20px;
+    padding: 6px 14px;
+    border-radius: 999px;
     font-size: .74rem;
     font-weight: 600;
-    border: 1px solid rgba(125,52,65,.08);
+    border: 1px solid var(--border);
 }
 
 .btn-relatorio {
@@ -343,24 +464,20 @@ h1{
     justify-content: center;
     gap: 10px;
     width: 100%;
-    padding: 15px;
-    background: linear-gradient(135deg, var(--wine), #a34555);
+    padding: 18px;
+    background: linear-gradient(135deg, var(--wine), #87485b);
     color: white;
     text-decoration: none;
-    border-radius: 16px;
-    font-size: .93rem;
-    font-weight: 600;
-    transition: transform .15s, box-shadow .15s;
-    box-shadow: 0 6px 20px rgba(125,52,65,.30);
+    border-radius: 999px;
+    font-size: .95rem;
+    font-weight: 700;
+    transition: .3s;
+    box-shadow: 0 16px 36px rgba(95,48,65,.22);
 }
 
 .btn-relatorio:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 28px rgba(125,52,65,.38);
-}
-
-.btn-relatorio:active {
-    transform: translateY(0);
+    transform: translateY(-3px);
+    box-shadow: 0 20px 44px rgba(95,48,65,.30);
 }
 
 .btn-seta {
@@ -369,204 +486,273 @@ h1{
 }
 
 .btn-relatorio:hover .btn-seta {
-    transform: translateX(4px);
+    transform: translateX(5px);
 }
 
-.relatorio-preview {
+/* AJUDA */
+.alerta-ajuda {
+    background: linear-gradient(135deg, var(--wine), #84485a);
+    color: white;
+    border-radius: 30px;
+    padding: 34px;
+    margin-top: 8px;
+    box-shadow: 0 30px 70px rgba(95,48,65,.25);
+}
+
+.alerta-ajuda h3 {
+    font-family: 'Playfair Display';
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+}
+
+.alerta-ajuda p {
+    margin-bottom: 20px;
+    line-height: 1.8;
+    font-size: .9rem;
+    opacity: .88;
+}
+
+.numeros {
     display: flex;
     gap: 10px;
-    margin-bottom: 18px;
+    flex-wrap: wrap;
 }
 
-.preview-item {
-    flex: 1;
-    background: var(--soft);
-    border-radius: 14px;
-    padding: 12px 10px;
-    text-align: center;
-}
-
-.preview-item .p-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
+.num-btn {
+    text-decoration: none;
+    color: white;
+    border: 1px solid rgba(255,255,255,.3);
+    background: rgba(255,255,255,.15);
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-size: .9rem;
     font-weight: 700;
-    color: var(--wine);
-    line-height: 1;
-    margin-bottom: 5px;
+    transition: .25s;
+    backdrop-filter: blur(4px);
 }
 
-.preview-item .p-label {
-    font-size: .7rem;
-    opacity: .65;
-    line-height: 1.35;
+.num-btn:hover {
+    background: rgba(255,255,255,.28);
+    transform: translateY(-2px);
 }
 
-/* RESPONSIVO */
+/* BOTTOM NAV */
+.bottom-nav{
 
-@media(max-width:480px){
+position:fixed;
 
-    h1{
-        font-size:1.7rem;
-    }
+left:50%;
 
-    .stats-grid{
-        grid-template-columns:1fr 1fr;
-    }
+bottom:22px;
+
+transform:
+
+translateX(-50%);
+
+width:
+
+92%;
+
+max-width:
+
+480px;
+
+padding:
+
+14px;
+
+background:
+
+rgba(
+255,
+255,
+255,
+.88
+);
+
+backdrop-filter:
+
+blur(18px);
+
+border:
+
+1px solid var(--border);
+
+border-radius:
+
+999px;
+
+display:flex;
+
+justify-content:
+
+space-around;
+
+box-shadow:
+
+0 20px 50px
+rgba(
+95,
+48,
+65,
+.12
+);
+
+z-index:
+500;
+
+}
+
+
+.bottom-nav a{
+
+text-decoration:none;
+
+font-size:
+1.45rem;
+
+transition:
+.25s;
+
+}
+
+
+.bottom-nav a:hover{
+
+transform:
+
+translateY(-3px);
+
+}
+
+/* SECTION WRAPPER */
+.section {
+    max-width: 760px;
+    margin: auto;
+    padding: 0 7%;
+}
+
+@media(max-width: 480px) {
+    .hero h1 { font-size: 1.8rem; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .relatorio-preview { gap: 8px; }
+    .alerta-ajuda { padding: 26px; }
 }
 </style>
 </head>
 
 <body>
 
-<header class="header">
-    <h1>Violência contra a Mulher no DF</h1>
+<!-- NAVBAR -->
+<header class="navbar">
 
-    <p class="subtitle">
+<a
+href="/"
+class="logo">
+
+<img
+src="../static/imagens/logo.png">
+
+<span>
+
+Minha Maquiagem
+
+</span>
+
+</a>
+
+
+<div class="nav-actions">
+
+<a
+href="/"
+class="nav-btn">
+
+Voltar
+
+</a>
+
+</div>
+
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <h1>Violência contra a Mulher no DF</h1>
+    <p>
         Dados reais do Distrito Federal para conscientização,
         prevenção e apoio às vítimas.
     </p>
-</header>
+</section>
 
-<main class="container">
-
-    <!-- STATS -->
-
-    <div class="stats-grid">
-
-        <div class="stat-card">
-            <div class="stat-number">23</div>
-            <div class="stat-label">
-                casos de feminicídio registrados no DF em 2024
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-number">31</div>
-            <div class="stat-label">
-                casos registrados em 2023
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-number">+155%</div>
-            <div class="stat-label">
-                aumento histórico desde 2015
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-number">10</div>
-            <div class="stat-label">
-                anos de dados analisados
-            </div>
-        </div>
-
+<!-- STATS -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">23</div>
+        <div class="stat-label">casos de feminicídio registrados no DF em 2024</div>
     </div>
+    <div class="stat-card">
+        <div class="stat-number">31</div>
+        <div class="stat-label">casos registrados em 2023</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">+155%</div>
+        <div class="stat-label">aumento histórico desde 2015</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">10</div>
+        <div class="stat-label">anos de dados analisados</div>
+    </div>
+</div>
+
+<div class="section">
 
     <!-- EVOLUÇÃO -->
-
     <div class="card">
-
         <h2>Evolução histórica no DF</h2>
 
         <div class="bar-row">
-            <div class="bar-label">
-                <span>2015</span>
-                <span>9 casos</span>
-            </div>
-
-            <div class="bar-track">
-                <div class="bar-fill" data-pct="29"></div>
-            </div>
+            <div class="bar-label"><span>2015</span><span>9 casos</span></div>
+            <div class="bar-track"><div class="bar-fill" data-pct="29"></div></div>
         </div>
-
         <div class="bar-row">
-            <div class="bar-label">
-                <span>2019</span>
-                <span>33 casos</span>
-            </div>
-
-            <div class="bar-track">
-                <div class="bar-fill" data-pct="100"></div>
-            </div>
+            <div class="bar-label"><span>2019</span><span>33 casos</span></div>
+            <div class="bar-track"><div class="bar-fill" data-pct="100"></div></div>
         </div>
-
         <div class="bar-row">
-            <div class="bar-label">
-                <span>2024</span>
-                <span>23 casos</span>
-            </div>
-
-            <div class="bar-track">
-                <div class="bar-fill" data-pct="69"></div>
-            </div>
+            <div class="bar-label"><span>2024</span><span>23 casos</span></div>
+            <div class="bar-track"><div class="bar-fill" data-pct="69"></div></div>
         </div>
 
-        <p class="fonte">
-            Fonte: SSP/DF — Série histórica 2015–2024
-        </p>
-
+        <p class="fonte">Fonte: SSP/DF — Série histórica 2015–2024</p>
     </div>
 
     <!-- REGIÕES -->
-
     <div class="card">
-
         <h2>Regiões Administrativas com mais registros</h2>
 
         <div class="bar-row">
-            <div class="bar-label">
-                <span>Ceilândia</span>
-                <span>26 casos</span>
-            </div>
-
-            <div class="bar-track">
-                <div class="bar-fill" data-pct="100"></div>
-            </div>
+            <div class="bar-label"><span>Ceilândia</span><span>26 casos</span></div>
+            <div class="bar-track"><div class="bar-fill" data-pct="100"></div></div>
         </div>
-
         <div class="bar-row">
-            <div class="bar-label">
-                <span>Samambaia</span>
-                <span>16 casos</span>
-            </div>
-
-            <div class="bar-track">
-                <div class="bar-fill" data-pct="61"></div>
-            </div>
+            <div class="bar-label"><span>Samambaia</span><span>16 casos</span></div>
+            <div class="bar-track"><div class="bar-fill" data-pct="61"></div></div>
         </div>
-
         <div class="bar-row">
-            <div class="bar-label">
-                <span>Planaltina</span>
-                <span>15 casos</span>
-            </div>
-
-            <div class="bar-track">
-                <div class="bar-fill" data-pct="57"></div>
-            </div>
+            <div class="bar-label"><span>Planaltina</span><span>15 casos</span></div>
+            <div class="bar-track"><div class="bar-fill" data-pct="57"></div></div>
         </div>
-
         <div class="bar-row">
-            <div class="bar-label">
-                <span>Taguatinga</span>
-                <span>12 casos</span>
-            </div>
-
-            <div class="bar-track">
-                <div class="bar-fill" data-pct="46"></div>
-            </div>
+            <div class="bar-label"><span>Taguatinga</span><span>12 casos</span></div>
+            <div class="bar-track"><div class="bar-fill" data-pct="46"></div></div>
         </div>
 
-        <p class="fonte">
-            Fonte: SSP/DF — Série histórica de feminicídios
-        </p>
-
+        <p class="fonte">Fonte: SSP/DF — Série histórica de feminicídios</p>
     </div>
 
-
+    <!-- RELATÓRIO -->
     <div class="card-relatorio">
-
         <div class="relatorio-header">
             <div class="relatorio-icone">📊</div>
             <div class="relatorio-titulo">
@@ -612,176 +798,110 @@ h1{
             Ver o relatório completo
             <span class="btn-seta">→</span>
         </a>
+    </div>
 
     <!-- TIPOS -->
-
     <div class="card">
-
         <h2>Formas de violência reconhecidas pela Lei Maria da Penha</h2>
 
         <div class="tipo-item">
             <span class="tipo-icon">🤛</span>
-
             <div class="tipo-info">
                 <h4>Violência Física</h4>
-                <p>
-                    Agressões, empurrões, tapas ou qualquer ato contra o corpo.
-                </p>
+                <p>Agressões, empurrões, tapas ou qualquer ato contra o corpo.</p>
             </div>
         </div>
-
         <div class="tipo-item">
             <span class="tipo-icon">🧠</span>
-
             <div class="tipo-info">
                 <h4>Violência Psicológica</h4>
-                <p>
-                    Manipulação emocional, humilhação, ameaças e isolamento.
-                </p>
+                <p>Manipulação emocional, humilhação, ameaças e isolamento.</p>
             </div>
         </div>
-
         <div class="tipo-item">
             <span class="tipo-icon">💰</span>
-
             <div class="tipo-info">
                 <h4>Violência Patrimonial</h4>
-                <p>
-                    Controle financeiro, destruição de bens ou retenção de documentos.
-                </p>
+                <p>Controle financeiro, destruição de bens ou retenção de documentos.</p>
             </div>
         </div>
-
         <div class="tipo-item">
             <span class="tipo-icon">🔞</span>
-
             <div class="tipo-info">
                 <h4>Violência Sexual</h4>
-                <p>
-                    Qualquer ato sexual forçado ou sem consentimento.
-                </p>
+                <p>Qualquer ato sexual forçado ou sem consentimento.</p>
             </div>
         </div>
-
         <div class="tipo-item">
             <span class="tipo-icon">💬</span>
-
             <div class="tipo-info">
                 <h4>Violência Moral</h4>
-                <p>
-                    Calúnia, humilhação pública, difamação e injúrias constantes.
-                </p>
+                <p>Calúnia, humilhação pública, difamação e injúrias constantes.</p>
             </div>
         </div>
 
-        <p class="fonte">
-            Fonte: Lei Maria da Penha — Lei 11.340/2006
-        </p>
-
+        <p class="fonte">Fonte: Lei Maria da Penha — Lei 11.340/2006</p>
     </div>
 
     <!-- ALERTAS -->
-
     <div class="card">
-
         <h2>Sinais de relacionamento abusivo</h2>
 
         <div class="tipo-item">
             <span class="tipo-icon">⚠️</span>
-
             <div class="tipo-info">
                 <h4>Controle excessivo</h4>
-                <p>
-                    Fiscalização constante de mensagens, roupas, amizades ou localização.
-                </p>
+                <p>Fiscalização constante de mensagens, roupas, amizades ou localização.</p>
             </div>
         </div>
-
         <div class="tipo-item">
             <span class="tipo-icon">🧠</span>
-
             <div class="tipo-info">
                 <h4>Manipulação emocional</h4>
-                <p>
-                    Culpa constante, medo frequente e diminuição da autoestima.
-                </p>
+                <p>Culpa constante, medo frequente e diminuição da autoestima.</p>
             </div>
         </div>
-
         <div class="tipo-item">
             <span class="tipo-icon">🚨</span>
-
             <div class="tipo-info">
                 <h4>Ameaças recorrentes</h4>
-                <p>
-                    Histórico de perseguição, intimidação ou agressividade.
-                </p>
+                <p>Histórico de perseguição, intimidação ou agressividade.</p>
             </div>
         </div>
-
     </div>
 
     <!-- AJUDA -->
-
     <div class="alerta-ajuda">
-
         <h3>Se você precisa de ajuda agora</h3>
-
         <p>
             Você não está sozinha. Existem serviços preparados para te ouvir,
             proteger e orientar de forma segura.
         </p>
-
         <div class="numeros">
-
-            <a href="tel:180" class="num-btn">
-                📞 180
-            </a>
-
-            <a href="tel:190" class="num-btn">
-                🚨 190
-            </a>
-
-            <a href="/contatos" class="num-btn">
-                👥 Contatos
-            </a>
-
+            <a href="tel:180" class="num-btn">📞 180</a>
+            <a href="tel:190" class="num-btn">🚨 190</a>
+            <a href="/contatos" class="num-btn">👥 Contatos</a>
         </div>
-
     </div>
 
-</main>
+</div><!-- /section -->
 
 <!-- NAV -->
-
 <nav class="bottom-nav">
-
-    <a href="/home-secret" class="nav-item">🏠</a>
-
-    <a href="/localizacao" class="nav-item">📍</a>
-
-    <a href="/contatos" class="nav-item">👥</a>
-
-    <a href="/diario" class="nav-item">📝</a>
-
+    <a href="/home-secret">🏠</a>
+    <a href="/localizacao">📍</a>
+    <a href="/contatos">👥</a>
+    <a href="/diario">📝</a>
 </nav>
 
 <script>
-
 window.addEventListener('load', () => {
-
     document.querySelectorAll('.bar-fill').forEach(bar => {
-
         setTimeout(() => {
-
             bar.style.width = bar.dataset.pct + '%';
-
         }, 250);
-
     });
-
 });
-
 </script>
 
 </body>

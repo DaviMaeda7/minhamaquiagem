@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Descobrir Meu Tom de Pele - Minha Maquiagem</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--rose:#ff7ea8;
+--pink:#ffd7e5;
+--cream:#fff8f8;
+--wine:#5f3041;
+--dark:#2b2528;
+--white:#ffffff;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Inter',sans-serif;
+background:var(--cream);
+color:var(--dark);
+overflow-x:hidden;
+}
+
+/* NAVBAR */
+.navbar{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:999;
+padding:18px 6%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:rgba(255,255,255,.78);
+backdrop-filter:blur(20px);
+border-bottom:1px solid rgba(0,0,0,.05);
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+text-decoration:none;
+}
+
+.logo img{height:50px;}
+
+.logo span{
+font-family:'Playfair Display';
+font-size:1.7rem;
+color:var(--wine);
+}
+
+/* MENU */
+.menu{
+display:flex;
+gap:30px;
+position:relative;
+}
+
+.menu a{
+text-decoration:none;
+font-weight:600;
+color:var(--dark);
+cursor:pointer;
+}
+
+.menu a:hover{
+color:var(--rose);
+}
+
+/* DROPDOWN */
+.dropdown{
+position:absolute;
+top:45px;
+left:0;
+background:white;
+border-radius:18px;
+box-shadow:0 18px 40px rgba(0,0,0,.08);
+padding:12px;
+display:none;
+flex-direction:column;
+min-width:220px;
+z-index:999;
+}
+
+.dropdown a{
+padding:12px;
+border-radius:12px;
+text-decoration:none;
+color:var(--dark);
+font-weight:500;
+}
+
+.dropdown a:hover{
+background:#fff2f6;
+}
+
+/* HERO */
+.hero{
+padding:140px 6% 80px;
+text-align:center;
+background:linear-gradient(135deg,#fff6f9,#ffe6ef);
+}
+
+.hero h1{
+font-family:'Playfair Display';
+font-size:4rem;
+color:var(--wine);
+}
+
+.hero p{
+color:#5e5457;
+max-width:700px;
+margin:20px auto;
+line-height:1.8;
+}
+
+/* CONTAINER */
+.container{
+max-width:1000px;
+margin:auto;
+padding:60px 20px;
+}
+
+/* CARD */
+.card{
+background:white;
+border-radius:30px;
+padding:35px;
+box-shadow:0 18px 50px rgba(0,0,0,.06);
+}
+
+/* UPLOAD */
+.upload-area{
+border:3px dashed var(--pink);
+padding:50px;
+text-align:center;
+border-radius:25px;
+cursor:pointer;
+transition:.3s;
+}
+
+.upload-area:hover{
+background:#fff6f9;
+transform:translateY(-3px);
+}
+
+input[type=file]{display:none}
+
+.preview{
+max-width:300px;
+margin:25px auto;
+display:none;
+}
+
+.preview img{
+width:100%;
+border-radius:20px;
+}
+
+/* BUTTON */
+.btn{
+background:var(--wine);
+color:white;
+border:none;
+padding:15px 28px;
+border-radius:999px;
+cursor:pointer;
+font-weight:600;
+transition:.3s;
+}
+
+.btn:hover{
+transform:translateY(-4px);
+}
+
+/* LOADING */
+.loading{
+display:none;
+text-align:center;
+padding:40px;
+}
+
+.bar{
+height:12px;
+background:#eee;
+border-radius:20px;
+overflow:hidden;
+margin-top:20px;
+}
+
+.fill{
+height:100%;
+width:0;
+background:linear-gradient(90deg,var(--rose),var(--wine));
+transition:.3s;
+}
+
+/* RESULT */
+.result{
+display:none;
+margin-top:30px;
+}
+
+.result h2{
+font-family:'Playfair Display';
+color:var(--wine);
+margin-bottom:20px;
+}
+
+.result-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.result-card{
+background:#fff7fa;
+padding:20px;
+border-radius:20px;
+box-shadow:0 12px 30px rgba(0,0,0,.05);
+}
+
+.palette{
+display:flex;
+gap:10px;
+margin-top:10px;
+}
+
+.color{
+width:45px;
+height:45px;
+border-radius:50%;
+}
+
+@media(max-width:900px){
+.hero h1{font-size:2.6rem;}
+}
+
+.upload-btn{
+display:inline-block;
+margin-top:18px;
+padding:14px 24px;
+border-radius:999px;
+background:var(--wine);
+color:white;
+font-weight:600;
+cursor:pointer;
+transition:.3s;
+}
+
+.upload-btn:hover{
+transform:translateY(-4px);
+background:#4b2734;
+}
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+
+<a href="/" class="logo">
+<img src="../static/imagens/logo.png">
+<span>Minha Maquiagem</span>
+</a>
+
+<nav class="menu">
+
+<a href="/">Início</a>
+<a onclick="toggleMenu()">Ferramentas ▾</a>
+
+<div class="dropdown" id="menuTools">
+    <a href="/tom-de-pele">Descobrir meu Tom</a>
+    <a href="/inspiracoes">Inspirações</a>
+    <a href="/quizmake">Descubra seu estilo</a>
+</div>
+
+<a href="/login">Perfil</a>
+
+</nav>
+
+</header>
+
+<section class="hero">
+<h1>Descubra seu Tom de Pele</h1>
+<p>
+Analise sua imagem e receba recomendações de tons, bases e combinações que valorizam sua beleza natural.
+</p>
+</section>
+
+<div class="container">
+<div class="card">
+
+<div class="upload-area">
+    <h2>📸 Envie sua selfie</h2>
+    <p>Adicione uma foto para iniciar a análise</p>
+
+    <label for="photo" class="upload-btn">
+        Clique para adicionar uma foto
+    </label>
+</div>
+
+<input id="photo" type="file" accept="image/*">
+
+<div class="preview" id="preview">
+<img id="previewImg">
+</div>
+
+<div style="text-align:center;margin-top:20px">
+<button class="btn" id="analisar">✨ Analisar</button>
+</div>
+
+<div class="loading" id="loading">
+<h3>Analisando...</h3>
+<div class="bar"><div class="fill" id="fill"></div></div>
+<p id="status">Iniciando análise...</p>
+</div>
+
+<div class="result" id="result">
+
+<h2>Seu Resultado</h2>
+
+<div class="result-grid">
+
+<div class="result-card">
+<h3>Tom de Pele</h3>
+<p>Médio Claro</p>
+</div>
+
+<div class="result-card">
+<h3>Subtom</h3>
+<p>Neutro Quente ✨</p>
+</div>
+
+<div class="result-card">
+<h3>Base Recomendada</h3>
+<p>Warm Beige / Natural Beige</p>
+</div>
+
+</div>
+
+<div class="result-card" style="margin-top:20px">
+<h3>Cartela Ideal</h3>
+
+<div class="palette">
+<div class="color" style="background:#f5d6c6"></div>
+<div class="color" style="background:#d9a77c"></div>
+<div class="color" style="background:#c98c68"></div>
+<div class="color" style="background:#8f5f45"></div>
+</div>
+
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+const photo = document.getElementById('photo');
+const preview = document.getElementById('preview');
+const previewImg = document.getElementById('previewImg');
+
+let base64Image = null;
+
+// 📸 preview + base64
+photo.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  previewImg.src = URL.createObjectURL(file);
+  preview.style.display = 'block';
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    base64Image = event.target.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+// 🔥 clique único
+document.getElementById('analisar').addEventListener('click', async () => {
+  if (!base64Image) {
+    alert('Selecione uma selfie primeiro.');
+    return;
+  }
+
+  const loading = document.getElementById('loading');
+  const fill = document.getElementById('fill');
+  const result = document.getElementById('result');
+  const status = document.getElementById('status');
+
+  loading.style.display = 'block';
+  result.style.display = 'none';
+
+  // UX loading fake
+  let p = 0;
+  const msgs = [
+    'Detectando rosto...',
+    'Analisando iluminação...',
+    'Calculando tonalidade...',
+    'Finalizando resultado...'
+  ];
+
+  const timer = setInterval(() => {
+    p += 5;
+    fill.style.width = p + '%';
+    status.textContent = msgs[Math.min(3, Math.floor(p / 25))];
+
+    if (p >= 70) clearInterval(timer);
+  }, 80);
+
+  try {
+    const res = await fetch('/api/ia/tom-de-pele', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image: base64Image })
+    });
+
+    const data = await res.json();
+
+    clearInterval(timer);
+    fill.style.width = '100%';
+
+    setTimeout(() => {
+      loading.style.display = 'none';
+      result.style.display = 'block';
+
+      document.querySelector(".result-grid").innerHTML = `
+        <div class="result-card">
+          <h3>Tom de Pele</h3>
+          <p>${data.tom}</p>
+        </div>
+
+        <div class="result-card">
+          <h3>Subtom</h3>
+          <p>${data.subtom}</p>
+        </div>
+
+        <div class="result-card">
+          <h3>Análise Técnica</h3>
+          <p>Cr: ${data.cr.toFixed(1)} | Cb: ${data.cb.toFixed(1)}</p>
+        </div>
+      `;
+    }, 500);
+
+  } catch (err) {
+    console.error(err);
+    alert("Erro na análise da imagem");
+    loading.style.display = 'none';
+  }
+});
+</script>
+<script>
+  function toggleMenu(){
+const menu = document.getElementById("menuTools");
+menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+}
+</script>
+</body>
+</html>

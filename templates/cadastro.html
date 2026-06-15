@@ -1,220 +1,193 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Criar Conta • Minha Maquiagem</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose: #ff7ea8;
+  --pink: #ffd7e5;
+  --cream: #fff8f8;
+  --wine: #5f3041;
+  --gold: #d4a853;
+  --dark: #2b2528;
+  --white: #ffffff;
+}
 
-  <style>
-    :root {
-      --surface: #fff8f8;
-      --surface-container: #f2e4e4;
-      --surface-high: #edd6d6;
-      --primary: #8c4b55;
-      --primary-container: #f8a6b1;
-      --on-surface: #1d1b1b;
-      --on-surface-soft: #6b5b5b;
-      --error: #ba1a1a;
-      --success: #2e7d32;
-      --white: #ffffff;
-    }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #fff7fa, #ffe9f1);
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--dark);
+}
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background: var(--surface);
-      font-family: 'Inter', sans-serif;
-      color: var(--on-surface);
-    }
+.navbar {
+  position: fixed; top: 0; left: 0; width: 100%;
+  padding: 18px 6%;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(0,0,0,.05);
+  z-index: 999;
+}
 
-    .page-top {
-      padding: 40px 32px 0;
-    }
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo img { height: 50px; }
+.logo span { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700; color: var(--wine); }
 
-    .back-btn {
-      color: var(--on-surface-soft);
-      text-decoration: none;
-      font-size: 0.82rem;
-    }
+.menu { display: flex; gap: 30px; }
+.menu a { text-decoration: none; color: var(--dark); font-weight: 600; }
+.menu a:hover { color: var(--rose); }
 
-    .cadastro-wrapper {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 32px;
-    }
+.signup-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  padding: 120px 6% 70px;
+  align-items: center;
+  min-height: 100vh;
+}
 
-    .cadastro-icon {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
+.signup-hero { max-width: 700px; }
 
-    .cadastro-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
-      line-height: 1.15;
-      margin-bottom: 8px;
-    }
+.hero-badge {
+  display: inline-block; padding: 10px 18px; border-radius: 999px;
+  background: white; color: var(--wine); font-size: .8rem; font-weight: 700;
+  margin-bottom: 24px;
+}
 
-    .cadastro-title em {
-      color: var(--primary);
-      font-style: italic;
-    }
+.signup-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 5rem; line-height: 1.02;
+  color: var(--wine); margin-bottom: 20px;
+}
 
-    .cadastro-sub {
-      color: var(--on-surface-soft);
-      font-size: 0.92rem;
-      margin-bottom: 36px;
-      line-height: 1.6;
-    }
+.signup-hero h1 span { color: var(--rose); }
 
-    .form-group {
-      margin-bottom: 22px;
-    }
+.signup-hero p { line-height: 1.9; font-size: 1.08rem; color: #655c60; margin-bottom: 34px; }
 
-    .form-label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: var(--on-surface-soft);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
+.steps { display: grid; gap: 18px; }
 
-    .input-wrapper {
-      position: relative;
-    }
+.step {
+  padding: 22px; border-radius: 24px;
+  background: rgba(255,255,255,.5);
+  backdrop-filter: blur(10px);
+}
 
-    .form-input,
-    .form-select {
-      width: 100%;
-      padding: 14px 16px;
-      border: none;
-      border-bottom: 2px solid transparent;
-      border-radius: 8px 8px 0 0;
-      background: var(--surface-container);
-      font-size: 0.95rem;
-      outline: none;
-      font-family: 'Inter', sans-serif;
-    }
+.step strong { display: block; margin-bottom: 8px; color: var(--wine); }
 
-    .form-input:focus,
-    .form-select:focus {
-      background: var(--surface-high);
-      border-bottom-color: var(--primary);
-    }
+.signup-card {
+  background: rgba(255,255,255,.58);
+  backdrop-filter: blur(20px);
+  padding: 55px; border-radius: 42px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.06);
+}
 
-    .input-icon {
-      position: absolute;
-      top: 50%;
-      right: 14px;
-      transform: translateY(-50%);
-      cursor: pointer;
-      font-size: 1.1rem;
-    }
+.card-icon { font-size: 3.5rem; margin-bottom: 18px; }
 
-    .form-error,
-    .form-success {
-      display: none;
-      margin: 0 0 14px;
-      font-size: 0.8rem;
-    }
+.card-title { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--wine); margin-bottom: 10px; }
 
-    .form-error {
-      color: var(--error);
-    }
+.card-sub { color: #666; line-height: 1.8; margin-bottom: 35px; }
 
-    .form-success {
-      color: var(--success);
-    }
+.form-group { margin-bottom: 22px; }
 
-    .form-error.show,
-    .form-success.show {
-      display: block;
-    }
+.form-label {
+  display: block; margin-bottom: 10px;
+  font-size: .8rem; font-weight: 700; letter-spacing: .08em;
+  color: var(--wine);
+}
 
-    .terms {
-      display: flex;
-      gap: 10px;
-      margin: 6px 0 22px;
-      color: var(--on-surface-soft);
-      font-size: 0.82rem;
-      line-height: 1.5;
-    }
+.input-wrapper { position: relative; }
 
-    .terms input {
-      margin-top: 3px;
-      accent-color: var(--primary);
-    }
+.form-input {
+  width: 100%; padding: 18px 22px;
+  border: none; border-radius: 22px;
+  background: white; outline: none; font-size: 1rem; transition: .3s;
+}
 
-    .terms a,
-    .login-link a {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 500;
-    }
+.form-input:focus { box-shadow: 0 0 0 4px rgba(255,126,168,.18); }
 
-    .btn-primary {
-      width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 30px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-container));
-      color: var(--white);
-      font-size: 0.94rem;
-      font-weight: 500;
-      cursor: pointer;
-    }
+.input-icon {
+  position: absolute; right: 20px; top: 50%;
+  transform: translateY(-50%); cursor: pointer;
+}
 
-    .login-link {
-      margin-top: 22px;
-      text-align: center;
-      color: var(--on-surface-soft);
-      font-size: 0.82rem;
-    }
+.form-error, .form-success { display: none; margin-top: 12px; font-size: .9rem; }
+.form-error { color: #d84b4b; }
+.form-success { color: #2f8d46; }
+.form-error.show, .form-success.show { display: block; }
 
-    .cadastro-footer {
-      padding: 0 32px 40px;
-      text-align: center;
-    }
+.signup-btn {
+  width: 100%; padding: 18px;
+  border: none; border-radius: 999px;
+  background: var(--wine); color: white;
+  font-size: 1rem; font-weight: 700;
+  cursor: pointer; transition: .35s;
+  margin-top: 8px;
+}
 
-    .footer-text {
-      color: var(--on-surface-soft);
-      font-size: 0.75rem;
-      line-height: 1.6;
-    }
-  </style>
+.signup-btn:hover { transform: translateY(-5px); }
+
+.login-link { margin-top: 24px; text-align: center; color: #777; }
+.login-link a { color: var(--wine); font-weight: 700; text-decoration: none; }
+
+.footer { padding: 45px; text-align: center; color: #777; }
+.footer a { margin: 0 12px; text-decoration: none; color: #777; }
+.footer a:hover { color: var(--wine); }
+
+@media (max-width: 1000px) {
+  .signup-layout { grid-template-columns: 1fr; }
+  .signup-hero h1 { font-size: 3rem; }
+}
+
+@media (max-width: 600px) {
+  .menu { display: none; }
+  .signup-card { padding: 35px; }
+}
+</style>
 </head>
 
 <body>
-  <div class="page-top">
-    <a href="/login" class="back-btn">← Voltar para login</a>
+
+<header class="navbar">
+  <a href="/" class="logo">
+    <img src="../static/imagens/logo.png">
+    <span>Minha Maquiagem</span>
+  </a>
+  <nav class="menu">
+    <a href="/">Início</a>
+    <a href="/ferramentas">Ferramentas</a>
+    <a href="/login">Perfil</a>
+  </nav>
+</header>
+
+<div class="signup-layout">
+
+  <div class="signup-hero">
+    <div class="hero-badge">✨ SUA CONTA • SUA EXPERIÊNCIA</div>
+    <h1>Comece sua <span>coleção</span></h1>
+    <p>Crie sua conta para receber sugestões personalizadas e continuar sua jornada.</p>
+    <div class="steps">
+      <div class="step"><strong>01 • Dados pessoais</strong>Preencha seus dados básicos.</div>
+      <div class="step"><strong>02 • Segurança</strong>Proteja sua conta com senha.</div>
+      <div class="step"><strong>03 • Explorar</strong>Entre e descubra seu estilo.</div>
+    </div>
   </div>
 
-  <main class="cadastro-wrapper">
-    <span class="cadastro-icon">✨</span>
+  <div class="signup-card">
+    <div class="card-icon">✨</div>
+    <h2 class="card-title">Criar conta</h2>
+    <p class="card-sub">Preencha seus dados e comece a construir sua experiência.</p>
 
-    <h1 class="cadastro-title">
-      Criar <br>
-      <em>conta.</em>
-    </h1>
+    <div id="formCadastro">
 
-    <p class="cadastro-sub">
-      Preencha seus dados para acessar sua área privada com segurança.
-    </p>
-
-    <form id="formCadastro">
       <div class="form-group">
         <label for="nome" class="form-label">Nome completo</label>
         <input type="text" id="nome" class="form-input" placeholder="Digite seu nome">
@@ -243,118 +216,110 @@
         <input type="password" id="confirmarSenha" class="form-input" placeholder="Repita sua senha">
       </div>
 
-      <label class="terms">
-        <input type="checkbox" id="termos">
-        <span>Li e aceito os <a href="#">termos de uso</a> e a <a href="#">política de privacidade</a>.</span>
-      </label>
+      <p class="form-error" id="mensagemErro"></p>
+      <p class="form-success" id="mensagemSucesso"></p>
 
-      <p class="form-error" id="mensagemErro">Preencha todos os campos corretamente.</p>
-      <p class="form-success" id="mensagemSucesso">Cadastro realizado com sucesso!</p>
+      <button class="signup-btn" id="btnCadastro">Criar minha conta →</button>
 
-      <button type="submit" class="btn-primary">Criar minha conta →</button>
-    </form>
+    </div>
 
-    <p class="login-link">
-      Já tem uma conta? <a href="/login">Entrar agora</a>
-    </p>
-  </main>
+    <div class="login-link">
+      Já possui conta? <a href="/login">Entrar</a>
+    </div>
+  </div>
 
-  <footer class="cadastro-footer">
-    <p class="footer-text">
-      Suas informações são guardadas com carinho.<br>
-      Ninguém além de você tem acesso.
-    </p>
-  </footer>
+</div>
 
-  <script>
-    const formCadastro = document.getElementById('formCadastro');
-    const nome = document.getElementById('nome');
-    const email = document.getElementById('email');
-    const telefone = document.getElementById('telefone');
-    const senha = document.getElementById('senha');
-    const confirmarSenha = document.getElementById('confirmarSenha');
-    const termos = document.getElementById('termos');
-    const mensagemErro = document.getElementById('mensagemErro');
-    const mensagemSucesso = document.getElementById('mensagemSucesso');
-    const toggleSenha = document.getElementById('toggleSenha');
+<script>
+const nomeEl          = document.getElementById('nome');
+const emailEl         = document.getElementById('email');
+const telefoneEl      = document.getElementById('telefone');
+const senhaEl         = document.getElementById('senha');
+const confirmarSenhaEl= document.getElementById('confirmarSenha');
+const erroEl          = document.getElementById('mensagemErro');
+const sucessoEl       = document.getElementById('mensagemSucesso');
+const toggleEl        = document.getElementById('toggleSenha');
+const btnCadastro     = document.getElementById('btnCadastro');
 
-    toggleSenha.addEventListener('click', () => {
-      if (senha.type === 'password') {
-        senha.type = 'text';
-        toggleSenha.textContent = '🙈';
-      } else {
-        senha.type = 'password';
-        toggleSenha.textContent = '👁️';
-      }
+// ── Mostrar / ocultar senha ───────────────────────────────────────────────
+toggleEl.addEventListener('click', () => {
+  if (senhaEl.type === 'password') {
+    senhaEl.type = 'text';
+    toggleEl.textContent = '🙈';
+  } else {
+    senhaEl.type = 'password';
+    toggleEl.textContent = '👁️';
+  }
+});
+
+// ── Cadastro ──────────────────────────────────────────────────────────────
+function mostrarErro(msg) {
+  erroEl.textContent = msg;
+  erroEl.classList.add('show');
+  sucessoEl.classList.remove('show');
+}
+
+btnCadastro.addEventListener('click', async () => {
+  erroEl.classList.remove('show');
+  sucessoEl.classList.remove('show');
+
+  const nome     = nomeEl.value.trim();
+  const email    = emailEl.value.trim();
+  const telefone = telefoneEl.value.trim();
+  const senha    = senhaEl.value;
+  const confirma = confirmarSenhaEl.value;
+
+  // ── Validações client-side ──────────────────────────────────────────────
+  if (!nome || !email || !telefone || !senha || !confirma) {
+    return mostrarErro('Preencha todos os campos.');
+  }
+
+  if (senha.length < 6) {
+    return mostrarErro('Senha mínima: 6 caracteres.');
+  }
+
+  if (senha !== confirma) {
+    return mostrarErro('As senhas não coincidem.');
+  }
+
+  // ── Envio ───────────────────────────────────────────────────────────────
+  btnCadastro.textContent = 'Criando conta... ✨';
+  btnCadastro.disabled = true;
+
+  try {
+    const resposta = await fetch('/api/signup', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: nome,
+        email:    email,
+        telefone: telefone,
+        password: senha,
+        confirm_password: confirma
+      })
     });
 
-    // O "async" foi adicionado aqui para permitir a conexão com o Python
-    formCadastro.addEventListener('submit', async (event) => {
-      event.preventDefault();
+    const data = await resposta.json();
 
-      mensagemErro.classList.remove('show');
-      mensagemSucesso.classList.remove('show');
+    if (data.success) {
+      sucessoEl.textContent = 'Conta criada ✨';
+      sucessoEl.classList.add('show');
+      setTimeout(() => { window.location.href = '/home-secret'; }, 1200);
+    } else {
+      mostrarErro(data.message || 'Erro ao criar conta.');
+      btnCadastro.textContent = 'Criar minha conta →';
+      btnCadastro.disabled = false;
+    }
 
-      // 1. Validações locais (se o usuário preencheu tudo certo)
-      if (!nome.value || !email.value || !telefone.value || !senha.value || !confirmarSenha.value) {
-        mensagemErro.textContent = 'Preencha todos os campos com carinho.';
-        mensagemErro.classList.add('show');
-        return;
-      }
+  } catch (err) {
+    console.error(err);
+    mostrarErro('Erro ao conectar.');
+    btnCadastro.textContent = 'Criar minha conta →';
+    btnCadastro.disabled = false;
+  }
+});
+</script>
 
-      if (senha.value.length < 6) {
-        mensagemErro.textContent = 'A senha precisa ter pelo menos 6 caracteres.';
-        mensagemErro.classList.add('show');
-        return;
-      }
-
-      if (senha.value !== confirmarSenha.value) {
-        mensagemErro.textContent = 'As senhas não são iguais.';
-        mensagemErro.classList.add('show');
-        return;
-      }
-
-      if (!termos.checked) {
-        mensagemErro.textContent = 'Você precisa aceitar os termos para continuar.';
-        mensagemErro.classList.add('show');
-        return;
-      }
-
-      // 2. ENVIANDO OS DADOS PARA O BANCO DE DADOS (PYTHON)
-      try {
-        const res = await fetch('/api/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            username: nome.value.trim(),
-            email: email.value.trim(),
-            telefone: telefone.value.trim(),
-            password: senha.value,
-            confirm_password: confirmarSenha.value
-          })
-        });
-
-        const data = await res.json();
-        
-        // 3. Resposta do Banco de Dados
-        if (data.success) {
-          mensagemSucesso.textContent = 'Cadastro realizado com sucesso! Entrando...';
-          mensagemSucesso.classList.add('show');
-          
-          // Aguarda 1.5 segundos e joga a usuária logada direto para a área secreta
-          setTimeout(() => {
-            window.location.href = '/home-secret';
-          }, 1500);
-        } else {
-          // Se o e-mail ou nome já existirem, o Python avisa aqui
-          mensagemErro.textContent = data.message;
-          mensagemErro.classList.add('show');
-        }
-      } catch (err) {
-        mensagemErro.textContent = 'Erro ao conectar com o servidor. Tente novamente.';
-        mensagemErro.classList.add('show');
-      }
-    });
-  </script>
 </body>
 </html>
