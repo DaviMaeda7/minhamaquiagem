@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inspirações — Minha Maquiagem</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --cream: #fff8f8;
+  --rose:  #ff7ea8;
+  --wine:  #5f3041;
+  --text:  #2b2528;
+  --border:#f5dfe6;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  padding-bottom: 100px;
+}
+
+/* ── NAVBAR ── */
+.navbar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  z-index: 999;
+  padding: 18px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,.82);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,.05);
+}
+
+.logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+.logo img { height:50px; }
+.logo span { font-family:'Playfair Display'; font-size:1.7rem; color:var(--wine); }
+
+.menu { display:flex; gap:30px; position:relative; }
+.menu a { text-decoration:none; font-weight:600; color:var(--text); cursor:pointer; }
+.menu a:hover { color:var(--rose); }
+
+.dropdown {
+  position: absolute;
+  top: 45px; left: 0;
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(0,0,0,.08);
+  padding: 12px;
+  display: none;
+  flex-direction: column;
+  min-width: 220px;
+  z-index: 999;
+}
+.dropdown a { padding:12px; border-radius:12px; text-decoration:none; color:var(--text); font-weight:500; }
+.dropdown a:hover { background:#fff2f6; }
+
+/* ── HERO ── */
+.hero {
+  padding: 130px 6% 50px;
+  text-align: center;
+  background: linear-gradient(160deg, #fff6f9 0%, #ffe8f0 100%);
+}
+
+.hero-eyebrow {
+  display: inline-block;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin-bottom: 14px;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display';
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  color: var(--wine);
+  line-height: 1.2;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--rose);
+}
+
+.hero p {
+  color: #888;
+  margin-top: 12px;
+  font-size: .95rem;
+  line-height: 1.7;
+  max-width: 520px;
+  margin-inline: auto;
+}
+
+/* ── GRID DE CATEGORIAS ── */
+.categories-wrap {
+  padding: 52px 5%;
+}
+
+/* linha 1: 3 cards | linha 2: 2 cards centralizados */
+.row {
+  display: grid;
+  gap: 22px;
+  margin-bottom: 22px;
+}
+.row-3 { grid-template-columns: repeat(3, 1fr); }
+.row-2 {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: calc(66.66% + 14px); /* mesma largura de 2/3 da row-3 */
+  margin-inline: auto;
+}
+
+/* ── CARD ── */
+.album {
+  border-radius: 28px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(95,48,65,.09);
+  transition: transform .35s ease, box-shadow .35s ease;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  background: #f5e6ec;
+}
+
+.album:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 52px rgba(95,48,65,.18);
+}
+
+/* imagem ocupa 65% do card */
+.album-img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+}
+
+.album-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .5s ease;
+}
+
+.album:hover .album-img img {
+  transform: scale(1.06);
+}
+
+/* overlay gradiente sobre a imagem */
+.album-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(95,48,65,.55) 100%);
+  opacity: 0;
+  transition: opacity .35s ease;
+}
+
+.album:hover .album-img::after {
+  opacity: 1;
+}
+
+/* texto abaixo da imagem */
+.album-content {
+  padding: 20px 22px 22px;
+  background: white;
+  border-top: 1px solid var(--border);
+}
+
+.album-content h3 {
+  font-family: 'Playfair Display';
+  color: var(--wine);
+  font-size: 1.35rem;
+  margin-bottom: 4px;
+}
+
+.album-content p {
+  color: #888;
+  font-size: .875rem;
+  line-height: 1.5;
+}
+
+/* tag de estilo no canto da imagem */
+.album-tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(255,255,255,.88);
+  backdrop-filter: blur(8px);
+  color: var(--wine);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+/* ── RESPONSIVO ── */
+@media (max-width: 900px) {
+  .row-3 { grid-template-columns: 1fr 1fr; }
+  .row-2 { max-width: 100%; grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 560px) {
+  .row-3, .row-2 { grid-template-columns: 1fr; max-width: 100%; }
+  .hero { padding-top: 110px; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+  <a href="/" class="logo">
+    <img src="../static/imagens/logo.png" alt="Logo">
+    <span>Minha Maquiagem</span>
+  </a>
+  <nav class="menu">
+    <a href="/">Início</a>
+    <a onclick="toggleMenu()">Ferramentas ▾</a>
+    <div class="dropdown" id="menuTools">
+      <a href="/tom-de-pele">Descobrir meu Tom</a>
+      <a href="/inspiracoes">Inspirações</a>
+      <a href="/quizmake">Descubra seu estilo</a>
+      <a href="/chat-box">Chat de Beleza</a>
+    </div>
+    <a href="/login">Perfil</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <span class="hero-eyebrow">Galeria de Estilos</span>
+  <h1>Estilos que combinam <em>com você</em></h1>
+  <p>Explore diferentes moods de maquiagem e encontre o que mais reflete sua identidade.</p>
+</section>
+
+<div class="categories-wrap">
+
+  <!-- Linha 1: Easy · Natural · Soft Glam -->
+  <div class="row row-3">
+
+    <a href="/inspiracoes/beginner" class="album">
+      <div class="album-img">
+        <img src="../static/imagens/iniciante1.jpeg" alt="Easy">
+      </div>
+      <span class="album-tag">Iniciante</span>
+      <div class="album-content">
+        <h3>Easy</h3>
+        <p>Leve, natural e rápido para o dia a dia</p>
+      </div>
+    </a>
+
+    <a href="/inspiracoes/natural" class="album">
+      <div class="album-img">
+        <img src="../static/imagens/natural1.jpeg" alt="Natural">
+      </div>
+      <span class="album-tag">Natural</span>
+      <div class="album-content">
+        <h3>Natural</h3>
+        <p>Realce suave da beleza sem exageros</p>
+      </div>
+    </a>
+
+    <a href="/inspiracoes/soft" class="album">
+      <div class="album-img">
+        <img src="../static/imagens/soft-glam1.jpeg" alt="Soft Glam">
+      </div>
+      <span class="album-tag">Soft Glam</span>
+      <div class="album-content">
+        <h3>Soft Glam</h3>
+        <p>Elegante com toque delicado de brilho</p>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Linha 2: Full Glam · Criativa (centralizados) -->
+  <div class="row row-2">
+
+    <a href="/inspiracoes/glam" class="album">
+      <div class="album-img">
+        <img src="../static/imagens/full-glam1.jpeg" alt="Full Glam">
+      </div>
+      <span class="album-tag">Full Glam</span>
+      <div class="album-content">
+        <h3>Full Glam</h3>
+        <p>Intenso, marcante e sofisticado</p>
+      </div>
+    </a>
+
+    <a href="/inspiracoes/creative" class="album">
+      <div class="album-img">
+        <img src="../static/imagens/criativa4.jpeg" alt="Criativa">
+      </div>
+      <span class="album-tag">Criativa</span>
+      <div class="album-content">
+        <h3>Criativa</h3>
+        <p>Cores, arte e liberdade de expressão</p>
+      </div>
+    </a>
+
+  </div>
+
+</div>
+
+<script>
+function toggleMenu() {
+  const menu = document.getElementById("menuTools");
+  menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+}
+
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".menu")) {
+    document.getElementById("menuTools").style.display = "none";
+  }
+});
+</script>
+
+</body>
+</html>

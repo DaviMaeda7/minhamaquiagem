@@ -2,1365 +2,233 @@
 <html lang="pt-BR">
 
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<meta
-name="viewport"
-content="width=device-width,initial-scale=1.0">
+<title>Minha Maquiagem</title>
 
-<title>
-Minha Maquiagem
-</title>
-
-<link
-href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
-rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 
 :root{
-
 --rose:#ff7ea8;
 --pink:#ffd7e5;
-
 --cream:#fff8f8;
-
 --wine:#5f3041;
-
---gold:#d4a853;
-
 --dark:#2b2528;
-
 --white:#ffffff;
-
 }
 
 *{
-
 margin:0;
-
 padding:0;
-
 box-sizing:border-box;
-
-}
-
-html{
-scroll-behavior:smooth;
 }
 
 body{
-
-font-family:
-'Inter',
-sans-serif;
-
-background:
-var(--cream);
-
-color:
-var(--dark);
-
+font-family:'Inter',sans-serif;
+background:var(--cream);
+color:var(--dark);
 overflow-x:hidden;
-
 }
 
 /* NAVBAR */
-
 .navbar{
-
 position:fixed;
-
 top:0;
-
 left:0;
-
 width:100%;
-
 z-index:999;
-
-padding:
-18px 6%;
-
+padding:18px 6%;
 display:flex;
-
-justify-content:
-space-between;
-
-align-items:
-center;
-
-background:
-rgba(255,255,255,.78);
-
-backdrop-filter:
-blur(20px);
-
-border-bottom:
-1px solid rgba(0,0,0,.05);
-
+justify-content:space-between;
+align-items:center;
+background:rgba(255,255,255,.78);
+backdrop-filter:blur(20px);
+border-bottom:1px solid rgba(0,0,0,.05);
 }
 
 .logo{
-
 display:flex;
-
 align-items:center;
-
 gap:12px;
-
 text-decoration:none;
-
 }
 
-.logo img{
-height:50px;
-}
+.logo img{height:50px;}
 
 .logo span{
-
-font-family:
-'Playfair Display',
-serif;
-
-font-size:
-1.7rem;
-
-font-weight:
-700;
-
-color:
-var(--wine);
-
+font-family:'Playfair Display';
+font-size:1.7rem;
+color:var(--wine);
 }
 
+/* MENU */
 .menu{
-
 display:flex;
-
-gap:
-30px;
-
+gap:30px;
+position:relative;
 }
 
 .menu a{
-
-text-decoration:
-none;
-
-font-weight:
-600;
-
-color:
-var(--dark);
-
-transition:
-.3s;
-
+text-decoration:none;
+font-weight:600;
+color:var(--dark);
+cursor:pointer;
 }
 
 .menu a:hover{
 color:var(--rose);
 }
 
+/* DROPDOWN */
+.dropdown{
+position:absolute;
+top:45px;
+left:0;
+background:white;
+border-radius:18px;
+box-shadow:0 18px 40px rgba(0,0,0,.08);
+padding:12px;
+display:none;
+flex-direction:column;
+min-width:220px;
+z-index:999;
+}
+
+.dropdown a{
+padding:12px;
+border-radius:12px;
+text-decoration:none;
+color:var(--dark);
+font-weight:500;
+}
+
+.dropdown a:hover{
+background:#fff2f6;
+}
+
 /* HERO */
-
 .hero{
-
-min-height:
-100vh;
-
-padding:
-140px 6% 120px;
-
-position:
-relative;
-
-display:
-flex;
-
-align-items:
-center;
-
-overflow:
-hidden;
-
-background:
-
-linear-gradient(
-135deg,
-#fff6f9,
-#ffe6ef
-);
-
+min-height:100vh;
+padding:140px 6% 120px;
+display:flex;
+align-items:center;
+background:linear-gradient(135deg,#fff6f9,#ffe6ef);
 }
 
-.hero::before{
-
-content:"";
-
-position:absolute;
-
-width:
-900px;
-
-height:
-900px;
-
-border-radius:
-50%;
-
-right:
--350px;
-
-top:
--250px;
-
-background:
-
-radial-gradient(
-circle,
-rgba(255,126,168,.20),
-transparent
-);
-
-}
-
-.hero::after{
-
-content:"";
-
-position:absolute;
-
-width:
-400px;
-
-height:
-400px;
-
-left:
--100px;
-
-bottom:
--120px;
-
-border-radius:
-50%;
-
-background:
-
-rgba(
-212,
-168,
-83,
-.08
-);
-
-}
-
-.hero-content{
-
-position:
-relative;
-
-z-index:
-2;
-
-max-width:
-760px;
-
-}
+.hero-content{max-width:760px;}
 
 .hero-tag{
-
-display:
-inline-block;
-
-padding:
-10px 18px;
-
-border-radius:
-999px;
-
-background:
-rgba(255,255,255,.8);
-
-backdrop-filter:
-blur(12px);
-
-color:
-var(--wine);
-
-font-size:
-.8rem;
-
-font-weight:
-700;
-
-margin-bottom:
-28px;
-
+display:inline-block;
+padding:10px 18px;
+border-radius:999px;
+background:rgba(255,255,255,.8);
+font-weight:700;
+margin-bottom:28px;
 }
 
 .hero h1{
-
-font-family:
-'Playfair Display',
-serif;
-
-font-size:
-5.2rem;
-
-line-height:
-1.02;
-
-color:
-var(--wine);
-
-margin-bottom:
-26px;
-
+font-family:'Playfair Display';
+font-size:5rem;
+color:var(--wine);
+margin-bottom:20px;
 }
 
-.hero h1 span{
-color:var(--rose);
-}
+.hero h1 span{color:var(--rose);}
 
 .hero p{
-
-font-size:
-1.15rem;
-
-line-height:
-1.9;
-
-max-width:
-650px;
-
-color:
-#5e5457;
-
-margin-bottom:
-40px;
-
-}
-
-.hero-buttons{
-
-display:flex;
-
-gap:14px;
-
-flex-wrap:wrap;
-
-}
-
-.hero-buttons a{
-
-padding:
-16px 30px;
-
-border-radius:
-999px;
-
-font-weight:
-700;
-
-text-decoration:
-none;
-
-transition:
-.35s;
-
-}
-
-.btn-primary{
-
-background:
-var(--wine);
-
-color:
-white;
-
-}
-
-.btn-secondary{
-
-border:
-1px solid var(--wine);
-
-color:
-var(--wine);
-
-}
-
-.hero-buttons a:hover{
-
-transform:
-translateY(-6px);
-
+font-size:1.1rem;
+color:#5e5457;
+line-height:1.9;
 }
 
 /* STATS */
-
 .hero-stats{
-
-padding:
-0 6%;
-
-margin-top:
--50px;
-
-position:
-relative;
-
-z-index:
-4;
-
+padding:0 6%;
+margin-top:-40px;
 }
 
 .stats-card{
-
-background:
-white;
-
-border-radius:
-40px;
-
-padding:
-40px;
-
-display:
-grid;
-
-grid-template-columns:
-repeat(
-3,
-1fr
-);
-
-gap:
-30px;
-
-box-shadow:
-0 18px 50px rgba(0,0,0,.06);
-
+background:white;
+border-radius:40px;
+padding:40px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+box-shadow:0 18px 50px rgba(0,0,0,.06);
 }
 
 .stat{
-
-text-align:
-center;
-
+text-align:center;
 }
 
 .stat strong{
-
-display:block;
-
-font-size:
-3rem;
-
-color:
-var(--wine);
-
-font-family:
-'Playfair Display',
-serif;
-
+font-size:2.5rem;
+font-family:'Playfair Display';
+color:var(--wine);
 }
 
 .stat span{
-
-color:
-#666;
-
-}
-
-.section-title{
-
-text-align:
-center;
-
-margin-bottom:
-70px;
-
-}
-
-.section-title h2{
-
-font-family:
-'Playfair Display',
-serif;
-
-font-size:
-3rem;
-
-color:
-var(--wine);
-
-}
-
-.section-title p{
-
-margin-top:
-12px;
-
-color:
-#777;
-
-}
-
-@media(max-width:900px){
-
-.hero h1{
-font-size:3rem;
-}
-
-.stats-card{
-
-grid-template-columns:
-1fr;
-
-}
-
-}
-
-@media(max-width:600px){
-
-.menu{
-display:none;
-}
-
-.hero{
-
-padding-top:
-110px;
-
-}
-
-.hero h1{
-font-size:2.3rem;
-}
-
+color:#666;
+font-size:.95rem;
 }
 
 /* TOOLS */
-
 .tools{
-
-padding:
-140px 6%;
-
-background:
-
-linear-gradient(
-180deg,
-var(--cream),
-white
-);
-
+padding:140px 6%;
 }
 
 .tools-grid{
-
 display:grid;
-
-grid-template-columns:
-1.4fr 1fr 1fr;
-
-gap:
-28px;
-
+grid-template-columns:1.4fr 1fr 1fr;
+gap:28px;
 }
 
 .tool-card{
-
-background:
-white;
-
-padding:
-42px;
-
-border-radius:
-38px;
-
-box-shadow:
-0 18px 55px rgba(0,0,0,.05);
-
-transition:
-.35s;
-
-position:
-relative;
-
-overflow:hidden;
-
+background:white;
+padding:42px;
+border-radius:38px;
+box-shadow:0 18px 55px rgba(0,0,0,.05);
+transition:.3s;
 }
 
 .tool-card:hover{
-
-transform:
-translateY(-10px);
-
-}
-
-.destaque{
-
-background:
-
-linear-gradient(
-135deg,
-#ffffff,
-#fff4f8
-);
-
-grid-row:
-span 2;
-
-}
-
-.destaque::before{
-
-content:"";
-
-position:absolute;
-
-width:320px;
-
-height:320px;
-
-border-radius:50%;
-
-right:-150px;
-
-top:-150px;
-
-background:
-
-rgba(
-255,
-126,
-168,
-.12
-);
-
-}
-
-.tool-badge{
-
-display:inline-block;
-
-padding:
-10px 16px;
-
-border-radius:
-999px;
-
-background:
-var(--wine);
-
-color:
-white;
-
-font-size:
-.75rem;
-
-font-weight:
-700;
-
-margin-bottom:
-24px;
-
+transform:translateY(-8px);
 }
 
 .tool-card h3{
-
-font-size:
-1.8rem;
-
-color:
-var(--wine);
-
-margin-bottom:
-14px;
-
+font-size:1.6rem;
+color:var(--wine);
+margin-bottom:10px;
 }
 
 .tool-card p{
-
-line-height:
-1.9;
-
-color:
-#666;
-
-}
-
-.tool-benefits{
-
-margin:
-30px 0;
-
-list-style:none;
-
-}
-
-.tool-benefits li{
-
-padding:
-10px 0;
-
-color:#555;
-
+color:#666;
+line-height:1.8;
+margin-bottom:20px;
 }
 
 .tool-btn{
-
 display:inline-block;
-
-padding:
-16px 28px;
-
-border-radius:
-999px;
-
-background:
-var(--wine);
-
+padding:14px 22px;
+border-radius:999px;
+background:var(--wine);
 color:white;
-
 text-decoration:none;
-
-font-weight:
-700;
-
-transition:.3s;
-
+font-weight:700;
 }
 
-.tool-btn:hover{
-
-transform:
-translateY(-4px);
-
-}
-
-.tool-icon{
-
-font-size:
-3rem;
-
-margin-bottom:
-18px;
-
-}
-
-/* QUIZ */
-
-.quiz{
-
-padding:
-150px 6%;
-
-}
-
-.quiz-box{
-
-background:
-
-linear-gradient(
-135deg,
-var(--pink),
-#fff4f8
-);
-
-padding:
-90px;
-
-border-radius:
-44px;
-
-text-align:
-center;
-
-max-width:
-1100px;
-
-margin:auto;
-
-position:
-relative;
-
-overflow:hidden;
-
-}
-
-.quiz-box::before{
-
-content:"";
-
-position:absolute;
-
-width:
-420px;
-
-height:
-420px;
-
-background:
-
-rgba(
-255,
-255,
-255,
-.25
-);
-
-border-radius:
-50%;
-
-right:
--180px;
-
-top:
--180px;
-
-}
-
-.quiz h2{
-
-position:relative;
-
-font-family:
-'Playfair Display',
-serif;
-
-font-size:
-4rem;
-
-color:
-var(--wine);
-
-margin-bottom:
-20px;
-
-}
-
-.quiz p{
-
-position:relative;
-
-max-width:
-700px;
-
-margin:
-auto;
-
-line-height:
-1.9;
-
-color:
-#665b60;
-
-}
-
-.quiz button{
-
-margin-top:
-34px;
-
-border:none;
-
-padding:
-18px 34px;
-
-border-radius:
-999px;
-
-background:
-var(--wine);
-
-color:white;
-
-font-size:
-1rem;
-
-font-weight:
-700;
-
-cursor:pointer;
-
-transition:
-.35s;
-
-position:
-relative;
-
-}
-
-.quiz button:hover{
-
-transform:
-translateY(-5px);
-
-}
-
-@media(max-width:1000px){
-
-.tools-grid{
-
-grid-template-columns:
-1fr;
-
-}
-
-.destaque{
-
-grid-row:auto;
-
-}
-
-}
-
-@media(max-width:600px){
-
-.quiz-box{
-
-padding:
-60px 35px;
-
-}
-
-.quiz h2{
-
-font-size:
-2.4rem;
-
-}
-
-}
-
-/* INSPIRAÇÕES */
-
-.inspiracoes{
-
-padding:
-140px 6%;
-
-background:
-white;
-
-}
-
-.masonry{
-
-columns:4;
-
-column-gap:22px;
-
-}
-
-.item{
-
-position:relative;
-
-overflow:hidden;
-
-border-radius:
-34px;
-
-margin-bottom:
-22px;
-
-box-shadow:
-0 18px 50px rgba(0,0,0,.05);
-
-}
-
-.item img{
-
-width:100%;
-
-display:block;
-
-transition:
-.5s;
-
-}
-
-.item:hover img{
-
-transform:
-scale(1.08);
-
-}
-
-.item::after{
-
-content:"";
-
-position:absolute;
-
-inset:0;
-
-background:
-
-linear-gradient(
-transparent,
-rgba(0,0,0,.18)
-);
-
-opacity:0;
-
-transition:.35s;
-
-}
-
-.item:hover::after{
-
-opacity:1;
-
-}
-
-/* ARTICLES */
-
-.articles{
-
-padding:
-150px 6%;
-
-background:
-
-linear-gradient(
-180deg,
-white,
-var(--cream)
-);
-
-}
-
-.article-grid{
-
-display:grid;
-
-grid-template-columns:
-repeat(
-auto-fit,
-minmax(320px,1fr)
-);
-
-gap:
-28px;
-
-}
-
-.article-card{
-
-padding:
-40px;
-
-background:
-white;
-
-border-radius:
-36px;
-
-box-shadow:
-0 16px 50px rgba(0,0,0,.05);
-
-transition:
-.35s;
-
-}
-
-.article-card:hover{
-
-transform:
-translateY(-8px);
-
-}
-
-.article-card span{
-
-display:inline-block;
-
-padding:
-8px 14px;
-
-border-radius:
-999px;
-
-background:
-#fff1f5;
-
-color:
-var(--rose);
-
-font-size:
-.75rem;
-
-font-weight:
-700;
-
-margin-bottom:
-18px;
-
-}
-
-.article-card h3{
-
-font-size:
-1.7rem;
-
-color:
-var(--wine);
-
-margin-bottom:
-16px;
-
-}
-
-.article-card p{
-
-line-height:
-1.9;
-
-color:
-#666;
-
-}
-
-/* CTA */
-
-.cta{
-
-padding:
-170px 6%;
-
-text-align:
-center;
-
-background:
-
-linear-gradient(
-135deg,
-#fff2f7,
-white
-);
-
-position:
-relative;
-
-overflow:hidden;
-
-}
-
-.cta::before{
-
-content:"";
-
-position:absolute;
-
-width:
-650px;
-
-height:
-650px;
-
-border-radius:
-50%;
-
-background:
-
-rgba(
-255,
-126,
-168,
-.10
-);
-
-right:
--250px;
-
-top:
--250px;
-
-}
-
-.cta h2{
-
-position:relative;
-
-font-family:
-'Playfair Display',
-serif;
-
-font-size:
-5rem;
-
-line-height:
-1.05;
-
-color:
-var(--wine);
-
-margin-bottom:
-24px;
-
-}
-
-.cta p{
-
-position:relative;
-
-font-size:
-1.1rem;
-
-color:
-#666;
-
-max-width:
-650px;
-
-margin:
-auto;
-
-margin-bottom:
-34px;
-
-}
-
-.cta a{
-
-display:inline-block;
-
-padding:
-18px 34px;
-
-border-radius:
-999px;
-
-background:
-var(--wine);
-
-color:
-white;
-
-text-decoration:
-none;
-
-font-weight:
-700;
-
-transition:
-.35s;
-
-}
-
-.cta a:hover{
-
-transform:
-translateY(-6px);
-
-}
-
-/* FOOTER */
-
-footer{
-
-background:
-white;
-
-padding:
-60px;
-
-text-align:
-center;
-
-border-top:
-1px solid #eee;
-
-}
-
-footer a{
-
-text-decoration:none;
-
-margin:
-0 14px;
-
-color:
-#777;
-
-transition:
-.3s;
-
-}
-
-footer a:hover{
-
-color:
-var(--wine);
-
-}
-
-footer p{
-
-margin-top:
-18px;
-
-color:
-#888;
-
-}
-
-/* MOBILE */
-
+/* RESPONSIVO */
 @media(max-width:900px){
-
-.masonry{
-
-columns:2;
-
-}
-
-.cta h2{
-
-font-size:
-3rem;
-
-}
-
-}
-
-@media(max-width:600px){
-
-.masonry{
-
-columns:1;
-
-}
-
-.cta{
-
-padding:
-110px 8%;
-
-}
-
-.cta h2{
-
-font-size:
-2.2rem;
-
-}
-
+.hero h1{font-size:3rem;}
+.stats-card{grid-template-columns:1fr;}
+.tools-grid{grid-template-columns:1fr;}
+.hero h1{font-size:2.6rem;}
 }
 
 </style>
-
 </head>
 
 <body>
@@ -1368,22 +236,23 @@ font-size:
 <header class="navbar">
 
 <a href="/" class="logo">
-
-<img
-src="./static/imagens/logo.png">
-
-<span>
-
-Minha Maquiagem
-
-</span>
-
+<img src="../static/imagens/logo.png">
+<span>Minha Maquiagem</span>
 </a>
 
 <nav class="menu">
 
 <a href="/">Início</a>
-<a href="#ferramentas">Ferramentas</a>
+
+<a onclick="toggleMenu()">Ferramentas ▾</a>
+
+<div class="dropdown" id="menuTools">
+    <a href="/tom-de-pele">Descobrir meu Tom</a>
+    <a href="/inspiracoes">Inspirações</a>
+    <a href="/quizmake">Descubra seu estilo</a>
+    <a href="/chat-box">Aprenda mais com IA</a>
+</div>
+
 <a href="/login">Perfil</a>
 
 </nav>
@@ -1394,52 +263,15 @@ Minha Maquiagem
 
 <div class="hero-content">
 
-<div class="hero-tag">
-
-✨ DESCUBRA • APRENDA • CRIE
-
-</div>
+<div class="hero-tag">✨ DESCUBRA • CRIE • EVOLUA</div>
 
 <h1>
-
-Sua maquiagem
-começa pelo
-<span>
-
-autoconhecimento
-
-</span>
-
+Sua beleza começa pelo <span>autoconhecimento</span>
 </h1>
 
 <p>
-
-Descubra seu tom,
-encontre sua combinação ideal
-e transforme inspiração em
-uma rotina feita para você.
-
+Descubra seu estilo, entenda suas cores e encontre o que realmente combina com você.
 </p>
-
-<div class="hero-buttons">
-
-<a
-href="/tom-de-pele"
-class="btn-primary">
-
-Descobrir meu tom
-
-</a>
-
-<a
-href="#inspiracoes"
-class="btn-secondary">
-
-Ver inspirações
-
-</a>
-
-</div>
 
 </div>
 
@@ -1450,163 +282,65 @@ Ver inspirações
 <div class="stats-card">
 
 <div class="stat">
-
-<strong>
-+100
-</strong>
-
-<span>
-
-combinações
-
-</span>
-
+<strong>+ possibilidades</strong><br>
+<span>de descoberta pessoal</span>
 </div>
 
 <div class="stat">
-
-<strong>
-100%
-</strong>
-
-<span>
-
-personalizado
-
-</span>
-
+<strong>100%</strong><br>
+<span>experiência personalizada</span>
 </div>
 
 <div class="stat">
-
-<strong>
-24h
-</strong>
-
-<span>
-
-para explorar
-
-</span>
-
+<strong>sempre</strong><br>
+<span>evoluindo com você</span>
 </div>
 
 </div>
 
 </section>
 
-<section
-class="tools"
-id="ferramentas">
-
-<div class="section-title">
-
-<h2>
-
-Ferramentas Inteligentes
-
-</h2>
-
-<p>
-
-Experiências feitas para descobrir,
-testar e aprender.
-
-</p>
-
-</div>
+<section class="tools">
 
 <div class="tools-grid">
 
-<div class="tool-card destaque">
+<div class="tool-card">
 
-<div class="tool-badge">
-
-MAIS UTILIZADA
-
-</div>
-
-<h3>
-
-Descubra sua combinação perfeita
-
-</h3>
-
+<h3>Descubra seu tom</h3>
 <p>
-
-Analise seu tom de pele,
-descubra seu subtom e receba
-recomendações alinhadas ao seu estilo.
-
+Entenda melhor sua pele e encontre combinações que valorizam sua beleza natural.
 </p>
-
-<ul class="tool-benefits">
-
-<li>
-✓ Descoberta do subtom
-</li>
-
-<li>
-✓ Sugestão de bases
-</li>
-
-<li>
-✓ Recomendações personalizadas
-</li>
-
-<li>
-✓ Resultado visual premium
-</li>
-
-</ul>
-
-<a href="/tom-de-pele" class="tool-btn">Começar análise</a>
+<a class="tool-btn" href="/tom-de-pele">Explorar</a>
 
 </div>
 
 <div class="tool-card">
 
-<div class="tool-icon">
-
-💄
-
-</div>
-
-<h3>
-
-Guia de Base
-
-</h3>
-
+<h3>Inspirações</h3>
 <p>
-
-Encontre cobertura,
-acabamento e cor ideal.
-
+Descubra ideias e referências para criar looks que combinam com sua identidade.
 </p>
+<a class="tool-btn" href="/inspiracoes">Ver</a>
 
 </div>
 
 <div class="tool-card">
 
-<div class="tool-icon">
-
-🪞
+<h3>Descubra seu estilo</h3>
+<p>
+Responda perguntas rápidas e entenda qual estética mais combina com você.
+</p>
+<a class="tool-btn" href="/quizmake">Começar</a>
 
 </div>
 
-<h3>
+<div class="tool-card">
 
-Formato do rosto
-
-</h3>
-
+<h3>Chat de Beleza Inteligente</h3>
 <p>
-
-Dicas personalizadas
-para destacar seus traços.
-
+Tire dúvidas, receba dicas personalizadas e aprenda sobre maquiagem, skincare e combinações ideais para o seu tom de pele com uma IA treinada para beleza.
 </p>
+<a class="tool-btn" href="/chat-box">Acessar Chat</a>
 
 </div>
 
@@ -1614,142 +348,99 @@ para destacar seus traços.
 
 </section>
 
+<!-- COMO FUNCIONA -->
+<section style="padding:120px 6%; background:linear-gradient(180deg,#fff,#fff6f9);">
 
-<section class="quiz">
+<div style="text-align:center; max-width:800px; margin:auto; margin-bottom:60px;">
+    <h2 style="font-family:'Playfair Display'; font-size:2.8rem; color:var(--wine);">
+        Como funciona
+    </h2>
+    <p style="color:#666; margin-top:10px; line-height:1.8;">
+        Um processo simples para descobrir o que realmente combina com você.
+    </p>
+</div>
 
-<div class="quiz-box">
+<div style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:1100px; margin:auto;">
 
-<h2>
+    <div style="background:white; padding:30px; border-radius:30px; box-shadow:0 18px 50px rgba(0,0,0,.05); text-align:center;">
+        <div style="font-size:2rem;">1️⃣</div>
+        <h3 style="font-family:'Playfair Display'; margin:10px 0; color:var(--wine);">Descubra</h3>
+        <p style="color:#666; line-height:1.7;">Entenda seu tom, estilo e preferências de forma guiada.</p>
+    </div>
 
-Qual é seu estilo?
+    <div style="background:white; padding:30px; border-radius:30px; box-shadow:0 18px 50px rgba(0,0,0,.05); text-align:center;">
+        <div style="font-size:2rem;">2️⃣</div>
+        <h3 style="font-family:'Playfair Display'; margin:10px 0; color:var(--wine);">Experimente</h3>
+        <p style="color:#666; line-height:1.7;">Veja combinações, inspirações e possibilidades reais.</p>
+    </div>
 
+    <div style="background:white; padding:30px; border-radius:30px; box-shadow:0 18px 50px rgba(0,0,0,.05); text-align:center;">
+        <div style="font-size:2rem;">3️⃣</div>
+        <h3 style="font-family:'Playfair Display'; margin:10px 0; color:var(--wine);">Aplique</h3>
+        <p style="color:#666; line-height:1.7;">Use no seu dia a dia e construa sua identidade visual.</p>
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- PARA QUEM É -->
+<section style="padding:120px 6%; background:white;">
+
+<div style="max-width:900px; margin:auto; text-align:center;">
+
+<h2 style="font-family:'Playfair Display'; font-size:2.8rem; color:var(--wine);">
+Para quem é essa experiência?
 </h2>
 
-<p>
-
-Responda perguntas rápidas
-e descubra tendências,
-cores e técnicas que combinam
-com você.
-
+<p style="color:#666; margin-top:14px; line-height:1.9;">
+Criado para quem quer se conhecer melhor e transformar sua rotina de beleza em algo mais consciente.
 </p>
 
-<button onclick="location.href='/quizmake'">
+<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:30px;">
 
-Começar Quiz
+<span style="padding:10px 18px; border-radius:999px; background:#fff2f6; color:var(--wine); font-weight:600;">
+Iniciantes em maquiagem
+</span>
 
-</button>
+<span style="padding:10px 18px; border-radius:999px; background:#fff2f6; color:var(--wine); font-weight:600;">
+Amantes de beleza
+</span>
+
+<span style="padding:10px 18px; border-radius:999px; background:#fff2f6; color:var(--wine); font-weight:600;">
+Quem busca autoconhecimento
+</span>
+
+<span style="padding:10px 18px; border-radius:999px; background:#fff2f6; color:var(--wine); font-weight:600;">
+Profissionais de estética
+</span>
+
+</div>
 
 </div>
 
 </section>
 
-<section
-class="inspiracoes"
-id="inspiracoes">
+<!-- CTA FINAL -->
+<section style="padding:140px 6%; text-align:center; background:linear-gradient(135deg,#fff2f7,#ffffff);">
 
-<div class="section-title">
-
-<h2>
-
-Inspire-se
-
+<h2 style="font-family:'Playfair Display'; font-size:3.5rem; color:var(--wine);">
+Sua beleza começa agora
 </h2>
 
-<p>
-
-Descubra tendências e referências.
-
+<p style="max-width:600px; margin:20px auto; color:#666; line-height:1.9;">
+Explore ferramentas, descubra seu estilo e construa uma rotina feita para você.
 </p>
-
-</div>
-
-<div class="masonry">
-
-<div class="item">
-<img src="./static/imagens/img-index2.jpeg">
-</div>
-
-<div class="item">
-<img src="./static/imagens/blush-rose.jpg">
-</div>
-
-<div class="item">
-<img src="./static/imagens/batom-matte.jpg">
-</div>
-
-<div class="item">
-<img src="./static/imagens/base-liquida.avif">
-</div>
-
-<div class="item">
-<img src="./static/imagens/iluminador_v.png">
-</div>
-
-<div class="item">
-<img src="./static/imagens/img-index2.jpeg">
-</div>
-
-</div>
 
 </section>
 
-<section class="cta">
-
-<h2>
-
-Sua beleza.
-Sua identidade.
-Sua história.
-
-</h2>
-
-<p>
-
-Descubra, aprenda e construa
-uma rotina feita para você.
-
-</p>
-
-<a href="#">
-
-Começar agora
-
-</a>
-
-</section>
-
-
-<footer>
-
-<div>
-
-<a href="#">
-Sobre
-</a>
-
-<a href="#">
-Contato
-</a>
-
-<a href="#">
-Privacidade
-</a>
-
-<a href="#">
-Ajuda
-</a>
-
-</div>
-
-<p>
-
-© 2026 Minha Maquiagem
-
-</p>
-
-</footer>
-
+<script>
+function toggleMenu(){
+const menu = document.getElementById("menuTools");
+menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+}
+</script>
 
 </body>
 </html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Easy — Inspirações</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #fff8f8;
+  --rose:  #ff7ea8;
+  --wine:  #5f3041;
+  --text:  #2b2528;
+  --border:#f5dfe6;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  padding-bottom: 100px;
+}
+/* NAVBAR */
+.navbar {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 999;
+  padding: 18px 6%;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,.82);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,.05);
+}
+.logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+.logo img { height:50px; }
+.logo span { font-family:'Playfair Display'; font-size:1.7rem; color:var(--wine); }
+.menu { display:flex; gap:30px; position:relative; }
+.menu a { text-decoration:none; font-weight:600; color:var(--text); cursor:pointer; }
+.menu a:hover { color:var(--rose); }
+.dropdown {
+  position: absolute; top: 45px; left: 0;
+  background: white; border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(0,0,0,.08);
+  padding: 12px; display: none; flex-direction: column;
+  min-width: 220px; z-index: 999;
+}
+.dropdown a { padding:12px; border-radius:12px; text-decoration:none; color:var(--text); font-weight:500; }
+.dropdown a:hover { background:#fff2f6; }
+/* HERO */
+.hero {
+  padding: 130px 6% 50px;
+  text-align: center;
+  background: linear-gradient(160deg, #fff6f9 0%, #ffe8f0 100%);
+}
+.hero-eyebrow {
+  display: inline-block;
+  font-size: .75rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--rose); margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'Playfair Display';
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  color: var(--wine); line-height: 1.15;
+}
+.hero h1 em { font-style: italic; color: var(--rose); }
+.hero p {
+  color: #888; margin-top: 12px;
+  font-size: .95rem; line-height: 1.7;
+  max-width: 500px; margin-inline: auto;
+}
+/* MASONRY */
+.masonry-wrap { padding: 48px 5%; }
+.masonry { columns: 3; column-gap: 18px; }
+.card {
+  break-inside: avoid; margin-bottom: 18px;
+  border-radius: 22px; overflow: hidden;
+  position: relative; cursor: pointer;
+  background: #f5e6ec;
+  box-shadow: 0 6px 24px rgba(95,48,65,.08);
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 48px rgba(95,48,65,.16);
+}
+.card img {
+  display: block; width: 100%; height: auto;
+  object-fit: cover; transition: transform .5s ease;
+}
+.card:hover img { transform: scale(1.04); }
+.card::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(95,48,65,.45) 100%);
+  opacity: 0; transition: opacity .35s ease; border-radius: 22px;
+}
+.card:hover::after { opacity: 1; }
+/* RESPONSIVO */
+@media (max-width: 900px) { .masonry { columns: 2; } }
+@media (max-width: 560px) {
+  .masonry { columns: 1; }
+  .hero { padding-top: 110px; }
+}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <a href="/" class="logo">
+    <img src="../static/imagens/logo.png" alt="Logo">
+    <span>Minha Maquiagem</span>
+  </a>
+  <nav class="menu">
+    <a href="/">Início</a>
+    <a onclick="toggleMenu()">Ferramentas ▾</a>
+    <div class="dropdown" id="menuTools">
+      <a href="/tom-de-pele">Descobrir meu Tom</a>
+      <a href="/inspiracoes">Inspirações</a>
+      <a href="/quizmake">Descubra seu estilo</a>
+      <a href="/chat-box">Chat de Beleza</a>
+    </div>
+    <a href="/login">Perfil</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <span class="hero-eyebrow">Inspirações · Easy</span>
+  <h1>Beleza simples <em>e prática</em></h1>
+  <p>Looks rápidos, naturais e perfeitos para o dia a dia. Sem esforço, mas sempre com elegância.</p>
+</section>
+
+<div class="masonry-wrap">
+  <div class="masonry">
+    <div class="card"><img src="../static/imagens/iniciante1.jpeg" alt="Easy 1"></div>
+    <div class="card"><img src="../static/imagens/iniciante2.jpeg" alt="Easy 2"></div>
+    <div class="card"><img src="../static/imagens/iniciante3.jpeg" alt="Easy 3"></div>
+    <div class="card"><img src="../static/imagens/iniciante4.jpeg" alt="Easy 4"></div>
+    <div class="card"><img src="../static/imagens/iniciante5.jpeg" alt="Easy 5"></div>
+    <div class="card"><img src="../static/imagens/iniciante6.jpeg" alt="Easy 6"></div>
+  </div>
+</div>
+
+<script>
+function toggleMenu() {
+  const menu = document.getElementById("menuTools");
+  menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+}
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".menu")) {
+    document.getElementById("menuTools").style.display = "none";
+  }
+});
+</script>
+</body>
+</html>
