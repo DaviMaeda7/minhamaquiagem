@@ -1120,42 +1120,20 @@ return;
 
 try{
 
-const resposta =
-await fetch(
-'/api/signup',
-{
-
-method:
-'POST',
-
-headers:{
-'Content-Type':
-'application/json'
-},
-
-body:
-JSON.stringify({
-
-username:
-nome.value.trim(),
-
-email:
-email.value.trim(),
-
-telefone:
-telefone.value.trim(),
-
-password:
-senha.value,
-
-confirm_password:
-confirmarSenha.value
-
-})
-
-}
-
-);
+const resposta = await fetch('/api/signup', {
+  method: 'POST',
+  credentials: "include", // 👈 ISSO AQUI É CRUCIAL
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    username: nome.value.trim(),
+    email: email.value.trim(),
+    telefone: telefone.value.trim(),
+    password: senha.value,
+    confirm_password: confirmarSenha.value
+  })
+});
 
 const data =
 await resposta.json();
@@ -1197,16 +1175,10 @@ erro.classList.add(
 
 }
 
-catch{
-
-erro.textContent=
-
-'Erro ao conectar.';
-
-erro.classList.add(
-'show'
-);
-
+catch(err){
+console.log(err);
+erro.textContent = 'Erro ao conectar.';
+erro.classList.add('show');
 }
 
 }

@@ -16,7 +16,7 @@ from src.servicos.auth import hash_password, verify_password, validate_signup_da
 app = Flask(__name__)
 app.config.update(
     SECRET_KEY="chave-secreta-temporaria-para-testes-em-desenvolvimento",
-    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_SECURE=False,
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax"
 )
@@ -72,6 +72,10 @@ def chat_box():
 @app.route('/quizmake')
 def quizmake():
     return render_template('quizmake.html')
+
+@app.route('/tom-de-pele')
+def tom_de_pele():
+    return render_template('tom-de-pele.html')
 # ── Inspirações ─────────────────────────────────────────────────────────────
 
 @app.route('/inspiracoes')
