@@ -290,7 +290,7 @@ Usuário: {mensagem}
         return jsonify({"error": str(e)}), 500
     
 @app.route('/api/ia/tom-de-pele', methods=['POST'])
-def tom_de_pele():
+def api_tom_de_pele():
     dados = request.get_json()
     imagem_base64 = dados.get("image")
 
