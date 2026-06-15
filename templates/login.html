@@ -2,1098 +2,294 @@
 <html lang="pt-BR">
 
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width,initial-scale=1.0">
-
-<title>
-
-Minha Conta • Minha Maquiagem
-
-</title>
-
-<link
-href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
-rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Minha Conta • Minha Maquiagem</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-
-:root{
-
---rose:#ff7ea8;
---pink:#ffd7e5;
-
---cream:#fff8f8;
-
---wine:#5f3041;
-
---gold:#d4a853;
-
---dark:#2b2528;
-
---white:#ffffff;
-
+:root {
+  --rose: #ff7ea8;
+  --pink: #ffd7e5;
+  --cream: #fff8f8;
+  --wine: #5f3041;
+  --gold: #d4a853;
+  --dark: #2b2528;
+  --white: #ffffff;
 }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #fff7fa, #ffe9f1);
+  color: var(--dark);
+  overflow-x: hidden;
+  min-height: 100vh;
 }
 
-body{
-
-font-family:
-'Inter',
-sans-serif;
-
-background:
-
-linear-gradient(
-135deg,
-#fff7fa,
-#ffe9f1
-);
-
-color:
-var(--dark);
-
-overflow-x:hidden;
-
-min-height:
-100vh;
-
+.navbar {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 999;
+  padding: 18px 6%;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(0,0,0,.05);
 }
 
-/* NAVBAR */
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo img { height: 50px; }
+.logo span { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700; color: var(--wine); }
 
-.navbar{
+.menu { display: flex; gap: 30px; }
+.menu a { text-decoration: none; font-weight: 600; color: var(--dark); }
+.menu a:hover { color: var(--rose); }
 
-position:fixed;
-
-top:0;
-
-left:0;
-
-width:100%;
-
-z-index:999;
-
-padding:
-18px 6%;
-
-display:flex;
-
-justify-content:
-space-between;
-
-align-items:
-center;
-
-background:
-rgba(255,255,255,.78);
-
-backdrop-filter:
-blur(18px);
-
-border-bottom:
-1px solid rgba(0,0,0,.05);
-
+.login-layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  padding: 120px 6% 60px;
+  gap: 40px;
+  align-items: center;
 }
 
-.logo{
+.login-hero { position: relative; }
 
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
-text-decoration:none;
-
+.hero-badge {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: white;
+  color: var(--wine);
+  font-size: .8rem; font-weight: 700;
+  margin-bottom: 26px;
 }
 
-.logo img{
-height:50px;
+.login-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 5rem; line-height: 1.05;
+  color: var(--wine);
+  margin-bottom: 22px;
 }
 
-.logo span{
+.login-hero h1 span { color: var(--rose); }
 
-font-family:
-'Playfair Display',
-serif;
+.login-hero p { font-size: 1.1rem; line-height: 1.9; max-width: 650px; color: #665d60; }
 
-font-size:
-1.7rem;
+.hero-benefits { margin-top: 40px; display: grid; gap: 18px; }
 
-font-weight:
-700;
-
-color:
-var(--wine);
-
+.hero-benefit {
+  background: rgba(255,255,255,.5);
+  padding: 22px; border-radius: 24px;
+  backdrop-filter: blur(10px);
 }
 
-.menu{
-
-display:flex;
-
-gap:
-30px;
-
+.login-card {
+  background: rgba(255,255,255,.55);
+  backdrop-filter: blur(22px);
+  border-radius: 42px;
+  padding: 55px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.06);
 }
 
-.menu a{
+.profile-icon { font-size: 4rem; margin-bottom: 20px; }
 
-text-decoration:
-none;
+.login-title { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--wine); margin-bottom: 14px; }
 
-font-weight:
-600;
+.login-sub { color: #666; line-height: 1.8; margin-bottom: 35px; }
 
-color:
-var(--dark);
+.form-group { margin-bottom: 22px; }
 
+.form-label {
+  display: block; margin-bottom: 10px;
+  font-size: .8rem; letter-spacing: .08em; font-weight: 700;
+  color: var(--wine);
 }
 
-.menu a:hover{
+.input-wrapper { position: relative; }
 
-color:
-var(--rose);
-
+.form-input {
+  width: 100%; padding: 18px 22px;
+  border: none; border-radius: 22px;
+  background: white; font-size: 1rem;
+  outline: none; transition: .3s;
 }
 
-/* LAYOUT */
+.form-input:focus { box-shadow: 0 0 0 4px rgba(255,126,168,.18); }
 
-.login-layout{
-
-min-height:
-100vh;
-
-display:grid;
-
-grid-template-columns:
-1.1fr .9fr;
-
-padding:
-120px 6% 60px;
-
-gap:
-40px;
-
-align-items:
-center;
-
+.input-icon {
+  position: absolute; right: 20px; top: 50%;
+  transform: translateY(-50%); cursor: pointer;
 }
 
-/* HERO */
+.form-error { display: none; margin-top: 10px; color: #d84b4b; }
+.form-error.show { display: block; }
 
-.login-hero{
+.action-buttons { display: flex; flex-direction: column; gap: 14px; }
 
-position:relative;
-
+.btn-primary, .btn-secondary {
+  width: 100%; padding: 18px;
+  border: none; border-radius: 999px;
+  font-size: 1rem; font-weight: 700;
+  cursor: pointer; transition: .35s;
 }
 
-.hero-badge{
+.btn-primary { background: var(--wine); color: white; }
+.btn-primary:hover { transform: translateY(-5px); }
 
-display:inline-block;
+.btn-secondary { background: white; color: var(--wine); border: 1px solid rgba(95,48,65,.12); }
+.btn-secondary:hover { transform: translateY(-5px); }
 
-padding:
-10px 18px;
+.login-extra { margin-top: 28px; text-align: center; color: #777; font-size: .9rem; line-height: 1.8; }
+.login-extra a { color: var(--wine); text-decoration: none; font-weight: 700; }
+.login-extra a:hover { color: var(--rose); }
 
-border-radius:
-999px;
+.footer { padding: 45px; text-align: center; color: #777; }
+.footer a { color: #777; text-decoration: none; margin: 0 12px; }
+.footer a:hover { color: var(--wine); }
 
-background:
-white;
-
-color:
-var(--wine);
-
-font-size:
-.8rem;
-
-font-weight:
-700;
-
-margin-bottom:
-26px;
-
+@media (max-width: 1000px) {
+  .login-layout { grid-template-columns: 1fr; }
+  .login-hero h1 { font-size: 3rem; }
 }
 
-.login-hero h1{
-
-font-family:
-'Playfair Display',
-serif;
-
-font-size:
-5rem;
-
-line-height:
-1.05;
-
-color:
-var(--wine);
-
-margin-bottom:
-22px;
-
+@media (max-width: 600px) {
+  .menu { display: none; }
+  .login-card { padding: 35px; }
 }
-
-.login-hero h1 span{
-
-color:
-var(--rose);
-
-}
-
-.login-hero p{
-
-font-size:
-1.1rem;
-
-line-height:
-1.9;
-
-max-width:
-650px;
-
-color:
-#665d60;
-
-}
-
-.hero-benefits{
-
-margin-top:
-40px;
-
-display:grid;
-
-gap:
-18px;
-
-}
-
-.hero-benefit{
-
-background:
-rgba(255,255,255,.5);
-
-padding:
-22px;
-
-border-radius:
-24px;
-
-backdrop-filter:
-blur(10px);
-
-}
-
-/* CARD */
-
-.login-card{
-
-background:
-rgba(255,255,255,.55);
-
-backdrop-filter:
-blur(22px);
-
-border-radius:
-42px;
-
-padding:
-55px;
-
-box-shadow:
-0 20px 60px rgba(0,0,0,.06);
-
-}
-
-.profile-icon{
-
-font-size:
-4rem;
-
-margin-bottom:
-20px;
-
-}
-
-.login-title{
-
-font-family:
-'Playfair Display',
-serif;
-
-font-size:
-3rem;
-
-color:
-var(--wine);
-
-margin-bottom:
-14px;
-
-}
-
-.login-sub{
-
-color:
-#666;
-
-line-height:
-1.8;
-
-margin-bottom:
-35px;
-
-}
-
-.form-group{
-
-margin-bottom:
-22px;
-
-}
-
-.form-label{
-
-display:block;
-
-margin-bottom:
-10px;
-
-font-size:
-.8rem;
-
-letter-spacing:
-.08em;
-
-font-weight:
-700;
-
-color:
-var(--wine);
-
-}
-
-.input-wrapper{
-
-position:relative;
-
-}
-
-.form-input{
-
-width:100%;
-
-padding:
-18px 22px;
-
-border:none;
-
-border-radius:
-22px;
-
-background:
-white;
-
-font-size:
-1rem;
-
-outline:none;
-
-transition:
-.3s;
-
-}
-
-.form-input:focus{
-
-box-shadow:
-0 0 0 4px rgba(255,126,168,.18);
-
-}
-
-.input-icon{
-
-position:absolute;
-
-right:20px;
-
-top:50%;
-
-transform:
-translateY(-50%);
-
-cursor:pointer;
-
-}
-
-.form-error{
-
-display:none;
-
-margin-top:
-10px;
-
-color:#d84b4b;
-
-}
-
-.form-error.show{
-
-display:block;
-
-}
-
-@media(max-width:1000px){
-
-.login-layout{
-
-grid-template-columns:
-1fr;
-
-}
-
-.login-hero h1{
-
-font-size:
-3rem;
-
-}
-
-}
-
-@media(max-width:600px){
-
-.menu{
-display:none;
-}
-
-.login-card{
-
-padding:
-35px;
-
-}
-
-}
-
-.action-buttons{
-
-display:flex;
-
-flex-direction:column;
-
-gap:14px;
-
-}
-
-.btn-primary,
-.btn-secondary{
-
-width:100%;
-
-padding:
-18px;
-
-border:none;
-
-border-radius:
-999px;
-
-font-size:
-1rem;
-
-font-weight:
-700;
-
-cursor:pointer;
-
-transition:
-.35s;
-
-}
-
-.btn-primary{
-
-background:
-var(--wine);
-
-color:white;
-
-}
-
-.btn-primary:hover{
-
-transform:
-translateY(-5px);
-
-}
-
-.btn-secondary{
-
-background:
-white;
-
-color:
-var(--wine);
-
-border:
-1px solid rgba(95,48,65,.12);
-
-}
-
-.btn-secondary:hover{
-
-transform:
-translateY(-5px);
-
-}
-
-.login-extra{
-
-margin-top:
-28px;
-
-text-align:
-center;
-
-color:
-#777;
-
-font-size:
-.9rem;
-
-line-height:
-1.8;
-
-}
-
-.login-extra a{
-
-color:
-var(--wine);
-
-text-decoration:
-none;
-
-font-weight:
-700;
-
-}
-
-.login-extra a:hover{
-
-color:
-var(--rose);
-
-}
-
-.footer{
-
-padding:
-45px;
-
-text-align:
-center;
-
-color:
-#777;
-
-}
-
-.footer a{
-
-color:
-#777;
-
-text-decoration:none;
-
-margin:
-0 12px;
-
-}
-
-.footer a:hover{
-
-color:
-var(--wine);
-
-}
-
 </style>
-
 </head>
 
 <body>
 
 <header class="navbar">
-
-<a href="/" class="logo">
-
-<img src="../static/imagens/logo.png">
-
-<span>
-
-Minha Maquiagem
-
-</span>
-
-</a>
-
-<nav class="menu">
-
-<a href="/">
-Início
-</a>
-
-<a href="/ferramentas">
-Ferramentas
-</a>
-
-<a href="/login">
-Perfil
-</a>
-
-</nav>
-
+  <a href="/" class="logo">
+    <img src="../static/imagens/logo.png">
+    <span>Minha Maquiagem</span>
+  </a>
+  <nav class="menu">
+    <a href="/">Início</a>
+    <a href="/ferramentas">Ferramentas</a>
+    <a href="/login">Perfil</a>
+  </nav>
 </header>
 
 <div class="login-layout">
 
-<div class="login-hero">
+  <div class="login-hero">
+    <div class="hero-badge">✨ SUA CONTA • SUA EXPERIÊNCIA</div>
+    <h1>Entre e continue sua <span>jornada</span></h1>
+    <p>Acompanhe suas descobertas e mantenha tudo salvo em um só lugar.</p>
+    <div class="hero-benefits">
+      <div class="hero-benefit">✨ Recomendações personalizadas</div>
+      <div class="hero-benefit">🛍️ Experiência exclusiva</div>
+    </div>
+  </div>
 
-<div class="hero-badge">
+  <div class="login-card">
+    <div class="profile-icon">👤</div>
+    <h2 class="login-title">Bem-vinda de volta.</h2>
+    <p class="login-sub">Entre para acessar seus favoritos, continuar suas descobertas e explorar uma experiência personalizada.</p>
 
-✨ SUA CONTA • SUA EXPERIÊNCIA
+    <div class="form-group">
+      <label for="inputUsuario" class="form-label">Seu e-mail</label>
+      <input type="text" id="inputUsuario" class="form-input" placeholder="Digite seu e-mail" autocomplete="off" spellcheck="false">
+    </div>
 
-</div>
+    <div class="form-group">
+      <label for="inputSenha" class="form-label">Senha</label>
+      <div class="input-wrapper">
+        <input type="password" id="inputSenha" class="form-input" placeholder="••••••••">
+        <span class="input-icon" id="toggleSenha">👁️</span>
+      </div>
+      <p class="form-error" id="erroSenha">Verifique suas informações.</p>
+    </div>
 
-<h1>
-
-Entre e continue sua
-<span>
-
-jornada
-
-</span>
-
-</h1>
-
-<p>
-
-Acompanhe suas descobertas
-e mantenha tudo salvo
-em um só lugar.
-
-</p>
-
-<div class="hero-benefits">
-
-<div class="hero-benefit">
-
-✨ Recomendações personalizadas
-
-</div>
-
-<div class="hero-benefit">
-
-🛍️ Experiência exclusiva
+    <div class="action-buttons">
+      <button class="btn-primary" id="btnEntrar">Entrar →</button>
+      <button class="btn-secondary" onclick="window.location.href='/cadastro'">Criar minha conta</button>
+    </div>
+  </div>
 
 </div>
-
-</div>
-
-</div>
-
-<div class="login-card">
-
-<div class="profile-icon">
-
-👤
-
-</div>
-
-<h2 class="login-title">
-
-Bem-vinda de volta.
-
-</h2>
-
-<p class="login-sub">
-
-Entre para acessar seus favoritos,
-continuar suas descobertas e explorar
-uma experiência personalizada.
-
-</p>
-
-
-<div class="form-group">
-
-<label
-for="inputUsuario"
-class="form-label">
-
-Seu e-mail
-
-</label>
-
-<input
-
-type="text"
-
-id="inputUsuario"
-
-class="form-input"
-
-placeholder=
-"Digite seu e-mail"
-
-autocomplete=
-"off"
-
-spellcheck=
-"false"
-
->
-
-</div>
-
-
-<div class="form-group">
-
-<label
-for="inputSenha"
-class="form-label">
-
-Senha
-
-</label>
-
-<div class="input-wrapper">
-
-<input
-
-type="password"
-
-id="inputSenha"
-
-class="form-input"
-
-placeholder=
-"••••••••"
-
->
-
-<span
-class="input-icon"
-id="toggleSenha">
-
-👁️
-
-</span>
-
-</div>
-
-<p
-class="form-error"
-id="erroSenha">
-
-Verifique suas informações.
-
-</p>
-
-</div>
-
-<div class="action-buttons">
-
-<button
-class="btn-primary"
-id="btnEntrar">
-
-Entrar →
-
-</button>
-
-<button
-
-class="btn-secondary"
-
-onclick="
-window.location.href='/cadastro'
-">
-
-Criar minha conta
-
-</button>
-
-</div>
-</div>
-</div>
-
 
 <footer class="footer">
-
-<div>
-
-<a href="#">
-Sobre
-</a>
-
-<a href="#">
-Contato
-</a>
-
-<a href="#">
-Privacidade
-</a>
-
-<a href="#">
-Ajuda
-</a>
-
-</div>
-
-<p style="margin-top:18px;">
-
-© 2026 Minha Maquiagem
-
-</p>
-
+  <div>
+    <a href="#">Sobre</a>
+    <a href="#">Contato</a>
+    <a href="#">Privacidade</a>
+    <a href="#">Ajuda</a>
+  </div>
+  <p style="margin-top:18px;">© 2026 Minha Maquiagem</p>
 </footer>
 
-
 <script>
+const toggleSenha  = document.getElementById('toggleSenha');
+const inputSenha   = document.getElementById('inputSenha');
+const inputUsuario = document.getElementById('inputUsuario');
+const btnEntrar    = document.getElementById('btnEntrar');
+const erroSenha    = document.getElementById('erroSenha');
 
-const toggleSenha =
-document.getElementById(
-'toggleSenha'
-);
+// ── Mostrar / ocultar senha ───────────────────────────────────────────────
+toggleSenha.addEventListener('click', () => {
+  if (inputSenha.type === 'password') {
+    inputSenha.type = 'text';
+    toggleSenha.textContent = '🙈';
+  } else {
+    inputSenha.type = 'password';
+    toggleSenha.textContent = '👁️';
+  }
+});
 
-const inputSenha =
-document.getElementById(
-'inputSenha'
-);
+// ── Login ─────────────────────────────────────────────────────────────────
+async function fazerLogin() {
+  const usuario = inputUsuario.value.trim();
+  const senha   = inputSenha.value.trim();
 
-const inputUsuario =
-document.getElementById(
-'inputUsuario'
-);
+  erroSenha.classList.remove('show');
 
-const btnEntrar =
-document.getElementById(
-'btnEntrar'
-);
+  if (!usuario || !senha) {
+    erroSenha.textContent = 'Preencha todos os campos.';
+    erroSenha.classList.add('show');
+    return;
+  }
 
-const erroSenha =
-document.getElementById(
-'erroSenha'
-);
+  btnEntrar.textContent = 'Entrando... ✨';
+  btnEntrar.disabled = true;
 
-/* MOSTRAR SENHA */
+  try {
+    const resposta = await fetch('/api/login', {
+      method: 'POST',
+      credentials: 'include',          // ← FIX: garante que o cookie de sessão seja salvo
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: usuario, password: senha })
+    });
 
-toggleSenha.addEventListener(
-'click',
-()=>{
+    const data = await resposta.json();
 
-if(
-inputSenha.type===
-'password'
-){
+    if (data.success) {
+      btnEntrar.textContent = 'Redirecionando ✨';
+      setTimeout(() => { window.location.href = '/home-secret'; }, 800);
+    } else {
+      btnEntrar.textContent = 'Entrar →';
+      btnEntrar.disabled = false;
+      erroSenha.textContent = data.message || 'E-mail ou senha incorretos';
+      erroSenha.classList.add('show');
+      inputSenha.value = '';
+    }
 
-inputSenha.type=
-'text';
-
-toggleSenha.textContent=
-'🙈';
-
+  } catch {
+    btnEntrar.textContent = 'Entrar →';
+    btnEntrar.disabled = false;
+    erroSenha.textContent = 'Erro ao conectar.';
+    erroSenha.classList.add('show');
+  }
 }
 
-else{
-
-inputSenha.type=
-'password';
-
-toggleSenha.textContent=
-'👁️';
-
-}
-
-}
-);
-
-
-/* LOGIN */
-
-async function fazerLogin(){
-
-const usuario =
-inputUsuario
-.value
-.trim();
-
-const senha =
-inputSenha
-.value
-.trim();
-
-erroSenha
-.classList
-.remove(
-'show'
-);
-
-if(
-!usuario
-||
-!senha
-){
-
-erroSenha.textContent=
-'Preencha todos os campos.';
-
-erroSenha
-.classList
-.add(
-'show'
-);
-
-return;
-
-}
-
-btnEntrar.textContent=
-'Entrando... ✨';
-
-try{
-
-const resposta =
-await fetch(
-'/api/login',
-{
-
-method:
-'POST',
-
-headers:{
-'Content-Type':
-'application/json'
-},
-
-body:
-JSON.stringify({
-
-email:
-usuario,
-
-password:
-senha
-
-})
-
-}
-
-);
-
-const data =
-await resposta.json();
-
-if(
-data.success
-){
-
-btnEntrar.textContent=
-'Redirecionando ✨';
-
-setTimeout(
-()=>{
-
-window.location.href=
-'/home-secret';
-
-},
-800
-);
-
-}
-
-else{
-
-btnEntrar.textContent=
-'Entrar →';
-
-erroSenha.textContent=
-
-data.message ||
-
-'E-mail ou senha incorretos';
-
-erroSenha
-.classList
-.add(
-'show'
-);
-
-inputSenha.value='';
-
-}
-
-}
-
-catch{
-
-btnEntrar.textContent=
-'Entrar →';
-
-erroSenha.textContent=
-
-'Erro ao conectar.';
-
-erroSenha
-.classList
-.add(
-'show'
-);
-
-}
-
-}
-
-btnEntrar
-.addEventListener(
-'click',
-fazerLogin
-);
-
-inputSenha
-.addEventListener(
-'keydown',
-e=>{
-
-if(
-e.key===
-'Enter'
-){
-
-fazerLogin();
-
-}
-
-}
-);
-
+btnEntrar.addEventListener('click', fazerLogin);
+inputSenha.addEventListener('keydown', e => { if (e.key === 'Enter') fazerLogin(); });
 </script>
 
 </body>
-
 </html>

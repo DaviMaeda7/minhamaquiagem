@@ -2,1191 +2,324 @@
 <html lang="pt-BR">
 
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width,initial-scale=1.0">
-
-<title>
-
-Criar Conta • Minha Maquiagem
-
-</title>
-
-<link
-href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
-rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Criar Conta • Minha Maquiagem</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-
-:root{
-
---rose:#ff7ea8;
---pink:#ffd7e5;
-
---cream:#fff8f8;
-
---wine:#5f3041;
-
---gold:#d4a853;
-
---dark:#2b2528;
-
---white:#ffffff;
-
+:root {
+  --rose: #ff7ea8;
+  --pink: #ffd7e5;
+  --cream: #fff8f8;
+  --wine: #5f3041;
+  --gold: #d4a853;
+  --dark: #2b2528;
+  --white: #ffffff;
 }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #fff7fa, #ffe9f1);
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--dark);
 }
 
-body{
-
-font-family:
-'Inter',
-sans-serif;
-
-background:
-
-linear-gradient(
-135deg,
-#fff7fa,
-#ffe9f1
-);
-
-min-height:
-100vh;
-
-overflow-x:
-hidden;
-
-color:
-var(--dark);
-
+.navbar {
+  position: fixed; top: 0; left: 0; width: 100%;
+  padding: 18px 6%;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(0,0,0,.05);
+  z-index: 999;
 }
 
-/* NAVBAR */
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo img { height: 50px; }
+.logo span { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700; color: var(--wine); }
 
-.navbar{
+.menu { display: flex; gap: 30px; }
+.menu a { text-decoration: none; color: var(--dark); font-weight: 600; }
+.menu a:hover { color: var(--rose); }
 
-position:fixed;
-
-top:0;
-
-left:0;
-
-width:100%;
-
-padding:
-18px 6%;
-
-display:flex;
-
-justify-content:
-space-between;
-
-align-items:center;
-
-background:
-rgba(255,255,255,.78);
-
-backdrop-filter:
-blur(18px);
-
-border-bottom:
-1px solid rgba(0,0,0,.05);
-
-z-index:
-999;
-
+.signup-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  padding: 120px 6% 70px;
+  align-items: center;
+  min-height: 100vh;
 }
 
-.logo{
+.signup-hero { max-width: 700px; }
 
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
-text-decoration:none;
-
+.hero-badge {
+  display: inline-block; padding: 10px 18px; border-radius: 999px;
+  background: white; color: var(--wine); font-size: .8rem; font-weight: 700;
+  margin-bottom: 24px;
 }
 
-.logo img{
-height:50px;
+.signup-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 5rem; line-height: 1.02;
+  color: var(--wine); margin-bottom: 20px;
 }
 
-.logo span{
+.signup-hero h1 span { color: var(--rose); }
 
-font-family:
-'Playfair Display',
-serif;
+.signup-hero p { line-height: 1.9; font-size: 1.08rem; color: #655c60; margin-bottom: 34px; }
 
-font-size:
-1.7rem;
+.steps { display: grid; gap: 18px; }
 
-font-weight:
-700;
-
-color:
-var(--wine);
-
+.step {
+  padding: 22px; border-radius: 24px;
+  background: rgba(255,255,255,.5);
+  backdrop-filter: blur(10px);
 }
 
-.menu{
+.step strong { display: block; margin-bottom: 8px; color: var(--wine); }
 
-display:flex;
-
-gap:
-30px;
-
+.signup-card {
+  background: rgba(255,255,255,.58);
+  backdrop-filter: blur(20px);
+  padding: 55px; border-radius: 42px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.06);
 }
 
-.menu a{
+.card-icon { font-size: 3.5rem; margin-bottom: 18px; }
 
-text-decoration:none;
+.card-title { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--wine); margin-bottom: 10px; }
 
-color:
-var(--dark);
+.card-sub { color: #666; line-height: 1.8; margin-bottom: 35px; }
 
-font-weight:
-600;
+.form-group { margin-bottom: 22px; }
 
+.form-label {
+  display: block; margin-bottom: 10px;
+  font-size: .8rem; font-weight: 700; letter-spacing: .08em;
+  color: var(--wine);
 }
 
-.menu a:hover{
+.input-wrapper { position: relative; }
 
-color:
-var(--rose);
-
+.form-input {
+  width: 100%; padding: 18px 22px;
+  border: none; border-radius: 22px;
+  background: white; outline: none; font-size: 1rem; transition: .3s;
 }
 
-/* LAYOUT */
+.form-input:focus { box-shadow: 0 0 0 4px rgba(255,126,168,.18); }
 
-.signup-layout{
-
-display:grid;
-
-grid-template-columns:
-1fr 1fr;
-
-gap:
-50px;
-
-padding:
-120px 6% 70px;
-
-align-items:
-center;
-
-min-height:
-100vh;
-
+.input-icon {
+  position: absolute; right: 20px; top: 50%;
+  transform: translateY(-50%); cursor: pointer;
 }
 
-/* HERO */
+.form-error, .form-success { display: none; margin-top: 12px; font-size: .9rem; }
+.form-error { color: #d84b4b; }
+.form-success { color: #2f8d46; }
+.form-error.show, .form-success.show { display: block; }
 
-.signup-hero{
-
-max-width:
-700px;
-
+.signup-btn {
+  width: 100%; padding: 18px;
+  border: none; border-radius: 999px;
+  background: var(--wine); color: white;
+  font-size: 1rem; font-weight: 700;
+  cursor: pointer; transition: .35s;
+  margin-top: 8px;
 }
 
-.hero-badge{
+.signup-btn:hover { transform: translateY(-5px); }
 
-display:inline-block;
+.login-link { margin-top: 24px; text-align: center; color: #777; }
+.login-link a { color: var(--wine); font-weight: 700; text-decoration: none; }
 
-padding:
-10px 18px;
+.footer { padding: 45px; text-align: center; color: #777; }
+.footer a { margin: 0 12px; text-decoration: none; color: #777; }
+.footer a:hover { color: var(--wine); }
 
-border-radius:
-999px;
-
-background:
-white;
-
-color:
-var(--wine);
-
-font-size:
-.8rem;
-
-font-weight:
-700;
-
-margin-bottom:
-24px;
-
+@media (max-width: 1000px) {
+  .signup-layout { grid-template-columns: 1fr; }
+  .signup-hero h1 { font-size: 3rem; }
 }
 
-.signup-hero h1{
-
-font-family:
-'Playfair Display',
-serif;
-
-font-size:
-5rem;
-
-line-height:
-1.02;
-
-color:
-var(--wine);
-
-margin-bottom:
-20px;
-
+@media (max-width: 600px) {
+  .menu { display: none; }
+  .signup-card { padding: 35px; }
 }
-
-.signup-hero h1 span{
-
-color:
-var(--rose);
-
-}
-
-.signup-hero p{
-
-line-height:
-1.9;
-
-font-size:
-1.08rem;
-
-color:
-#655c60;
-
-margin-bottom:
-34px;
-
-}
-
-.steps{
-
-display:grid;
-
-gap:
-18px;
-
-}
-
-.step{
-
-padding:
-22px;
-
-border-radius:
-24px;
-
-background:
-rgba(255,255,255,.5);
-
-backdrop-filter:
-blur(10px);
-
-}
-
-.step strong{
-
-display:block;
-
-margin-bottom:
-8px;
-
-color:
-var(--wine);
-
-}
-
-/* CARD */
-
-.signup-card{
-
-background:
-rgba(255,255,255,.58);
-
-backdrop-filter:
-blur(20px);
-
-padding:
-55px;
-
-border-radius:
-42px;
-
-box-shadow:
-0 20px 60px rgba(0,0,0,.06);
-
-}
-
-.card-icon{
-
-font-size:
-3.5rem;
-
-margin-bottom:
-18px;
-
-}
-
-.card-title{
-
-font-family:
-'Playfair Display',
-serif;
-
-font-size:
-3rem;
-
-color:
-var(--wine);
-
-margin-bottom:
-10px;
-
-}
-
-.card-sub{
-
-color:
-#666;
-
-line-height:
-1.8;
-
-margin-bottom:
-35px;
-
-}
-
-.form-group{
-
-margin-bottom:
-22px;
-
-}
-
-.form-label{
-
-display:block;
-
-margin-bottom:
-10px;
-
-font-size:
-.8rem;
-
-font-weight:
-700;
-
-letter-spacing:
-.08em;
-
-color:
-var(--wine);
-
-}
-
-.input-wrapper{
-
-position:relative;
-
-}
-
-.form-input{
-
-width:100%;
-
-padding:
-18px 22px;
-
-border:none;
-
-border-radius:
-22px;
-
-background:
-white;
-
-outline:none;
-
-font-size:
-1rem;
-
-transition:
-.3s;
-
-}
-
-.form-input:focus{
-
-box-shadow:
-0 0 0 4px rgba(255,126,168,.18);
-
-}
-
-.input-icon{
-
-position:absolute;
-
-right:20px;
-
-top:50%;
-
-transform:
-translateY(-50%);
-
-cursor:pointer;
-
-}
-
-.form-error,
-.form-success{
-
-display:none;
-
-margin-top:
-12px;
-
-font-size:
-.9rem;
-
-}
-
-.form-error{
-
-color:#d84b4b;
-
-}
-
-.form-success{
-
-color:#2f8d46;
-
-}
-
-.form-error.show,
-.form-success.show{
-
-display:block;
-
-}
-
-@media(max-width:1000px){
-
-.signup-layout{
-
-grid-template-columns:
-1fr;
-
-}
-
-.signup-hero h1{
-
-font-size:
-3rem;
-
-}
-
-}
-
-@media(max-width:600px){
-
-.menu{
-display:none;
-}
-
-.signup-card{
-
-padding:
-35px;
-
-}
-
-}
-
-.terms{
-
-display:flex;
-
-gap:14px;
-
-align-items:flex-start;
-
-margin:
-12px 0 26px;
-
-padding:
-22px;
-
-background:
-rgba(255,255,255,.6);
-
-border-radius:
-22px;
-
-}
-
-.terms input{
-
-accent-color:
-var(--wine);
-
-margin-top:
-4px;
-
-}
-
-.terms span{
-
-color:
-#666;
-
-line-height:
-1.8;
-
-}
-
-.terms a{
-
-color:
-var(--wine);
-
-text-decoration:
-none;
-
-font-weight:
-700;
-
-}
-
-.signup-btn{
-
-width:100%;
-
-padding:
-18px;
-
-border:none;
-
-border-radius:
-999px;
-
-background:
-var(--wine);
-
-color:white;
-
-font-size:
-1rem;
-
-font-weight:
-700;
-
-cursor:pointer;
-
-transition:
-.35s;
-
-}
-
-.signup-btn:hover{
-
-transform:
-translateY(-5px);
-
-}
-
-.login-link{
-
-margin-top:
-24px;
-
-text-align:center;
-
-color:
-#777;
-
-}
-
-.login-link a{
-
-color:
-var(--wine);
-
-font-weight:
-700;
-
-text-decoration:none;
-
-}
-
-.footer{
-
-padding:
-45px;
-
-text-align:center;
-
-color:#777;
-
-}
-
-.footer a{
-
-margin:
-0 12px;
-
-text-decoration:none;
-
-color:#777;
-
-}
-
-.footer a:hover{
-
-color:
-var(--wine);
-
-}
-
-
 </style>
-
 </head>
 
 <body>
 
 <header class="navbar">
-
-<a href="/" class="logo">
-
-<img src="../static/imagens/logo.png">
-
-<span>
-
-Minha Maquiagem
-
-</span>
-
-</a>
-
-<nav class="menu">
-
-<a href="/">
-Início
-</a>
-
-<a href="/ferramentas">
-Ferramentas
-</a>
-
-<a href="/login">
-Perfil
-</a>
-
-</nav>
-
+  <a href="/" class="logo">
+    <img src="../static/imagens/logo.png">
+    <span>Minha Maquiagem</span>
+  </a>
+  <nav class="menu">
+    <a href="/">Início</a>
+    <a href="/ferramentas">Ferramentas</a>
+    <a href="/login">Perfil</a>
+  </nav>
 </header>
 
 <div class="signup-layout">
 
-<div class="signup-hero">
-
-<div class="hero-badge">
-
-✨ SUA CONTA • SUA EXPERIÊNCIA
-
-</div>
-
-<h1>
-
-Comece sua
-<span>
-
-coleção
-
-</span>
-
-</h1>
-
-<p>
-
-Crie sua conta para
-receber sugestões personalizadas
-e continuar sua jornada.
-
-</p>
-
-<div class="steps">
-
-<div class="step">
-
-<strong>
-
-01 • Dados pessoais
-
-</strong>
-
-Preencha seus dados básicos.
-
-</div>
-
-<div class="step">
-
-<strong>
-
-02 • Segurança
-
-</strong>
-
-Proteja sua conta com senha.
-
-</div>
-
-<div class="step">
-
-<strong>
-
-03 • Explorar
-
-</strong>
-
-Entre e descubra seu estilo.
-
-</div>
-
-</div>
-
-</div>
-
-<div class="signup-card">
-
-<div class="card-icon">
-
-✨
-
-</div>
-
-<h2 class="card-title">
-
-Criar conta
-
-</h2>
-
-<p class="card-sub">
-
-Preencha seus dados e comece
-a construir sua experiência.
-
-</p>
-
-<form id="formCadastro">
-
-<div class="form-group">
-
-<label
-for="nome"
-class="form-label">
-
-Nome completo
-
-</label>
-
-<input
-type="text"
-id="nome"
-class="form-input"
-placeholder=
-"Digite seu nome">
-
-</div>
-
-
-<div class="form-group">
-
-<label
-for="email"
-class="form-label">
-
-E-mail
-
-</label>
-
-<input
-type="email"
-id="email"
-class="form-input"
-placeholder=
-"seuemail@exemplo.com">
-
-</div>
-
-
-<div class="form-group">
-
-<label
-for="telefone"
-class="form-label">
-
-Telefone
-
-</label>
-
-<input
-type="tel"
-id="telefone"
-class="form-input"
-placeholder=
-"(61) 99999-9999">
-
-</div>
-
-
-<div class="form-group">
-
-<label
-for="senha"
-class="form-label">
-
-Senha
-
-</label>
-
-<div class="input-wrapper">
-
-<input
-type="password"
-id="senha"
-class="form-input"
-placeholder=
-"Crie uma senha">
-
-<span
-class="input-icon"
-id="toggleSenha">
-
-👁️
-
-</span>
-
-</div>
-
-</div>
-
-
-<div class="form-group">
-
-<label
-for="confirmarSenha"
-class="form-label">
-
-Confirmar senha
-
-</label>
-
-<input
-type="password"
-id="confirmarSenha"
-class="form-input"
-placeholder=
-"Repita sua senha">
-
-</div>
-
-<p
-class="form-error"
-id="mensagemErro">
-
-Erro
-
-</p>
-
-
-<p
-class="form-success"
-id="mensagemSucesso">
-
-Sucesso
-
-</p>
-
-
-<button
-type="submit"
-class="signup-btn">
-
-Criar minha conta →
-
-</button>
-
-</form>
-
-
-<div class="login-link">
-
-Já possui conta?
-
-<a href="/login">
-
-Entrar
-
-</a>
-
-</div>
-
-</div>
+  <div class="signup-hero">
+    <div class="hero-badge">✨ SUA CONTA • SUA EXPERIÊNCIA</div>
+    <h1>Comece sua <span>coleção</span></h1>
+    <p>Crie sua conta para receber sugestões personalizadas e continuar sua jornada.</p>
+    <div class="steps">
+      <div class="step"><strong>01 • Dados pessoais</strong>Preencha seus dados básicos.</div>
+      <div class="step"><strong>02 • Segurança</strong>Proteja sua conta com senha.</div>
+      <div class="step"><strong>03 • Explorar</strong>Entre e descubra seu estilo.</div>
+    </div>
+  </div>
+
+  <div class="signup-card">
+    <div class="card-icon">✨</div>
+    <h2 class="card-title">Criar conta</h2>
+    <p class="card-sub">Preencha seus dados e comece a construir sua experiência.</p>
+
+    <div id="formCadastro">
+
+      <div class="form-group">
+        <label for="nome" class="form-label">Nome completo</label>
+        <input type="text" id="nome" class="form-input" placeholder="Digite seu nome">
+      </div>
+
+      <div class="form-group">
+        <label for="email" class="form-label">E-mail</label>
+        <input type="email" id="email" class="form-input" placeholder="seuemail@exemplo.com">
+      </div>
+
+      <div class="form-group">
+        <label for="telefone" class="form-label">Telefone</label>
+        <input type="tel" id="telefone" class="form-input" placeholder="(61) 99999-9999">
+      </div>
+
+      <div class="form-group">
+        <label for="senha" class="form-label">Senha</label>
+        <div class="input-wrapper">
+          <input type="password" id="senha" class="form-input" placeholder="Crie uma senha">
+          <span class="input-icon" id="toggleSenha">👁️</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmarSenha" class="form-label">Confirmar senha</label>
+        <input type="password" id="confirmarSenha" class="form-input" placeholder="Repita sua senha">
+      </div>
+
+      <p class="form-error" id="mensagemErro"></p>
+      <p class="form-success" id="mensagemSucesso"></p>
+
+      <button class="signup-btn" id="btnCadastro">Criar minha conta →</button>
+
+    </div>
+
+    <div class="login-link">
+      Já possui conta? <a href="/login">Entrar</a>
+    </div>
+  </div>
 
 </div>
 
 <script>
+const nomeEl          = document.getElementById('nome');
+const emailEl         = document.getElementById('email');
+const telefoneEl      = document.getElementById('telefone');
+const senhaEl         = document.getElementById('senha');
+const confirmarSenhaEl= document.getElementById('confirmarSenha');
+const erroEl          = document.getElementById('mensagemErro');
+const sucessoEl       = document.getElementById('mensagemSucesso');
+const toggleEl        = document.getElementById('toggleSenha');
+const btnCadastro     = document.getElementById('btnCadastro');
 
-const formCadastro =
-document.getElementById(
-'formCadastro'
-);
-
-const nome =
-document.getElementById(
-'nome'
-);
-
-const email =
-document.getElementById(
-'email'
-);
-
-const telefone =
-document.getElementById(
-'telefone'
-);
-
-const senha =
-document.getElementById(
-'senha'
-);
-
-const confirmarSenha =
-document.getElementById(
-'confirmarSenha'
-);
-
-const termos =
-document.getElementById(
-'termos'
-);
-
-const erro =
-document.getElementById(
-'mensagemErro'
-);
-
-const sucesso =
-document.getElementById(
-'mensagemSucesso'
-);
-
-const toggle =
-document.getElementById(
-'toggleSenha'
-);
-
-
-/* mostrar senha */
-
-toggle.addEventListener(
-'click',
-()=>{
-
-if(
-senha.type===
-'password'
-){
-
-senha.type=
-'text';
-
-toggle.textContent=
-'🙈';
-
-}
-
-else{
-
-senha.type=
-'password';
-
-toggle.textContent=
-'👁️';
-
-}
-
-}
-);
-
-
-/* cadastro */
-
-formCadastro.addEventListener(
-'submit',
-
-async(e)=>{
-
-e.preventDefault();
-
-erro.classList.remove(
-'show'
-);
-
-sucesso.classList.remove(
-'show'
-);
-
-if(
-
-!nome.value||
-!email.value||
-!telefone.value||
-!senha.value||
-!confirmarSenha.value
-
-){
-
-erro.textContent=
-'Preencha todos os campos.';
-
-erro.classList.add(
-'show'
-);
-
-return;
-
-}
-
-if(
-senha.value.length<6
-){
-
-erro.textContent=
-'Senha mínima: 6 caracteres';
-
-erro.classList.add(
-'show'
-);
-
-return;
-
-}
-
-if(
-senha.value
-!==
-
-confirmarSenha.value
-){
-
-erro.textContent=
-'As senhas não coincidem';
-
-erro.classList.add(
-'show'
-);
-
-return;
-
-}
-
-if(
-!termos.checked
-){
-
-erro.textContent=
-'Aceite os termos';
-
-erro.classList.add(
-'show'
-);
-
-return;
-
-}
-
-try{
-
-const resposta = await fetch('/api/signup', {
-  method: 'POST',
-  credentials: "include", // 👈 ISSO AQUI É CRUCIAL
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    username: nome.value.trim(),
-    email: email.value.trim(),
-    telefone: telefone.value.trim(),
-    password: senha.value,
-    confirm_password: confirmarSenha.value
-  })
+// ── Mostrar / ocultar senha ───────────────────────────────────────────────
+toggleEl.addEventListener('click', () => {
+  if (senhaEl.type === 'password') {
+    senhaEl.type = 'text';
+    toggleEl.textContent = '🙈';
+  } else {
+    senhaEl.type = 'password';
+    toggleEl.textContent = '👁️';
+  }
 });
 
-const data =
-await resposta.json();
-
-if(
-data.success
-){
-
-sucesso.textContent=
-
-'Conta criada ✨';
-
-sucesso.classList.add(
-'show'
-);
-
-setTimeout(
-()=>{
-
-window.location.href=
-'/home-secret';
-
-},
-1200
-);
-
+// ── Cadastro ──────────────────────────────────────────────────────────────
+function mostrarErro(msg) {
+  erroEl.textContent = msg;
+  erroEl.classList.add('show');
+  sucessoEl.classList.remove('show');
 }
 
-else{
+btnCadastro.addEventListener('click', async () => {
+  erroEl.classList.remove('show');
+  sucessoEl.classList.remove('show');
 
-erro.textContent=
-data.message;
+  const nome     = nomeEl.value.trim();
+  const email    = emailEl.value.trim();
+  const telefone = telefoneEl.value.trim();
+  const senha    = senhaEl.value;
+  const confirma = confirmarSenhaEl.value;
 
-erro.classList.add(
-'show'
-);
+  // ── Validações client-side ──────────────────────────────────────────────
+  if (!nome || !email || !telefone || !senha || !confirma) {
+    return mostrarErro('Preencha todos os campos.');
+  }
 
-}
+  if (senha.length < 6) {
+    return mostrarErro('Senha mínima: 6 caracteres.');
+  }
 
-}
+  if (senha !== confirma) {
+    return mostrarErro('As senhas não coincidem.');
+  }
 
-catch(err){
-console.log(err);
-erro.textContent = 'Erro ao conectar.';
-erro.classList.add('show');
-}
+  // ── Envio ───────────────────────────────────────────────────────────────
+  btnCadastro.textContent = 'Criando conta... ✨';
+  btnCadastro.disabled = true;
 
-}
+  try {
+    const resposta = await fetch('/api/signup', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: nome,
+        email:    email,
+        telefone: telefone,
+        password: senha,
+        confirm_password: confirma
+      })
+    });
 
-);
+    const data = await resposta.json();
 
+    if (data.success) {
+      sucessoEl.textContent = 'Conta criada ✨';
+      sucessoEl.classList.add('show');
+      setTimeout(() => { window.location.href = '/home-secret'; }, 1200);
+    } else {
+      mostrarErro(data.message || 'Erro ao criar conta.');
+      btnCadastro.textContent = 'Criar minha conta →';
+      btnCadastro.disabled = false;
+    }
+
+  } catch (err) {
+    console.error(err);
+    mostrarErro('Erro ao conectar.');
+    btnCadastro.textContent = 'Criar minha conta →';
+    btnCadastro.disabled = false;
+  }
+});
 </script>
 
 </body>
-
 </html>

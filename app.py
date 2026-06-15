@@ -29,23 +29,24 @@ repo_diario = SQLiteDiarioRepository()
 
 banco_dados = {
     "contatos": [
-        {"nome": "Polícia", "telefone": "190"},
-        {"nome": "Central de Atendimento à Mulher", "telefone": "180"},
-        {"nome": "SAMU", "telefone": "192"}
+        {"nome": "Polícia",                        "telefone": "190"},
+        {"nome": "Central de Atendimento à Mulher","telefone": "180"},
+        {"nome": "SAMU",                           "telefone": "192"}
     ],
     "questionarios": []
 }
 
 HF_API_URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct"
 
-headers = {
+hf_headers = {
     "Authorization": f"Bearer {os.getenv('HF_API_KEY')}"
 }
 
 face_cascade = cv2.CascadeClassifier(
     cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
 )
-# ── Páginas ──────────────────────────────────────────────────────────────────
+
+# ── Páginas públicas ──────────────────────────────────────────────────────────
 
 @app.route('/')
 def index():
@@ -54,12 +55,6 @@ def index():
 @app.route('/login')
 def login():
     return render_template('login.html')
-
-@app.route('/home-secret')
-def homesecret():
-    if 'user_id' not in session:
-        return redirect('/login')
-    return render_template('home_secret.html')
 
 @app.route('/cadastro')
 def cadastro():
@@ -76,33 +71,42 @@ def quizmake():
 @app.route('/tom-de-pele')
 def tom_de_pele():
     return render_template('tom-de-pele.html')
-# ── Inspirações ─────────────────────────────────────────────────────────────
+
+# ── Inspirações ───────────────────────────────────────────────────────────────
+# FIX: rotas alinhadas com os slugs usados no quiz
+# (beginner / natural / soft / glam / creative)
 
 @app.route('/inspiracoes')
 def inspiracoes():
     return render_template('inspiracoes.html')
 
-@app.route('/inspiracoes/easy')
-def inspiracoes_easy():
+@app.route('/inspiracoes/beginner')
+def inspiracoes_beginner():
     return render_template('easy.html')
 
 @app.route('/inspiracoes/natural')
 def inspiracoes_natural():
     return render_template('natural.html')
 
-@app.route('/inspiracoes/soft-glam')
-def inspiracoes_soft_glam():
+@app.route('/inspiracoes/soft')
+def inspiracoes_soft():
     return render_template('soft.html')
 
-@app.route('/inspiracoes/full-glam')
-def inspiracoes_full_glam():
+@app.route('/inspiracoes/glam')
+def inspiracoes_glam():
     return render_template('full.html')
 
-@app.route('/inspiracoes/criativa')
-def inspiracoes_criativa():
+@app.route('/inspiracoes/creative')
+def inspiracoes_creative():
     return render_template('criativa.html')
 
-# ── Outras páginas protegidas ───────────────────────────────────────────────
+# ── Páginas protegidas ────────────────────────────────────────────────────────
+
+@app.route('/home-secret')
+def homesecret():
+    if 'user_id' not in session:
+        return redirect('/login')
+    return render_template('home_secret.html')
 
 @app.route('/contatos')
 def pagina_contatos():
@@ -134,7 +138,7 @@ def pagina_localizacao():
         return redirect('/login')
     return render_template('localizacao.html')
 
-# ── Auth ─────────────────────────────────────────────────────────────────────
+# ── Auth ──────────────────────────────────────────────────────────────────────
 
 @app.route('/api/signup', methods=['POST'])
 def api_signup():
@@ -149,10 +153,10 @@ def api_signup():
     if exists['username']:
         return jsonify({"success": False, "message": "Este nome de acesso já está em uso."}), 400
 
-    senha_hash = hash_password(dados['password'])
+    senha_hash   = hash_password(dados['password'])
     novo_usuario = repo.create(dados['email'], dados['username'], senha_hash)
 
-    session['user_id'] = novo_usuario.id
+    session['user_id']  = novo_usuario.id
     session['username'] = novo_usuario.username
 
     return jsonify({"success": True, "message": "Conta criada com sucesso!"}), 201
@@ -169,7 +173,7 @@ def api_login():
     if not usuario or not verify_password(dados['password'], usuario.password_hash):
         return jsonify({"success": False, "message": "Dados incorretos."}), 401
 
-    session['user_id'] = usuario.id
+    session['user_id']  = usuario.id
     session['username'] = usuario.username
 
     return jsonify({"success": True}), 200
@@ -180,7 +184,7 @@ def api_logout():
     session.clear()
     return jsonify({"success": True}), 200
 
-# ── Diário ───────────────────────────────────────────────────────────────────
+# ── Diário ────────────────────────────────────────────────────────────────────
 
 @app.route('/api/diario', methods=['GET'])
 def listar_diario():
@@ -214,7 +218,7 @@ def apagar_diario(entrada_id):
 
     return jsonify({"success": True}), 200
 
-# ── Questionário ─────────────────────────────────────────────────────────────
+# ── Questionário ──────────────────────────────────────────────────────────────
 
 @app.route('/api/questionario', methods=['POST'])
 def salvar_questionario():
@@ -222,15 +226,15 @@ def salvar_questionario():
 
     if dados.get('respostas'):
         banco_dados["questionarios"].append({
-            "data": datetime.now().strftime("%d/%m/%Y %H:%M"),
-            "respostas": dados.get('respostas'),
+            "data":              datetime.now().strftime("%d/%m/%Y %H:%M"),
+            "respostas":         dados.get('respostas'),
             "nivel_risco_front": dados.get('nivel')
         })
         return jsonify({"success": True}), 200
 
     return jsonify({"success": False}), 400
 
-# ── Contatos ─────────────────────────────────────────────────────────────────
+# ── Contatos ──────────────────────────────────────────────────────────────────
 
 @app.route('/api/contatos', methods=['GET'])
 def listar_contatos():
@@ -243,23 +247,24 @@ def adicionar_contato():
 
     if dados.get('nome') and dados.get('telefone'):
         banco_dados["contatos"].append({
-            "nome": dados.get('nome'),
+            "nome":     dados.get('nome'),
             "telefone": dados.get('telefone')
         })
         return jsonify({"success": True}), 200
 
     return jsonify({"success": False}), 400
 
+# ── IA: Chat ──────────────────────────────────────────────────────────────────
+
 @app.route('/api/ia/chat', methods=['POST'])
 def chat_ia():
-    dados = request.get_json()
+    dados    = request.get_json()
     mensagem = dados.get("message", "")
 
     if not mensagem:
         return jsonify({"error": "Mensagem vazia"}), 400
 
-    prompt = f"""
-Você é uma maquiadora especialista.
+    prompt = f"""Você é uma maquiadora especialista.
 Responda de forma simples, amigável e prática.
 
 Usuário: {mensagem}
@@ -267,94 +272,64 @@ Usuário: {mensagem}
 
     payload = {
         "inputs": prompt,
-        "parameters": {
-            "max_new_tokens": 200,
-            "temperature": 0.7
-        }
+        "parameters": {"max_new_tokens": 200, "temperature": 0.7}
     }
 
-    response = requests.post(HF_API_URL, headers=headers, json=payload)
+    response = requests.post(HF_API_URL, headers=hf_headers, json=payload)
 
     try:
         result = response.json()
-
-        # formato do HF pode variar
         if isinstance(result, list):
             text = result[0].get("generated_text", "")
         else:
             text = result.get("generated_text", "")
-
         return jsonify({"response": text})
-
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
+
+# ── IA: Tom de pele ───────────────────────────────────────────────────────────
+# FIX: renomeada de tom_de_pele → api_tom_de_pele para evitar conflito de endpoint
+
 @app.route('/api/ia/tom-de-pele', methods=['POST'])
 def api_tom_de_pele():
-    dados = request.get_json()
-    imagem_base64 = dados.get("image")
+    dados          = request.get_json()
+    imagem_base64  = dados.get("image")
 
     if not imagem_base64:
         return jsonify({"error": "Sem imagem"}), 400
 
-    # decode base64
     img_data = base64.b64decode(imagem_base64.split(",")[1])
-    np_arr = np.frombuffer(img_data, np.uint8)
-    img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+    np_arr   = np.frombuffer(img_data, np.uint8)
+    img      = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 
-    # carregar detector de rosto
-    face_cascade = cv2.CascadeClassifier(
-        cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
-    )
-
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    gray  = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.1, 5)
 
     if len(faces) == 0:
-        return jsonify({
-            "error": "Nenhum rosto detectado"
-        }), 400
+        return jsonify({"error": "Nenhum rosto detectado"}), 400
 
-    # pega o primeiro rosto
     (x, y, w, h) = faces[0]
 
-    # região das bochechas (parte central do rosto)
     roi = img[
         y + int(h * 0.3): y + int(h * 0.7),
         x + int(w * 0.2): x + int(w * 0.8)
     ]
 
-    # converte para YCrCb (melhor para pele)
-    ycrcb = cv2.cvtColor(roi, cv2.COLOR_BGR2YCrCb)
+    ycrcb   = cv2.cvtColor(roi, cv2.COLOR_BGR2YCrCb)
+    mean_cr = float(np.mean(ycrcb[:, :, 1]))
+    mean_cb = float(np.mean(ycrcb[:, :, 2]))
 
-    cr = ycrcb[:, :, 1]
-    cb = ycrcb[:, :, 2]
-
-    mean_cr = float(np.mean(cr))
-    mean_cb = float(np.mean(cb))
-
-    # classificação mais realista (aproximação estética)
     if mean_cr > 150 and mean_cb < 120:
-        tom = "Claro"
-        subtom = "Quente"
+        tom, subtom = "Claro",       "Quente"
     elif mean_cr > 140:
-        tom = "Médio Claro"
-        subtom = "Neutro Quente"
+        tom, subtom = "Médio Claro", "Neutro Quente"
     elif mean_cr > 130:
-        tom = "Médio"
-        subtom = "Neutro"
+        tom, subtom = "Médio",       "Neutro"
     else:
-        tom = "Escuro"
-        subtom = "Frio / Neutro"
+        tom, subtom = "Escuro",      "Frio / Neutro"
 
-    return jsonify({
-        "tom": tom,
-        "subtom": subtom,
-        "cr": mean_cr,
-        "cb": mean_cb
-    })
+    return jsonify({"tom": tom, "subtom": subtom, "cr": mean_cr, "cb": mean_cb})
 
 
 if __name__ == '__main__':
-    import os
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
